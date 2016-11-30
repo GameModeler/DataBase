@@ -6,3 +6,15 @@ C:\dev\DataBase\bin\Debug\Newtonsoft.Json.dll
 C:\dev\DataBase\bin\Debug\YamlSerializer.dll
 C:\dev\DataBase\bin\Debug\Newtonsoft.Json.xml
 C:\dev\DataBase\obj\Debug\DataBase.csprojResolveAssemblyReference.cache
+C:\dev\C#\DataBase\obj\Debug\DataBase.exe
+C:\dev\C#\DataBase\obj\Debug\DataBase.pdb
+C:\dev\C#\DataBase\obj\Debug\DataBase.csprojResolveAssemblyReference.cache
+C:\dev\C#\DataBase\bin\Debug\DataBase.exe
+C:\dev\C#\DataBase\bin\Debug\DataBase.pdb
+C:\dev\C#\DataBase\bin\Debug\Newtonsoft.Json.dll
+C:\dev\C#\DataBase\bin\Debug\YamlSerializer.dll
+C:\dev\C#\DataBase\bin\Debug\Newtonsoft.Json.xml
+C:\dev\C#\DataBase\bin\Debug\Faker.NET4.dll
+C:\dev\C#\DataBase\bin\Debug\de-DE\Faker.NET4.resources.dll
+C:\dev\C#\DataBase\bin\Debug\CsvHelper.dll
+C:\dev\C#\DataBase\bin\Debug\CsvHelper.xml

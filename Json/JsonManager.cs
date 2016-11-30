@@ -15,8 +15,9 @@ namespace DataBase.Json
         }
 
      
-        public static void WriteToJsonFile<T>(string filePath, T objectToWrite, bool append = false) where T : new()
+        public static void WriteToJsonFile<T>(string path, string fileName, T objectToWrite, bool append = false) where T : new()
         {
+            string filePath = path + fileName;
             TextWriter writer = null;
             try
             {

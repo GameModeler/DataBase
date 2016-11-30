@@ -12,8 +12,9 @@ namespace DataBase.Binary
      
 
         
-        public static void WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = false)
+        public static void WriteToBinaryFile<T>(string path, string fileName, T objectToWrite, bool append = false)
         {
+            string filePath = path + fileName;
             using (Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create))
             {
                 var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
