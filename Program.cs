@@ -2,6 +2,7 @@
 using DataBase.Character;
 using DataBase.Csv;
 using DataBase.Json;
+using DataBase.Sql;
 using DataBase.Xml;
 using DataBase.Yaml;
 using System;
@@ -56,6 +57,9 @@ namespace DataBase
             CsvManager.WriteToCsvFile<Class1>(@"A:\", "characterCSV.txt", class1);
             //Class1 test = CsvManager.ReadFromCsvFile<Class1>(@"A:\characterCSV.txt");
             //Console.WriteLine(test.Name);
+
+            // SQL
+            SqlManager.WriteToSqlFile<Class1>(@"A:\", "script.sql", class1, false, "Test3", true);
 
 
 
