@@ -5,17 +5,12 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace DataBase.Character
 {
     class CharacterManager
     {
-
-
-
-        public CharacterManager()
-        {
-        }
 
 
         // TODO : handle objects list
@@ -26,14 +21,26 @@ namespace DataBase.Character
             string contentsToWriteToFile = "";
             try
             {
-                contentsToWriteToFile += objectToWrite.GetType() + ">";
+                //var object_name = objectToWrite.GetType().GetTypeInfo().GenericTypeArguments[0];
+                var object_name = objectToWrite.GetType();
+                contentsToWriteToFile += object_name + ">";
+     
                 // Catch object properties
                 var properties = objectToWrite.GetType().GetProperties();
+                int propCount = properties.Count();
+                int i = 0;
+
                 foreach (var p in properties)
                 {
                     string name = p.Name;
                     var value = p.GetValue(objectToWrite, null);
-                    contentsToWriteToFile += name + ":" + value + delimiter;
+                    contentsToWriteToFile += name + ":" + value;
+
+                    i += 1;
+                    if (i < propCount)
+                        contentsToWriteToFile += delimiter;
+                    else
+                        contentsToWriteToFile += "\n";
                 }
                 writer = new StreamWriter(filePath, append);
                 writer.Write(contentsToWriteToFile);
@@ -45,57 +52,64 @@ namespace DataBase.Character
             }
         }
 
-      
 
-        // TODO : handle objects list
-        public static T ReadFromCharacterFile<T>(string filePath, char delimiter = '|') where T : new()
+
+        // Return always a list
+        public static List<T> ReadFromCharacterFile<T>(string filePath, char delimiter = '|') where T : new()
         {
+
+            List<T> objList = new List<T>();
+
+            var lineCount = File.ReadLines(filePath).Count();
+            string line;
+
             TextReader reader = null;
-            T obj = new T();
-            
             try
             {
+
                 reader = new StreamReader(filePath);
-                string fileContents = reader.ReadToEnd();
-                string[] res = fileContents.Split('>');
-
-                // Class control
-                if (Type.GetType(res[0]) == typeof(T))
+                while ((line = reader.ReadLine()) != null)
                 {
-                    
-                    string[] properties = res[1].Split(delimiter);
-        
-                    int i = 0;
-                    foreach (var prop in properties)
-                    {                      
-                        if (string.IsNullOrEmpty(prop) == false)
-                        {
-                            // Property of obj
-                            string objProp = obj.GetType().GetProperties()[i].Name;
-                            // Property on file
-                            string attribute = prop.Split(':')[0];
-                            // Value on file
-                            string value = prop.Split(':')[1];
-
-                            // Type of obj property
-                            Type typeProp = obj.GetType().GetProperties()[i].PropertyType;
-                            // Type of obj
-                            Type type = obj.GetType();
-                            // Property of obj
-                            PropertyInfo propToWrite = type.GetProperty(objProp);
-
-                            // Property of obj == property on file && property is not null && property of obj is ready to write ?
-                            if (objProp == attribute && (null != propToWrite && propToWrite.CanWrite))
+ 
+                    T obj = new T();
+     
+                    string[] res = line.Split('>');
+                    if (Type.GetType(res[0]) == typeof(T))
+                    {
+                   
+                        string[] properties = res[1].Split(delimiter);
+                                        
+                        int i = 0;
+                        foreach (var prop in properties)
+                        {                          
+                            if (string.IsNullOrEmpty(prop) == false)
                             {
-                                // Set value on obj property (with cast on value, each save value is a string)
-                                propToWrite.SetValue(obj, Convert.ChangeType(value, typeProp), null);
-                       
-                            }
+                                // Property of obj
+                                string objProp = obj.GetType().GetProperties()[i].Name;
+                                // Property on file
+                                string attribute = prop.Split(':')[0];
+                                // Value on file
+                                string value = prop.Split(':')[1];
+                                // Type of obj property
+                                Type typeProp = obj.GetType().GetProperties()[i].PropertyType;
+                                // Type of obj
+                                Type type = obj.GetType();
+                                // Property of obj
+                                PropertyInfo propToWrite = type.GetProperty(objProp);
+
+                                // Property of obj == property on file && property is not null && property of obj is ready to write ?
+                                if (objProp == attribute && (null != propToWrite && propToWrite.CanWrite))
+                                {
+                                    // Set value on obj property (with cast on value, each save value is a string)
+                                    propToWrite.SetValue(obj, Convert.ChangeType(value, typeProp), null);                       
+                                }
+                            }                    
+                            i += 1;
                         }
-                        i += 1;
-                    }                 
-                }
-                return obj;
+                        objList.Add(obj);
+                    }
+                }                     
+                return objList;
             }
             finally
             {
@@ -103,7 +117,6 @@ namespace DataBase.Character
                     reader.Close();
             }
         }
-
 
     }
 }

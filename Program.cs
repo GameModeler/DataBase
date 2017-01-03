@@ -19,13 +19,15 @@ namespace DataBase
 
         static void Main()
         {
-            Console.WriteLine("Hello World!");
 
             Class1 class1 = new Class1();
             class1.Id = 1;
             class1.Name = "test";
             class1.Status = true;
 
+
+            List<Class1> listClass1 = class1.LoadMultipleItems();
+            
 
             // JSON
             JsonManager.WriteToJsonFile<Class1>(@"A:\", "test.json", class1);
@@ -43,9 +45,19 @@ namespace DataBase
             Console.WriteLine("Binary => " + objBin.Id + " " + objBin.Name + " " + objBin.Status);
 
             // CHARACTER
-            CharacterManager.WriteToCharacterFile<Class1>(@"A:\", "character.txt", class1, false);
-            Class1 objCharacter = CharacterManager.ReadFromCharacterFile<Class1>(@"A:\character.txt");
-            Console.WriteLine("Character => " + objCharacter.Id + " " + objCharacter.Name + " " + objCharacter.Status);
+            // Write one object
+            CharacterManager.WriteToCharacterFile<Class1>(@"A:\", "character.txt", class1, true);
+            // Write object list
+            //CharacterManager.WriteToCharacterFile<List<Class1>>(@"A:\", "list_character.txt", listClass1, false);
+            List<Class1> objListCharacter = CharacterManager.ReadFromCharacterFile<Class1>(@"A:\character.txt");
+            Console.WriteLine("Character_List => ");
+            foreach (var objChar in objListCharacter)
+            {
+                Console.WriteLine(objChar.Id + " " + objChar.Name + " " + objChar.Status);
+            }
+      
+
+            //Console.WriteLine("Character => " + objCharacter.Id + " " + objCharacter.Name + " " + objCharacter.Status);
 
             // YAML
             YamlManager.WriteToYamlFile<Class1>(@"A:\", "yaml.txt", class1);
@@ -63,9 +75,14 @@ namespace DataBase
 
 
 
-            /* Test List */
-            List <Class1> listClass1 = class1.LoadMultipleItems();
+            // Test List     
             JsonManager.WriteToJsonFile<List<Class1>>(@"A:\", "test_list.json", listClass1);
+            List<Class1> objJsonList = JsonManager.ReadFromJsonFile<List<Class1>>(@"A:\test_list.json");
+            Console.WriteLine("\nJSON_LIST =>");
+            foreach (var obj in objJsonList)
+            {
+                Console.WriteLine("" + obj.Id + " " + obj.Name + " " + obj.Status);
+            }
 
 
 
