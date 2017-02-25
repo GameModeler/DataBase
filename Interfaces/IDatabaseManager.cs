@@ -1,11 +1,11 @@
-﻿using DataBase.Utils;
+﻿using GMDataBase.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataBase.Interfaces
+namespace GMDataBase.Interfaces
 {
     public interface IDatabaseManager<T>
     {

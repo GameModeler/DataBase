@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataBase.Utils
+namespace GMDataBase.Utils
 {
     /// <summary>
     /// Enum of the different provider

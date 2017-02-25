@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataBase.Criteria
+namespace GMDataBase.Criteria
 {
     public class LinkCondition
     {

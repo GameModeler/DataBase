@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GMDataBase.Criteria
+namespace GMDataBase.Database.DbContexts.Interface
 {
-    public enum DbConstraint
+    public interface IDbContexts
     {
-        [StringValue("PRIMARY KEY")]
-        PRIMARY_KEY
+        ProviderType Provider { get; set; }
     }
 }

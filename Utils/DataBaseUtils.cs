@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
-using DataBase.Interfaces;
+using GMDataBase.Interfaces;
 using System.Data.Entity;
+using GMDataBase.Database.DbSettings.Interface;
 
-namespace DataBase.Utils
+namespace GMDataBase.Utils
 {
     public static class DataBaseUtils
     {

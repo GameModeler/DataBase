@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataBase.Database
+namespace GMDataBase.Database
 {
     public class SqliteConfiguration : DbConfiguration
     {

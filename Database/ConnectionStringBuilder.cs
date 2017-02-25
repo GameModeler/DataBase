@@ -1,44 +1,41 @@
-﻿using DataBase.Interfaces;
-using DataBase.Utils;
+﻿using GMDataBase.Database.DbSettings;
+using GMDataBase.Database.DbSettings.DbClasses;
+using GMDataBase.Database.DbSettings.Interface;
+using GMDataBase.Interfaces;
+using GMDataBase.Utils;
 using MySql.Data.Entity;
 using MySql.Data.MySqlClient;
 using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Data.SQLite;
 using System.Reflection;
 
-namespace DataBase.Database
+namespace GMDataBase.Database
 {
     /// <summary>
     /// Build the database connection string
     /// </summary>
-    public static class ConnectionStringBuilder
+    public class ConnectionStringBuilder
     {
-        private static DbConfig dbConfig = new DbConfig();
+        private static GmDbManager dbManager = GmDbManager.Instance;
 
         public static string BuildConnectionString(ProviderType provider, IDbSettings settings = null)
         {
-           switch (provider)
+            if (settings == null || DataBaseUtils.IsAllNullOrEmpty(settings)) //database settings is empty
             {
-                case ProviderType.MySQL:
-                    if (settings == null || DataBaseUtils.IsAllNullOrEmpty(settings)) //database settings is empty
-                    { 
-                        settings = new DbSettings(dbConfig.GetDefaultDbName(DatabaseManager.Instance.NbDefaultDb) , provider);                       
-                    }
+                int nbName = dbManager.NbDefaultDb;
+                List<Type> classList = GenericUtils.AllClassesFromNamespace("DbClasses");
+                var clazz = GenericUtils.GetClassesFromProperty(classList, "Provider", provider);
+                GenericUtils.CallMathodByReflection(typeof(DatabaseFactory), "DatabaseSettings", clazz, GetDefaultDbName(nbName));
 
-                    //DbConfiguration.SetConfiguration(new MySqlEFConfiguration());
+                settings = dbManager.GetDatabase(GetDefaultDbName(nbName));
 
-                    break;
-                default:
-                    if (settings == null || DataBaseUtils.IsAllNullOrEmpty(settings))
-                    {
-                        settings = new DbSettings(dbConfig.GetDefaultDbName(DatabaseManager.Instance.NbDefaultDb), provider);
-                    }
-                    break;
             }
-            return dbConfig.ProviderConnectionString(provider, settings);
+
+            return ProviderConnectionString(provider, settings);
         }
 
         public static DbConnection GetConnection(ProviderType provider, IDbSettings settings = null)
@@ -56,11 +53,13 @@ namespace DataBase.Database
                 switch (provider)
                 {
                     case ProviderType.MySQL:
-                        return BuildMySQLConnectionString(settings);
+                        return BuildMySQLConnectionString((MySqlDatabase)settings);
+
                     case ProviderType.SQLite:
-                        return BuildSQLiteConnectionString(settings);
+                        return BuildSQLiteConnectionString((SqLiteDatabase)settings);
+
                     default:
-                        return BuildSQLConnectionString(settings);
+                        return "";
                 }
             }
             else
@@ -69,12 +68,17 @@ namespace DataBase.Database
             }
         }
 
+        private static string GetDefaultDbName(int nb)
+        {
+            return Assembly.GetExecutingAssembly().GetName().Name + "_" + nb.ToString();
+        }
+
         /// <summary>
         /// Build MySQL connection string
         /// </summary>
         /// <param name="settings"></param>
         /// <returns></returns>
-        public static string BuildMySQLConnectionString(IDbSettings settings)
+        public static string BuildMySQLConnectionString(MySqlDatabase settings)
         {
             // Initialize the connection string builder for the
             // underlying provider.
@@ -105,61 +109,21 @@ namespace DataBase.Database
         }
 
         /// <summary>
-        /// Build SQL connection string
-        /// </summary>
-        /// <param name="settings"></param>
-        /// <returns></returns>
-        public static string BuildSQLConnectionString(IDbSettings settings)
-        {
-            // Initialize the connection string builder for the
-            // underlying provider.
-            SqlConnectionStringBuilder sqlBuilder = new SqlConnectionStringBuilder();
-
-            if (!string.IsNullOrEmpty(settings.DatabaseName))
-            {
-                sqlBuilder.InitialCatalog = settings.DatabaseName;
-            }
-            if (!string.IsNullOrEmpty(settings.Server))
-            {
-                sqlBuilder.DataSource = DataBaseUtils.BuildDataSource(settings.Server, settings.Port);
-            }
-            if (!string.IsNullOrEmpty(settings.UserId))
-            {
-                sqlBuilder.UserID = settings.UserId;
-            }
-            if (!string.IsNullOrEmpty(settings.Password))
-            {
-                sqlBuilder.Password = settings.Password;
-            }
-
-            sqlBuilder.IntegratedSecurity = true;
-
-            sqlBuilder.MultipleActiveResultSets = true;
-
-            // Build the SqlConnection connection string.
-            return sqlBuilder.ToString();
-        }
-
-        /// <summary>
         /// Build SQLite connection string
         /// </summary>
         /// <param name="settings"></param>
         /// <returns></returns>
-        public static string BuildSQLiteConnectionString(IDbSettings settings)
+        public static string BuildSQLiteConnectionString(SqLiteDatabase settings)
         {
             // Initialize the connection string builder for the
             // underlying provider.
-
             SQLiteConnectionStringBuilder sqlBuilder = new SQLiteConnectionStringBuilder();
 
-            if (!string.IsNullOrEmpty(settings.DatabaseName))
+            if (!string.IsNullOrEmpty(settings.DataSource))
             {
-                sqlBuilder.DataSource = settings.DatabaseName;
+                sqlBuilder.DataSource = settings.DataSource;
             }
-            if (!string.IsNullOrEmpty(settings.Server))
-            {
-                sqlBuilder.DataSource = settings.Server;
-            }
+            
             if (!string.IsNullOrEmpty(settings.Password))
             {
                 sqlBuilder.Password = settings.Password;

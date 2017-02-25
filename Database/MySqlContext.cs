@@ -16,24 +16,24 @@ using System.Threading;
 namespace DataBase.Database
 {
 
-    [DbConfigurationType(typeof(MySQLConfiguration))]
-    //[DbConfigurationType(typeof(MySqlEFConfiguration))]
+    //[DbConfigurationType(typeof(MySQLConfiguration))]
+    [DbConfigurationType(typeof(MySqlEFConfiguration))]
     public partial class MySqlContext<TEntity> : DbContext where TEntity : class
     {
 
         //GmDbContext<TEntity> where TEntity: class
         public DbSet<TEntity> DbSetT { get; set; }
 
-        //public MySqlContext(IDbSettings settings) : base(ConnectionStringBuilder.BuildConnectionString(ProviderType.MySQL, settings))
-        //{
-        //    //Database.CreateIfNotExists();
-        //}
-
-        public MySqlContext(IDbSettings settings) : base(new MySqlConnection(ConnectionStringBuilder.BuildConnectionString(ProviderType.MySQL, settings)), true)
+        public MySqlContext(IDbSettings settings) : base(ConnectionStringBuilder.BuildConnectionString(ProviderType.MySQL, settings))
         {
-            //DbConfiguration.SetConfiguration(new MySqlEFConfiguration());
             //Database.CreateIfNotExists();
         }
+
+        //public MySqlContext(IDbSettings settings) : base(new MySqlConnection(ConnectionStringBuilder.BuildConnectionString(ProviderType.MySQL, settings)), true)
+        //{
+        //    //DbConfiguration.SetConfiguration(new MySqlEFConfiguration());
+        //    //Database.CreateIfNotExists();
+        //}
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

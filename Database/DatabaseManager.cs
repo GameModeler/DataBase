@@ -1,13 +1,14 @@
 ﻿
-using DataBase.Interfaces;
-using DataBase.Utils;
+using GMDataBase.Database.DbSettings.Interface;
+using GMDataBase.Interfaces;
+using GMDataBase.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DataBase.Database
+namespace GMDataBase.Database
 {
-    public class DatabaseManager : IDatabaseManager<IDbSettings>
+    public class DatabaseManager
     {
 
         public Dictionary<string, IDbSettings> databases;
@@ -110,7 +111,7 @@ namespace DataBase.Database
         {
             get
             {
-                return nbDefaultDb;
+                return nbDefaultDb++;
             }
             set
             {
