@@ -11,9 +11,15 @@ namespace DataBase.Character
 {
     class CharacterManager
     {
-
-
-        // TODO : handle objects list
+        /// <summary>
+        /// Write T object in character in character file
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="path"></param>
+        /// <param name="fileName"></param>
+        /// <param name="objectToWrite"></param>
+        /// <param name="append"></param>
+        /// <param name="delimiter"></param>
         public static void WriteToCharacterFile<T>(string path, string fileName, T objectToWrite, bool append = false, string delimiter = "|") where T : new()
         {
             string filePath = path + fileName;
@@ -52,9 +58,13 @@ namespace DataBase.Character
             }
         }
 
-
-
-        // Return always a list
+        /// <summary>
+        /// Read character from character file and convert in T object
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="filePath"></param>
+        /// <param name="delimiter"></param>
+        /// <returns></returns>
         public static List<T> ReadFromCharacterFile<T>(string filePath, char delimiter = '|') where T : new()
         {
 
@@ -117,6 +127,5 @@ namespace DataBase.Character
                     reader.Close();
             }
         }
-
     }
 }

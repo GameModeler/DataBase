@@ -9,10 +9,17 @@ using System.Yaml.Serialization;
 
 namespace DataBase.Yaml
 {
-    class YamlManager
+    public class YamlManager
     {
 
-
+        /// <summary>
+        /// Write T object to json file
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="path"></param>
+        /// <param name="fileName"></param>
+        /// <param name="objectToWrite"></param>
+        /// <param name="append"></param>
         public static void WriteToYamlFile<T>(string path, string fileName, T objectToWrite, bool append = false) where T : new()
         {
             string filePath = path + fileName;
@@ -31,13 +38,19 @@ namespace DataBase.Yaml
             }
         }
 
-
+        /// <summary>
+        /// Read from json file and convert in T object
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
         public static T ReadFromYamlFile<T>(string filePath) where T : new()
         {
             TextReader reader = null;
             try
             {
                 var serializer = new YamlSerializer();
+                Console.WriteLine(serializer.DeserializeFromFile(filePath));
                 object obj = serializer.DeserializeFromFile(filePath)[0];
                 return (T)Convert.ChangeType(obj, typeof(T));
             }
@@ -47,9 +60,5 @@ namespace DataBase.Yaml
                     reader.Close();
             }
         }
-    
-
-
-
     }
 }

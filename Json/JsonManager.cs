@@ -10,11 +10,15 @@ namespace DataBase.Json
 {
     class JsonManager
     {
-        public JsonManager()
-        {
-        }
 
-     
+        /// <summary>
+        /// Write T object to json file
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="path"></param>
+        /// <param name="fileName"></param>
+        /// <param name="objectToWrite"></param>
+        /// <param name="append"></param>
         public static void WriteToJsonFile<T>(string path, string fileName, T objectToWrite, bool append = false) where T : new()
         {
             string filePath = path + fileName;
@@ -32,7 +36,12 @@ namespace DataBase.Json
             }
         }
 
-       
+        /// <summary>
+        /// Read from json file and convert in T object
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
         public static T ReadFromJsonFile<T>(string filePath) where T : new()
         {
             TextReader reader = null;
@@ -48,6 +57,5 @@ namespace DataBase.Json
                     reader.Close();
             }
         }
-
     }
 }

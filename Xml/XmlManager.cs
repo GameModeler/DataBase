@@ -8,14 +8,16 @@ using System.Xml.Serialization;
 
 namespace DataBase.Xml
 {
-    class XmlManager
+    public class XmlManager
     {
-
-        public XmlManager()
-        {
-        }
-
-        
+        /// <summary>
+        /// Write T object in xml file
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="path"></param>
+        /// <param name="fileName"></param>
+        /// <param name="objectToWrite"></param>
+        /// <param name="append"></param>
         public static void WriteToXmlFile<T>(string path, string fileName, T objectToWrite, bool append = false) where T : new()
         {
             string filePath = path + fileName;
@@ -33,7 +35,12 @@ namespace DataBase.Xml
             }
         }
 
-       
+        /// <summary>
+        /// Read from xml file and convert in T object
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
         public static T ReadFromXmlFile<T>(string filePath) where T : new()
         {
             TextReader reader = null;

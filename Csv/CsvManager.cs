@@ -9,8 +9,16 @@ using System.Threading.Tasks;
 
 namespace DataBase.Csv
 {
-    class CsvManager
+    public class CsvManager
     {
+        /// <summary>
+        /// Write object in csv file
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="path"></param>
+        /// <param name="fileName"></param>
+        /// <param name="objectToWrite"></param>
+        /// <param name="append"></param>
         public static void WriteToCsvFile<T>(string path, string fileName, T objectToWrite, bool append = false) where T : new()
         {
             string filePath = path + fileName;
@@ -27,7 +35,7 @@ namespace DataBase.Csv
                     writer.Close();
             }
         }
-
+ 
         public static void ReadFromCsvFile<T>(string filePath) where T : new()
         {
 
@@ -48,7 +56,6 @@ namespace DataBase.Csv
                 if (reader != null)
                     reader.Close();
             }
-        }
-       
+        }   
     }
 }

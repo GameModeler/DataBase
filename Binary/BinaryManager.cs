@@ -9,9 +9,14 @@ namespace DataBase.Binary
 {
     class BinaryManager
     {
-     
-
-        
+        /// <summary>
+        /// Write T object in binary file
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="path"></param>
+        /// <param name="fileName"></param>
+        /// <param name="objectToWrite"></param>
+        /// <param name="append"></param>
         public static void WriteToBinaryFile<T>(string path, string fileName, T objectToWrite, bool append = false)
         {
             string filePath = path + fileName;
@@ -22,7 +27,12 @@ namespace DataBase.Binary
             }
         }
 
-        
+        /// <summary>
+        /// Read from binary file and convert in T object
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
         public static T ReadFromBinaryFile<T>(string filePath)
         {
             using (Stream stream = File.Open(filePath, FileMode.Open))
