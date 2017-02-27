@@ -94,8 +94,8 @@ namespace GMDataBase
             GmDbContext<Car> dbContext = dbManager.ContextFactory<Car>();
 
             var sqlparking = dbContext
-                                      .Context(settingdb2, ProviderType.MySQL)
-                                      .Context(sqlDbSettings, ProviderType.SQLite)
+                                      .Context(settingdb2)
+                                      .Context(sqlDbSettings)
                                       .MySqlContext(settingdb2);
 
             await sqlparking.Insert(cars);

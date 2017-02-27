@@ -72,19 +72,6 @@ namespace GMDataBase.Database
             }
         }
 
-        /// <summary>
-        /// Provide a way to look for database information into the list of databases
-        /// </summary>
-        /// <param name="crible"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public IEnumerable<IDbSettings> SearchInDatabases(String crible, String value)
-        {
-            return from db in Databases.Values
-                   where db.GetCrible(crible) == value
-                   select db;
-        }
-
         public void SetProvider(ProviderType providerType)
         {
             if(Provider == ProviderType.Default)

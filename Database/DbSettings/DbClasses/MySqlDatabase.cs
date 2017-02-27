@@ -86,7 +86,5 @@ namespace GMDataBase.Database.DbSettings.DbClasses
             ConnectionString = "";
 
         }
-
-        public string connectionString
     }
 }

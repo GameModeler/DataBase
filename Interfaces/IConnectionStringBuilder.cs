@@ -1,4 +1,5 @@
-﻿using GMDataBase.Utils;
+﻿using GMDataBase.Database.DbSettings.Interface;
+using GMDataBase.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
