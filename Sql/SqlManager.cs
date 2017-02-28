@@ -1,20 +1,18 @@
 ﻿using DataBase.Dynamic;
 using MySql.Data.MySqlClient;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Diagnostics;
-
+using System.Data.Entity;
+using Database.Sql;
 
 namespace DataBase.Sql
 {
+
     public class SqlManager
     {
+
 
         /// <summary>
         /// Convert T object in sql script
@@ -52,7 +50,6 @@ namespace DataBase.Sql
                 insert += "INSERT INTO " + table + " VALUES(";
                 foreach (var p in properties)
                 {
-
                     // Create table
                     string name = p.Name;
                     Type typeProp = objectToWrite.GetType().GetProperties()[i].PropertyType;
@@ -70,10 +67,6 @@ namespace DataBase.Sql
                             else
                                 columnName = "INT(11)";
                             break;
-                        case "String":
-                            columnName = "VARCHAR(255)";
-                            value = "'" + value + "'";
-                            break;
                         case "Boolean":
                             columnName = "TINYINT(1)";
                             break;
@@ -81,6 +74,7 @@ namespace DataBase.Sql
                             columnName = "DateTime";
                             value = "'" + value + "'";
                             break;
+                        case "String":
                         default:
                             columnName = "VARCHAR(255)";
                             value = "'" + value + "'";
@@ -105,6 +99,7 @@ namespace DataBase.Sql
             return contentsToWriteToFile;
         }
 
+
         /// <summary>
         /// Execute Sql script
         /// </summary>
@@ -113,23 +108,20 @@ namespace DataBase.Sql
         /// <param name="pwd"></param>
         public static void ExecuteStringSql(string script, string user = "root", string pwd = "")
         {
-            MySql.Data.MySqlClient.MySqlConnection conn;
-            string myConnectionString;
-            myConnectionString = "server=127.0.0.1;Uid= " + user + ";Pwd= " + pwd + ";";
-            conn = new MySqlConnection();
+
+            string myConnectionString = "server=127.0.0.1;Uid= " + user + ";Pwd= " + pwd + ";";
             try
             {
-                conn = new MySqlConnection(myConnectionString);
+                MySqlConnection conn = new MySqlConnection(myConnectionString);
                 conn.Open();
-
                 MySqlCommand myCommand = new MySqlCommand(script, conn);
+                MySqlDataReader rdr = myCommand.ExecuteReader();
+                conn.Close();
             }
             catch (MySqlException ex)
             {
                 Console.WriteLine(ex.Message);
             }
-
-
         }
 
         /// <summary>
@@ -189,86 +181,7 @@ namespace DataBase.Sql
                 {
                     Console.WriteLine(ex.Message);
                 }
-           
-
             }
         }
-
-        public static Type GetClrType(SqlDbType sqlType)
-        {
-            switch (sqlType)
-            {
-                case SqlDbType.BigInt:
-                    return typeof(long?);
-
-                case SqlDbType.Binary:
-                case SqlDbType.Image:
-                case SqlDbType.Timestamp:
-                case SqlDbType.VarBinary:
-                    return typeof(byte[]);
-
-                case SqlDbType.Bit:
-                    return typeof(bool?);
-
-                case SqlDbType.Char:
-                case SqlDbType.NChar:
-                case SqlDbType.NText:
-                case SqlDbType.NVarChar:
-                case SqlDbType.Text:
-                case SqlDbType.VarChar:
-                case SqlDbType.Xml:
-                    return typeof(String);
-
-                case SqlDbType.DateTime:
-                case SqlDbType.SmallDateTime:
-                case SqlDbType.Date:
-                case SqlDbType.Time:
-                case SqlDbType.DateTime2:
-                    return typeof(DateTime?);
-
-                case SqlDbType.Decimal:
-                case SqlDbType.Money:
-                case SqlDbType.SmallMoney:
-                    return typeof(decimal?);
-
-                case SqlDbType.Float:
-                    return typeof(double?);
-
-                case SqlDbType.Int:
-                    return typeof(Int32?);
-
-                case SqlDbType.Real:
-                    return typeof(float?);
-
-                case SqlDbType.UniqueIdentifier:
-                    return typeof(Guid?);
-
-                case SqlDbType.SmallInt:
-                    return typeof(short?);
-
-                case SqlDbType.TinyInt:
-                    return typeof(Boolean);
-
-                case SqlDbType.Variant:
-                case SqlDbType.Udt:
-                    return typeof(object);
-
-                case SqlDbType.Structured:
-                    return typeof(DataTable);
-
-                case SqlDbType.DateTimeOffset:
-                    return typeof(DateTimeOffset?);
-
-                default:
-                    throw new ArgumentOutOfRangeException("sqlType");
-            }
-        }
-
-
-
-
-
-
-
-}
+    }
 }

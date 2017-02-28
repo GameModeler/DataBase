@@ -44,8 +44,9 @@ namespace DataBase.Yaml
         /// <typeparam name="T"></typeparam>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        public static T ReadFromYamlFile<T>(string filePath) where T : new()
+        public static T ReadFromYamlFile<T>(string path, string fileName) where T : new()
         {
+            string filePath = path + fileName;
             TextReader reader = null;
             try
             {

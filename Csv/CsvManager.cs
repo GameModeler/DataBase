@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,20 +37,45 @@ namespace DataBase.Csv
             }
         }
  
-        public static void ReadFromCsvFile<T>(string filePath) where T : new()
+        public static T ReadFromCsvFile<T>(string filePath) where T : new()
         {
 
             TextReader reader = null;
             try
             {
-               
 
-                reader = new StreamReader(filePath);
+                String[] values = File.ReadAllText(filePath).Split(',');
+                Console.WriteLine(values);
+            
+                T obj = new T();
+
+                int i = 0;
+                foreach (var prop in values)
+                {
+                    if (string.IsNullOrEmpty(prop) == false)
+                    {
+                        // Property of obj
+                        string objProp = obj.GetType().GetProperties()[i].Name;
+                        // Type of obj property
+                        Type typeProp = obj.GetType().GetProperties()[i].PropertyType;
+                        // Type of obj
+                        Type type = obj.GetType();
+                        // Property of obj
+                        PropertyInfo propToWrite = type.GetProperty(objProp);                 
+                        // Set value on obj property (with cast on value, each save value is a string)
+                        propToWrite.SetValue(obj, Convert.ChangeType(prop, typeProp), null);
+                     
+                    }
+                    i += 1;
+                }
+                return obj;
+                
+
+                /*reader = new StreamReader(filePath);
                 var csv = new CsvReader(reader);
                 var test = csv.GetRecords<T>();
                 Console.WriteLine(test);
-                //return test;
- 
+                return (T)test;*/
             }
             finally
             {
