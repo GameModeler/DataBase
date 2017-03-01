@@ -1,11 +1,8 @@
-﻿using DataBase.Dynamic;
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
 using System;
 using System.IO;
 using System.Linq;
 using System.Diagnostics;
-using System.Data.Entity;
-using Database.Sql;
 
 namespace DataBase.Sql
 {

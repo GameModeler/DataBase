@@ -65,11 +65,10 @@ namespace DataBase.Character
         /// <param name="filePath"></param>
         /// <param name="delimiter"></param>
         /// <returns></returns>
-        public static List<T> ReadFromCharacterFile<T>(string filePath, char delimiter = '|') where T : new()
+        public static List<T> ReadFromCharacterFile<T>(string path, string fileName, char delimiter = '|') where T : new()
         {
-
+            string filePath = path + fileName;
             List<T> objList = new List<T>();
-
             var lineCount = File.ReadLines(filePath).Count();
             string line;
 

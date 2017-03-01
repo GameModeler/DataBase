@@ -37,18 +37,14 @@ namespace DataBase.Csv
             }
         }
  
-        public static T ReadFromCsvFile<T>(string filePath) where T : new()
+        public static T ReadFromCsvFile<T>(string path, string fileName) where T : new()
         {
-
+            string filePath = path + fileName;
+            String[] values = File.ReadAllText(filePath).Split(',');
+            T obj = new T();
             TextReader reader = null;
             try
             {
-
-                String[] values = File.ReadAllText(filePath).Split(',');
-                Console.WriteLine(values);
-            
-                T obj = new T();
-
                 int i = 0;
                 foreach (var prop in values)
                 {
@@ -69,13 +65,6 @@ namespace DataBase.Csv
                     i += 1;
                 }
                 return obj;
-                
-
-                /*reader = new StreamReader(filePath);
-                var csv = new CsvReader(reader);
-                var test = csv.GetRecords<T>();
-                Console.WriteLine(test);
-                return (T)test;*/
             }
             finally
             {
