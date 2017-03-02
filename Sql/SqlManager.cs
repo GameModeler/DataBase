@@ -21,21 +21,22 @@ namespace DataBase.Sql
         /// <param name="createDB">create database or not</param>
         /// <param name="execute">execute or not script</param>
         /// <returns>return script</returns>
-        public static string ConvertObjectInScript<T>(T objectToWrite, bool append = false, string dbName = "Test", bool createDB = false, bool execute = false) where T : new()
+        public static string ConvertObjectInScript<T>(T objectToWrite, bool append = false, string dbName = "Test",
+                                                      bool createDB = false, bool execute = false, string user="root", string pwd="") where T : new()
         {
-            string contentsToWriteToFile = "";
+            string contents = "";
             string insert = "";
             string createTable = "";
             if (append)
             {
-                contentsToWriteToFile += "\n\n";
+                contents += "\n\n";
             }      
 
             if (createDB)
             {
-                contentsToWriteToFile += "CREATE DATABASE " + dbName + ";\n";
+                contents += "CREATE DATABASE " + dbName + ";\n";
             }
-            contentsToWriteToFile += "USE " + dbName + ";\n";
+            contents += "USE " + dbName + ";\n";
 
             if (null != objectToWrite)
             {
@@ -90,10 +91,15 @@ namespace DataBase.Sql
                 createTable += ");\n";
                 insert += ");";
             }
-            contentsToWriteToFile += createTable;
-            contentsToWriteToFile += insert;
+            contents += createTable;
+            contents += insert;
+
+            if(execute)
+            {
+                ExecuteStringSql(contents, user, pwd);
+            }
   
-            return contentsToWriteToFile;
+            return contents;
         }
 
 
@@ -139,9 +145,6 @@ namespace DataBase.Sql
                                              string user = "root", string pwd = "") where T : new()
         {
             string filePath = path + fileName;
-           
-           
-
             TextWriter writer = null;
             try
             {
@@ -155,9 +158,7 @@ namespace DataBase.Sql
                     writer.Close();
             }
             if(execute)
-            {
-
-                
+            {             
                 Process cmd = new Process();
                 cmd.StartInfo.FileName = "cmd.exe";
                 cmd.StartInfo.RedirectStandardInput = true;

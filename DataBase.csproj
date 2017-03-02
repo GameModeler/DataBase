@@ -81,6 +81,7 @@
     <Compile Include="Csv\CsvManager.cs" />
     <Compile Include="Dynamic\DynamicManager.cs" />
     <Compile Include="Json\JsonManager.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sql\SqlManager.cs" />
     <Compile Include="Xml\XmlManager.cs" />

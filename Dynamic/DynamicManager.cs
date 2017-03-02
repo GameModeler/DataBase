@@ -54,9 +54,9 @@ namespace DataBase.Dynamic
         /// <param name="myConnection">MysqlConnection connection</param>
         /// <param name="openclose">open and close mysql connection</param>
         /// <returns>array of mysql return</returns>
-        public static string[] CreateMySqlCommandArray(string myExecuteQuery, MySqlConnection myConnection, Boolean openclose = false)
+        public static string[] CreateMySqlCommandArray(string query, MySqlConnection connection, Boolean openclose = false)
         {
-            MySqlCommand myCommand = new MySqlCommand(myExecuteQuery, myConnection);
+            MySqlCommand myCommand = new MySqlCommand(query, connection);
             if (openclose)
                 myCommand.Connection.Open();
             List<string> results = new List<string>();
@@ -72,12 +72,12 @@ namespace DataBase.Dynamic
                 }
             }
 
-            string[] tableau = results.ToArray();
+            string[] array = results.ToArray();
 
             if (openclose)
-                myConnection.Close();
+                connection.Close();
 
-            return tableau;
+            return array;
         }
 
         /// <summary>
@@ -87,9 +87,9 @@ namespace DataBase.Dynamic
         /// <param name="myConnection">MysqlConnection connection</param>
         /// <param name="openclose">open and close mysql connection</param>
         /// <returns>Dictionnary of mysql return</returns>
-        public static Dictionary<string, string> CreateMySqlCommandDict(string myExecuteQuery, MySqlConnection myConnection, Boolean openclose = false)
+        public static Dictionary<string, string> CreateMySqlCommandDict(string query, MySqlConnection connection, Boolean openclose = false)
         {
-            MySqlCommand myCommand = new MySqlCommand(myExecuteQuery, myConnection);
+            MySqlCommand myCommand = new MySqlCommand(query, connection);
             if (openclose)
                 myCommand.Connection.Open();
             Dictionary<string, string> results = new Dictionary<string, string>();
@@ -107,7 +107,7 @@ namespace DataBase.Dynamic
             }
 
             if (openclose)
-                myConnection.Close();
+                connection.Close();
 
             return results;
         }
