@@ -6,7 +6,7 @@
     <authors>Arnaud Bouillod</authors>
     <owners>Arnaud Bouillod</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Saving your object in different langage on file. And convert this langage into objects</description>
+    <description>Saving your object in differents languages on file. And convert this language into objects</description>
     <releaseNotes>None</releaseNotes>
     <copyright>Copyright 2017</copyright>
     <tags>Save Load Data Object</tags>
@@ -18,4 +18,7 @@
       <dependency id="YamlSerializer" version="1.0.0" />
     </dependencies>
   </metadata>
+  <files>
+    <file src="..\bin\Debug\DataBase.dll" target="lib" />
+  </files>
 </package>
