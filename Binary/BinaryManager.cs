@@ -12,11 +12,11 @@ namespace DataBase.Binary
         /// <summary>
         /// Write T object in binary file
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="path"></param>
-        /// <param name="fileName"></param>
-        /// <param name="objectToWrite"></param>
-        /// <param name="append"></param>
+        /// <typeparam name="T">T object</typeparam>
+        /// <param name="path">path</param>
+        /// <param name="fileName">file name</param>
+        /// <param name="objectToWrite">T object to write</param>
+        /// <param name="append">append</param>
         public static void WriteToBinaryFile<T>(string path, string fileName, T objectToWrite, bool append = false)
         {
             string filePath = path + fileName;
@@ -30,11 +30,13 @@ namespace DataBase.Binary
         /// <summary>
         /// Read from binary file and convert in T object
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
-        public static T ReadFromBinaryFile<T>(string filePath)
+        /// <typeparam name="T">T object</typeparam>
+        /// <param name="path">path</param>
+        /// <param name="fileName">file name</param>
+        /// <returns>T object</returns>
+        public static T ReadFromBinaryFile<T>(string path, string fileName)
         {
+            string filePath = path + fileName;
             using (Stream stream = File.Open(filePath, FileMode.Open))
             {
                 var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();

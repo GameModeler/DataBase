@@ -14,12 +14,12 @@ namespace DataBase.Character
         /// <summary>
         /// Write T object in character in character file
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="path"></param>
-        /// <param name="fileName"></param>
-        /// <param name="objectToWrite"></param>
-        /// <param name="append"></param>
-        /// <param name="delimiter"></param>
+        /// <typeparam name="T">T object</typeparam>
+        /// <param name="path">path</param>
+        /// <param name="fileName">file name</param>
+        /// <param name="objectToWrite">T object to write</param>
+        /// <param name="append">append</param>
+        /// <param name="delimiter">delimite the differents attributes of T object</param>
         public static void WriteToCharacterFile<T>(string path, string fileName, T objectToWrite, bool append = false, string delimiter = "|") where T : new()
         {
             string filePath = path + fileName;
@@ -27,7 +27,6 @@ namespace DataBase.Character
             string contentsToWriteToFile = "";
             try
             {
-                //var object_name = objectToWrite.GetType().GetTypeInfo().GenericTypeArguments[0];
                 var object_name = objectToWrite.GetType();
                 contentsToWriteToFile += object_name + ">";
      
@@ -59,12 +58,13 @@ namespace DataBase.Character
         }
 
         /// <summary>
-        /// Read character from character file and convert in T object
+        /// Read character from character file and convert in T object list
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="filePath"></param>
-        /// <param name="delimiter"></param>
-        /// <returns></returns>
+        /// <typeparam name="T">Object List to read</typeparam>
+        /// <param name="path">path</param>
+        /// <param name="fileName">file name</param>
+        /// <param name="delimiter">delimite the differents attributes</param>
+        /// <returns>list T object</returns>
         public static List<T> ReadFromCharacterFile<T>(string path, string fileName, char delimiter = '|') where T : new()
         {
             string filePath = path + fileName;

@@ -15,11 +15,11 @@ namespace DataBase.Csv
         /// <summary>
         /// Write object in csv file
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="path"></param>
-        /// <param name="fileName"></param>
-        /// <param name="objectToWrite"></param>
-        /// <param name="append"></param>
+        /// <typeparam name="T">T object</typeparam>
+        /// <param name="path">path</param>
+        /// <param name="fileName">file name</param>
+        /// <param name="objectToWrite">object to write</param>
+        /// <param name="append">append</param>
         public static void WriteToCsvFile<T>(string path, string fileName, T objectToWrite, bool append = false) where T : new()
         {
             string filePath = path + fileName;
@@ -37,6 +37,13 @@ namespace DataBase.Csv
             }
         }
  
+        /// <summary>
+        /// Read T object from csv file
+        /// </summary>
+        /// <typeparam name="T">T object</typeparam>
+        /// <param name="path">path</param>
+        /// <param name="fileName">file name</param>
+        /// <returns>T object</returns>
         public static T ReadFromCsvFile<T>(string path, string fileName) where T : new()
         {
             string filePath = path + fileName;

@@ -14,13 +14,13 @@ namespace DataBase.Sql
         /// <summary>
         /// Convert T object in sql script
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="objectToWrite"></param>
-        /// <param name="append"></param>
-        /// <param name="dbName"></param>
-        /// <param name="createDB"></param>
-        /// <param name="execute"></param>
-        /// <returns></returns>
+        /// <typeparam name="T">T object</typeparam>
+        /// <param name="objectToWrite">T object to write</param>
+        /// <param name="append">append</param>
+        /// <param name="dbName">database Name</param>
+        /// <param name="createDB">create database or not</param>
+        /// <param name="execute">execute or not script</param>
+        /// <returns>return script</returns>
         public static string ConvertObjectInScript<T>(T objectToWrite, bool append = false, string dbName = "Test", bool createDB = false, bool execute = false) where T : new()
         {
             string contentsToWriteToFile = "";
@@ -100,9 +100,9 @@ namespace DataBase.Sql
         /// <summary>
         /// Execute Sql script
         /// </summary>
-        /// <param name="script"></param>
-        /// <param name="user"></param>
-        /// <param name="pwd"></param>
+        /// <param name="script">mysql script</param>
+        /// <param name="user">mysql user</param>
+        /// <param name="pwd">password mysql</param>
         public static void ExecuteStringSql(string script, string user = "root", string pwd = "")
         {
 
@@ -124,16 +124,16 @@ namespace DataBase.Sql
         /// <summary>
         /// Write to Sql file and execute this script
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="path"></param>
-        /// <param name="fileName"></param>
-        /// <param name="objectToWrite"></param>
-        /// <param name="append"></param>
-        /// <param name="dbName"></param>
-        /// <param name="createDB"></param>
-        /// <param name="execute"></param>
-        /// <param name="user"></param>
-        /// <param name="pwd"></param>
+        /// <typeparam name="T">T object</typeparam>
+        /// <param name="path">path</param>
+        /// <param name="fileName">file name</param>
+        /// <param name="objectToWrite">T object to write</param>
+        /// <param name="append">append</param>
+        /// <param name="dbName">database name</param>
+        /// <param name="createDB">create database or not</param>
+        /// <param name="execute">execute query or not</param>
+        /// <param name="user">mysql user</param>
+        /// <param name="pwd">mysql password</param>
         public static void WriteToSqlFile<T>(string path, string fileName, T objectToWrite, bool append = false, 
                                              string dbName = "Test", bool createDB = false, bool execute = false,
                                              string user = "root", string pwd = "") where T : new()

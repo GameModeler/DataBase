@@ -78,18 +78,11 @@
   <ItemGroup>
     <Compile Include="Binary\BinaryManager.cs" />
     <Compile Include="Character\CharacterManager.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="Csv\CsvManager.cs" />
     <Compile Include="Dynamic\DynamicManager.cs" />
     <Compile Include="Json\JsonManager.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sql\DataConnectionRessource.cs" />
-    <Compile Include="Sql\EnumString.cs" />
-    <Compile Include="Sql\FullDb.cs" />
-    <Compile Include="Sql\MySqlManager.cs" />
     <Compile Include="Sql\SqlManager.cs" />
-    <Compile Include="Sql\StringValue.cs" />
     <Compile Include="Xml\XmlManager.cs" />
     <Compile Include="Yaml\YamlManager.cs" />
   </ItemGroup>

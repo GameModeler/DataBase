@@ -14,11 +14,11 @@ namespace DataBase.Json
         /// <summary>
         /// Write T object to json file
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="path"></param>
-        /// <param name="fileName"></param>
-        /// <param name="objectToWrite"></param>
-        /// <param name="append"></param>
+        /// <typeparam name="T">T object</typeparam>
+        /// <param name="path">path</param>
+        /// <param name="fileName">file name</param>
+        /// <param name="objectToWrite">object to write</param>
+        /// <param name="append">append</param>
         public static void WriteToJsonFile<T>(string path, string fileName, T objectToWrite, bool append = false) where T : new()
         {
             string filePath = path + fileName;
@@ -39,11 +39,13 @@ namespace DataBase.Json
         /// <summary>
         /// Read from json file and convert in T object
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="filePath"></param>
+        /// <typeparam name="T">T object</typeparam>
+        /// <param name="path">path</param>
+        /// <param name="fileName">file name</param>
         /// <returns></returns>
-        public static T ReadFromJsonFile<T>(string filePath) where T : new()
+        public static T ReadFromJsonFile<T>(string path, string fileName) where T : new()
         {
+            string filePath = path + fileName;
             TextReader reader = null;
             try
             {

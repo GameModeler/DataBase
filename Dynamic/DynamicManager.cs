@@ -10,6 +10,14 @@ namespace DataBase.Dynamic
 {
     public class DynamicManager
     {
+        /// <summary>
+        /// Create IDictionnary object from mysql database
+        /// </summary>
+        /// <param name="user">mysql user</param>
+        /// <param name="pwd">mysql password</param>
+        /// <param name="database">mysql database</param>
+        /// <param name="table">mysql table</param>
+        /// <returns>IDictionnary object</returns>
         public static IDictionary<string, object> CreateObjectByDatabase(string user, string pwd, string database, string table)
         {
 
@@ -39,7 +47,13 @@ namespace DataBase.Dynamic
             return dic;
         }
 
-
+        /// <summary>
+        /// Create mysql command array
+        /// </summary>
+        /// <param name="myExecuteQuery">mysql query</param>
+        /// <param name="myConnection">MysqlConnection connection</param>
+        /// <param name="openclose">open and close mysql connection</param>
+        /// <returns>array of mysql return</returns>
         public static string[] CreateMySqlCommandArray(string myExecuteQuery, MySqlConnection myConnection, Boolean openclose = false)
         {
             MySqlCommand myCommand = new MySqlCommand(myExecuteQuery, myConnection);
@@ -66,6 +80,13 @@ namespace DataBase.Dynamic
             return tableau;
         }
 
+        /// <summary>
+        /// Create mysql command Dictionnary
+        /// </summary>
+        /// <param name="myExecuteQuery">mysql query</param>
+        /// <param name="myConnection">MysqlConnection connection</param>
+        /// <param name="openclose">open and close mysql connection</param>
+        /// <returns>Dictionnary of mysql return</returns>
         public static Dictionary<string, string> CreateMySqlCommandDict(string myExecuteQuery, MySqlConnection myConnection, Boolean openclose = false)
         {
             MySqlCommand myCommand = new MySqlCommand(myExecuteQuery, myConnection);

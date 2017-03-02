@@ -3,8 +3,8 @@
   <metadata>
     <id>SaveLoadData</id>
     <version>1.0.0</version>
-    <authors>nono</authors>
-    <owners>nono</owners>
+    <authors>Arnaud Bouillod</authors>
+    <owners>Arnaud Bouillod</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Saving your object in different langage on file. And convert this langage into objects</description>
     <releaseNotes>None</releaseNotes>
