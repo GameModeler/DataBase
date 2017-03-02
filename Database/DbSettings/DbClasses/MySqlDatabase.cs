@@ -5,6 +5,8 @@ namespace GMDataBase.Database.DbSettings.DbClasses
 {
     public class MySqlDatabase : IDbSettings
     {
+        const ProviderType PROVIDER = ProviderType.MySQL;
+
         #region Database basic settings
         public string DatabaseName { get; set; }
         public string Server { get; set; }
@@ -14,12 +16,11 @@ namespace GMDataBase.Database.DbSettings.DbClasses
         public string ConnectionString { get; set; }
 
         // Provider
-        private ProviderType provider;
+        private ProviderType provider = PROVIDER;
 
         public ProviderType Provider
         {
             get { return provider; }
-            set { provider = ProviderType.MySQL; }
         }
 
 

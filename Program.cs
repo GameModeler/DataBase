@@ -28,7 +28,7 @@ namespace GMDataBase
             sqlDbSettings.DatabaseName = "sqLiteDb";
             sqlDbSettings.DataSource = @"C:\Users\Anne\SQLDatabase\test.db.db";
 
-            MySqlDatabase dbset = DatabaseFactory.DatabaseSettings<MySqlDatabase>("dbSet");
+            // MySqlDatabase dbset = DatabaseFactory.DatabaseSettings<MySqlDatabase>("dbSet");
 
             // 1. Création d'un manager par type de provider.
             // Va permettre de gérer plusieurs bases de données ayant le même provider
@@ -95,8 +95,8 @@ namespace GMDataBase
 
             var sqlparking = dbContext
                                       .Context(settingdb2)
-                                      .Context(sqlDbSettings)
-                                      .MySqlContext(settingdb2);
+                                      .Context(sqlDbSettings);
+           //                           .MySqlContext(settingdb2);
 
             await sqlparking.Insert(cars);
 

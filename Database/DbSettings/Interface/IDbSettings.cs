@@ -11,7 +11,7 @@ namespace GMDataBase.Database.DbSettings.Interface
     {
         string DatabaseName { get; set; }
         string ConnectionString { get; set; }
-        ProviderType Provider { get; set; }
+        ProviderType Provider { get; }
 
     }
 }

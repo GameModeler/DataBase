@@ -10,6 +10,8 @@ namespace GMDataBase.Database.DbSettings.DbClasses
 {
     public class SqLiteDatabase : IDbSettings
     {
+        const ProviderType PROVIDER = ProviderType.SQLite;
+
         #region Database basic settings
         public string DatabaseName { get; set; }
         public string DataSource { get; set; }
@@ -27,12 +29,11 @@ namespace GMDataBase.Database.DbSettings.DbClasses
         public string ConnectionString { get; set; }
 
         // Provider
-        private ProviderType provider;
+        private ProviderType provider = PROVIDER;
 
         public ProviderType Provider
         {
             get { return provider; }
-            set { provider = ProviderType.SQLite; }
         }
         #endregion
 
