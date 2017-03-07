@@ -79,7 +79,9 @@
     <Compile Include="Xml\XmlManager.cs" />
     <Compile Include="Yaml\YamlManager.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="DataBase.vshost.exe" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />

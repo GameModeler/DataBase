@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataBase.Binary
 {
-    class BinaryManager
+    public class BinaryManager
     {
         /// <summary>
         /// Write T object in binary file

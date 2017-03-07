@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace DataBase.Json
 {
-    class JsonManager
+    [Serializable()]
+    public partial class JsonManager
     {
 
         /// <summary>

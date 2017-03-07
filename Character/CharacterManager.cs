@@ -9,7 +9,7 @@ using System.Runtime.Serialization;
 
 namespace DataBase.Character
 {
-    class CharacterManager
+    public class CharacterManager
     {
         /// <summary>
         /// Write T object in character in character file
