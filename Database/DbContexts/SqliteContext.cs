@@ -1,8 +1,8 @@
-﻿using GMDataBase.Database;
-using GMDataBase.Database.DbContexts.Interface;
-using GMDataBase.Database.DbSettings.Interface;
-using GMDataBase.Interfaces;
-using GMDataBase.Utils;
+﻿using DataBase.Database;
+using DataBase.Database.DbContexts.Interface;
+using DataBase.Database.DbSettings.Interface;
+using DataBase.Interfaces;
+using DataBase.Utils;
 using SQLite.CodeFirst;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GMDataBase.Database.DbContexts
+namespace DataBase.Database.DbContexts
 {
     [DbConfigurationType(typeof(SqliteConfiguration))]
     class SqliteContext<TEntity> : DbContext, IDbContexts where TEntity : class

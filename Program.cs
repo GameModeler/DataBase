@@ -1,34 +1,40 @@
-﻿using GMDataBase.Database;
-using GMDataBase.Database.DbSettings;
-using GMDataBase.Database.DbSettings.DbClasses;
-using GMDataBase.Entities;
-using GMDataBase.Interfaces;
-using GMDataBase.Utils;
-using GMLDataBase.Entities;
-using System;
+﻿using DataBase.Database;
+using DataBase.Database.DbSettings;
+using DataBase.Database.DbSettings.DbClasses;
+using DataBase.Entities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace GMDataBase
+namespace DataBase
 {
     class Program
     {
 
         public static async void InitTest()
         {
+
+            var db = DatabaseFactory.MySqlDb.Set.Server("myServer").ToConnectionString();
+                                    
+
             // Database information
             MySqlDatabase settingdb2 = new MySqlDatabase();
             settingdb2.DatabaseName = "db2";
             settingdb2.Server = "localhost";
             settingdb2.UserId = "root";
 
+            settingdb2.ToConnectionString();
+
             SqLiteDatabase sqlDbSettings = new SqLiteDatabase();
             sqlDbSettings.DatabaseName = "sqLiteDb";
             sqlDbSettings.DataSource = @"C:\Users\Anne\SQLDatabase\test.db.db";
 
-            // MySqlDatabase dbset = DatabaseFactory.DatabaseSettings<MySqlDatabase>("dbSet");
+            // Fluent API
+            SqLiteDatabase sqlDbSet = new SqLiteDatabase();
+            
+            sqlDbSet.Set
+                    .DatabaseName("sql")
+                    .DataSource(@"C: \Users\Anne\SQLDatabase\test.db.db");
+
+            MySqlDatabase dbset = DatabaseFactory.DatabaseSettings<MySqlDatabase>("dbSet");
 
             // 1. Création d'un manager par type de provider.
             // Va permettre de gérer plusieurs bases de données ayant le même provider

@@ -1,5 +1,5 @@
-﻿using GMDataBase.Database;
-using GMDataBase.Utils;
+﻿using DataBase.Database;
+using DataBase.Utils;
 using MySql.Data.Entity;
 using MySql.Data.MySqlClient;
 using System;
@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GMDataBase.Database
+namespace DataBase.Database
 {
     public class MySQLConfiguration : DbConfiguration
     {

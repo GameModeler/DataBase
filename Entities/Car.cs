@@ -1,4 +1,4 @@
-﻿using GMDataBase.Utils;
+﻿using DataBase.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GMLDataBase.Entities
+namespace DataBase.Entities
 {
     [Persistent]
     public class Car

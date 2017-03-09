@@ -1,7 +1,7 @@
-﻿using GMDataBase.Database.DbContexts;
-using GMDataBase.Database.DbSettings.Interface;
-using GMDataBase.Interfaces;
-using GMDataBase.Utils;
+﻿using DataBase.Database.DbContexts;
+using DataBase.Database.DbSettings.Interface;
+using DataBase.Interfaces;
+using DataBase.Utils;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -10,9 +10,9 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static GMDataBase.Utils.GenericUtils;
+using static DataBase.Utils.GenericUtils;
 
-namespace GMDataBase.Database
+namespace DataBase.Database
 {
     public class GmDbContext<TEntity> where TEntity : class
     {
@@ -40,7 +40,6 @@ namespace GMDataBase.Database
         /// <param name="settings"></param>
         /// <param name="provider"></param>
         /// <returns></returns>
-        /// 
         public GmDbContext<TEntity> Context(IDbSettings settings)
         {
             ProviderType provider = settings.Provider;

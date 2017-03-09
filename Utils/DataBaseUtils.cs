@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Reflection;
-using GMDataBase.Interfaces;
 using System.Data.Entity;
-using GMDataBase.Database.DbSettings.Interface;
+using DataBase.Database.DbSettings.Interface;
 
-namespace GMDataBase.Utils
+namespace DataBase.Utils
 {
+    /// <summary>
+    ///  Util class for the DataBase Module
+    /// </summary>
     public static class DataBaseUtils
     {
        /// <summary>
@@ -26,11 +25,21 @@ namespace GMDataBase.Utils
                 .Any(value => !string.IsNullOrEmpty(value));
         }
 
+        /// <summary>
+        /// Concatene database' server and port
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="port"></param>
+        /// <returns></returns>
         public static string BuildDataSource(string server, string port)
         {
             return port != null ? server + ":" + port : server;
         }
 
+        /// <summary>
+        /// Create a model from a DbModelBuilder
+        /// </summary>
+        /// <param name="modelBuilder"></param>
         public static void CreateModel(DbModelBuilder modelBuilder)
         {
             var entityMethod = typeof(DbModelBuilder).GetMethod("Entity");
@@ -49,6 +58,21 @@ namespace GMDataBase.Utils
                       .Invoke(modelBuilder, new object[] { });
                 }
             }
+        }
+
+        /// <summary>
+        /// Rename the key of a dictionary
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="dic"></param>
+        /// <param name="fromKey"></param>
+        /// <param name="toKey"></param>
+        public static void UpdateKey<TKey, TValue>(this IDictionary<TKey, TValue> dic, TKey fromKey, TKey toKey)
+        {
+            TValue value = dic[fromKey];
+            dic.Remove(fromKey);
+            dic[toKey] = value;
         }
     }
 }

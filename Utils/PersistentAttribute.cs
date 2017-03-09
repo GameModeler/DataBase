@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GMDataBase.Utils
+namespace DataBase.Utils
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class PersistentAttribute : Attribute

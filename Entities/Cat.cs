@@ -1,11 +1,11 @@
-﻿using GMDataBase.Utils;
+﻿using DataBase.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GMDataBase.Entities
+namespace DataBase.Entities
 {
     [Persistent]
     public class Cat

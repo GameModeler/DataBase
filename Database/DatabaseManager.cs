@@ -1,12 +1,12 @@
 ﻿
-using GMDataBase.Database.DbSettings.Interface;
-using GMDataBase.Interfaces;
-using GMDataBase.Utils;
+using DataBase.Database.DbSettings.Interface;
+using DataBase.Interfaces;
+using DataBase.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GMDataBase.Database
+namespace DataBase.Database
 {
     public class DatabaseManager
     {

@@ -1,7 +1,7 @@
-﻿using GMDataBase.Database;
-using GMDataBase.Interfaces;
-using GMDataBase.Utils;
-using GMDataBase.Criteria;
+﻿using DataBase.Database;
+using DataBase.Interfaces;
+using DataBase.Utils;
+using DataBase.Criteria;
 using MySql.Data.Entity;
 using MySql.Data.MySqlClient;
 using System;
@@ -12,20 +12,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
-using GMDataBase.Database.DbContexts.Interface;
-using GMDataBase.Database.DbSettings.Interface;
+using DataBase.Database.DbContexts.Interface;
+using DataBase.Database.DbSettings.Interface;
 
-namespace GMDataBase.Database.DbContexts
+namespace DataBase.Database.DbContexts
 {
-
+    /// <summary>
+    /// The MySql Database Context
+    /// </summary>
+    /// <typeparam name="TEntity"></typeparam>
     //[DbConfigurationType(typeof(MySQLConfiguration))]
     [DbConfigurationType(typeof(MySqlEFConfiguration))]
     public partial class MySqlContext<TEntity> : DbContext, IDbContexts where TEntity : class
     {
+        /// <summary>
+        /// The DbSet
+        /// </summary>
         public DbSet<TEntity> DbSetT { get; set; }
 
         private ProviderType provider;
-
+        /// <summary>
+        /// The Provider
+        /// </summary>
         public ProviderType Provider
         {
             get { return provider; }
@@ -52,19 +60,32 @@ namespace GMDataBase.Database.DbContexts
 
         //}
 
+        /// <summary>
+        /// Method called during the model creation
+        /// </summary>
+        /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            // System.Data.Entity.Database.SetInitializer(new CreateDatabaseIfNotExists<MySqlContext<TEntity>>());
             DataBaseUtils.CreateModel(modelBuilder);
         }
 
         #region SQL methods
+        /// <summary>
+        /// Inserts an entity
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public async Task<int> Insert(TEntity item)
         {
             this.DbSetT.Add(item);
             return await this.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Inserts entities
+        /// </summary>
+        /// <param name="items"></param>
+        /// <returns></returns>
         public async Task<int> Insert(IEnumerable<TEntity> items)
         {
             foreach (var item in items)
@@ -74,6 +95,11 @@ namespace GMDataBase.Database.DbContexts
             return await this.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Updates an entity
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public async Task<int> Update(TEntity item)
         {
             await Task.Factory.StartNew(() =>
@@ -83,6 +109,11 @@ namespace GMDataBase.Database.DbContexts
             return await this.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Updates entities
+        /// </summary>
+        /// <param name="items"></param>
+        /// <returns></returns>
         public async Task<int> Update(IEnumerable<TEntity> items)
         {
             await Task.Factory.StartNew(() =>
@@ -95,11 +126,20 @@ namespace GMDataBase.Database.DbContexts
             return await this.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Gets an entity
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<TEntity> Get(Int32 id)
         {
             return await this.DbSetT.FindAsync(id) as TEntity;
         }
 
+        /// <summary>
+        /// Gets entities
+        /// </summary>
+        /// <returns></returns>
         public async Task<IEnumerable<TEntity>> Get()
         {
             DbSet<TEntity> temp = default(DbSet<TEntity>);
@@ -112,6 +152,11 @@ namespace GMDataBase.Database.DbContexts
             return result;
         }
 
+        /// <summary>
+        /// Deletes an entity
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public async Task<Int32> Delete(TEntity item)
         {
             await Task.Factory.StartNew(() =>
@@ -122,6 +167,11 @@ namespace GMDataBase.Database.DbContexts
             return await this.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Deletes entities
+        /// </summary>
+        /// <param name="items"></param>
+        /// <returns></returns>
         public async Task<Int32> Delete(IEnumerable<TEntity> items)
         {
             await Task.Factory.StartNew(() =>
@@ -133,6 +183,11 @@ namespace GMDataBase.Database.DbContexts
             return res;
         }
 
+        /// <summary>
+        /// Allows to execute a custom query
+        /// </summary>
+        /// <param name="criteria"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<TEntity>> CustomQuery(Criteria.Criteria criteria)
         {
             return await this.DbSetT.SqlQuery(criteria.MySQLCompute()).ToListAsync();

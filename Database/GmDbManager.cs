@@ -1,8 +1,8 @@
-﻿using GMDataBase.Database.DbSettings.Interface;
+﻿using DataBase.Database.DbSettings.Interface;
 using System;
 using System.Collections.Generic;
 
-namespace GMDataBase.Database
+namespace DataBase.Database
 {
     /// <summary>
     /// To manage databases
@@ -12,19 +12,25 @@ namespace GMDataBase.Database
 
         private Dictionary<string, IDbSettings> databases;
 
+        /// <summary>
+        /// List of databases
+        /// </summary>
         public Dictionary<string, IDbSettings> Databases
         {
             get { return databases; }
             set { databases = value; }
         }
 
-        private int nbDefaultDb;
+        private int nbDefaultDb = 0;
 
+        /// <summary>
+        /// Number for database default name
+        /// </summary>
         public int NbDefaultDb
         {
             get
             {
-                return nbDefaultDb;
+                return nbDefaultDb++;
             }
             set
             {
