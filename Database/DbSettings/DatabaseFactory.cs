@@ -23,7 +23,6 @@ namespace DataBase.Database.DbSettings
         {
             T obj = new T();
             obj.DatabaseName = dnName;
-            GmDbManager.Instance.Databases.Add(obj.DatabaseName, obj);
             return obj;
         }
 

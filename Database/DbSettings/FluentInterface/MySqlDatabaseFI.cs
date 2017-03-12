@@ -39,17 +39,6 @@ namespace DataBase.Database.DbSettings.FluentInterface
         /// <returns></returns>
         public MySqlDatabaseFI DatabaseName(string databaseName)
         {
-            IDbSettings db;
-            if (mysql.DatabaseName != null && dbManager.Databases.TryGetValue(mysql.DatabaseName, out db))
-            {
-                DataBaseUtils.UpdateKey<string, IDbSettings>(dbManager.Databases, mysql.DatabaseName, databaseName);
-            }
-            else
-            {
-                // Register database into the database manager
-                dbManager.Databases.Add(databaseName, mysql);
-            }
-
             mysql.DatabaseName = databaseName;
             return this;
         }
@@ -106,5 +95,26 @@ namespace DataBase.Database.DbSettings.FluentInterface
         {
             return ConnectionStringBuilder.BuildConnectionString(ProviderType.MySQL, mysql);
         }
+
+        /// <summary>
+        /// Convert to MySqlDatabse type
+        /// </summary>
+        /// <returns></returns>
+        //public MySqlDatabase ToMySqlDatabase()
+        //{
+        //    return mysql;
+        //}
+
+        private MySqlDatabase toMySqlDatabase;
+
+        /// <summary>
+        /// Convert to MySqlDatabse type
+        /// </summary>
+        /// <returns></returns>
+        public MySqlDatabase ToMySqlDatabase
+        {
+            get { return mysql; }
+        }
+
     }
 }

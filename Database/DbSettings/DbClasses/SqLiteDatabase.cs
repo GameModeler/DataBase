@@ -95,7 +95,7 @@ namespace DataBase.Database.DbSettings.DbClasses
         public SqLiteDatabase() {
 
             // Sets a default name to the database
-            DatabaseName = ConnectionStringBuilder.GetDefaultDbName(dbManager.NbDefaultDb);
+            DatabaseName = ConnectionStringBuilder.GetDefaultDbName(dbManager.GetAndIncrNbDefaultDb());
 
             // Intitialization of the Fluent API
             sqliteFI = new SqLiteDatabaseFI(this);

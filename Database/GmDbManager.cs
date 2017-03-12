@@ -30,12 +30,26 @@ namespace DataBase.Database
         {
             get
             {
-                return nbDefaultDb++;
+                return nbDefaultDb;
             }
             set
             {
                 nbDefaultDb = value;
             }
+        }
+
+
+        /// <summary>
+        /// Return and incrcement the database default number
+        /// </summary>
+        /// <returns></returns>
+        public int GetAndIncrNbDefaultDb()
+        {
+            //var nbTemp = nbDefaultDb;
+            //nbDefaultDb++;
+            //return nbTemp;
+
+            return nbDefaultDb++;
         }
 
         #region Singleton
@@ -44,7 +58,7 @@ namespace DataBase.Database
 
         private GmDbManager()
         {
-            NbDefaultDb = 1;
+            nbDefaultDb = 0;
             Databases = new Dictionary<string, IDbSettings>();
         }
 

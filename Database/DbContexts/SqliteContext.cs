@@ -69,6 +69,17 @@ namespace DataBase.Database.DbContexts
             return await this.SaveChangesAsync();
         }
 
+        //public int Insert(IEnumerable<TEntity> items)
+        //{
+
+        //    foreach (var item in items)
+        //    {
+        //        DbSetT.Add(item);
+
+        //    }
+        //    return this.SaveChanges();
+        //}
+
         public async Task<int> Update(TEntity item)
         {
             await Task.Factory.StartNew(() =>

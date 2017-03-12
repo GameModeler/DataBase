@@ -13,19 +13,33 @@ namespace DataBase
         {
 
             // var db = DatabaseFactory.MySqlDb.Set.Server("myServer").ToConnectionString();
-                                    
+
+            GmDbManager dbManager = GmDbManager.Instance;
+            var database = dbManager.Databases;
+
+            var settingdb2 = DatabaseFactory
+                                .MySqlDb
+                                .Set
+                                .DatabaseName("db2")
+                                .Server("localhost")
+                                .UserId("root")
+                                .ToMySqlDatabase;
 
             // Database information
-            MySqlDatabase settingdb2 = new MySqlDatabase();
-            settingdb2.DatabaseName = "db2";
-            settingdb2.Server = "localhost";
-            settingdb2.UserId = "root";
+            //MySqlDatabase settingdb2 = new MySqlDatabase();
+            //settingdb2.DatabaseName = "db2";
+            //settingdb2.Server = "localhost";
+            //settingdb2.UserId = "root";
 
-            settingdb2.ToConnectionString();
+            string connectionstring = settingdb2.ToConnectionString();
 
             SqLiteDatabase sqlDbSettings = new SqLiteDatabase();
-            sqlDbSettings.DatabaseName = "sqLiteDb";
-            sqlDbSettings.DataSource = @"C:\Users\Anne\SQLDatabase\test.db.db";
+                
+            sqlDbSettings.Set.DatabaseName("sqLiteDb")
+                             .DataSource(@"C:\Users\Anne\SQLDatabase\test.db.db");
+
+            //sqlDbSettings.DatabaseName = "sqLiteDb";
+            //sqlDbSettings.DataSource = @"C:\Users\Anne\SQLDatabase\test.db.db";
 
             // Fluent API
             //SqLiteDatabase sqlDbSet = new SqLiteDatabase();
@@ -95,21 +109,19 @@ namespace DataBase
 
             //////////////////// GLOBAL CONTEXT /////////////////////////
 
-            GmDbManager dbManager = GmDbManager.Instance;
+
+            var mydb = dbManager.GetDatabase("db2");
 
             GmDbContext<Car> dbContext = dbManager.ContextFactory<Car>();
 
-            var sqlparking = dbContext.Context(settingdb2);
-            //                          .Context(sqlDbSettings);
-        
+            var sqlparking = dbContext.Context(settingdb2)
+                                      .Context(sqlDbSettings);
+
+
             await sqlparking.Insert(cars);
             
             // delete car from cars
-            sqlparking.Delete(cars[0]);
-
-            var a = cars;
-
-
+            // await sqlparking.Delete(cars[0]);
 
             //////////////////////////////////////////////////////////////
 

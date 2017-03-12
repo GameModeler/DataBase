@@ -14,6 +14,10 @@ using static DataBase.Utils.GenericUtils;
 
 namespace DataBase.Database
 {
+    /// <summary>
+    /// Global context
+    /// </summary>
+    /// <typeparam name="TEntity"></typeparam>
     public class GmDbContext<TEntity> where TEntity : class
     {
 
@@ -23,12 +27,18 @@ namespace DataBase.Database
 
         private Dictionary<IDbSettings, DbContext> databaseContexts;
 
+        /// <summary>
+        /// List of contexts
+        /// </summary>
         public Dictionary<IDbSettings, DbContext> DatabaseContexts
         {
             get { return databaseContexts; }
             set { databaseContexts = value; }
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public GmDbContext()
         {
             DatabaseContexts = new Dictionary<IDbSettings, DbContext>();
@@ -38,7 +48,6 @@ namespace DataBase.Database
         /// Global Context to chained database
         /// </summary>
         /// <param name="settings"></param>
-        /// <param name="provider"></param>
         /// <returns></returns>
         public GmDbContext<TEntity> Context(IDbSettings settings)
         {
@@ -116,6 +125,11 @@ namespace DataBase.Database
         }
 
         #region SQL methods
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public async Task<Dictionary<IDbSettings, int>> Insert(TEntity item) 
         {
             Dictionary<IDbSettings, int> result = new Dictionary<IDbSettings, int>();
@@ -176,6 +190,35 @@ namespace DataBase.Database
 
             return result;
         }
+
+        //public Dictionary<IDbSettings, int> Insert(IEnumerable<TEntity> items)
+        //{
+        //    Dictionary<IDbSettings, int> result = new Dictionary<IDbSettings, int>();
+
+        //    foreach (KeyValuePair<IDbSettings, DbContext> entry in DatabaseContexts)
+        //    {
+        //        IDbSettings dbSettings = entry.Key;
+        //        ProviderType provider = dbSettings.Provider;
+
+        //        switch (provider)
+        //        {
+        //            case ProviderType.MySQL:
+        //                MySqlContext<TEntity> contextMysql = (MySqlContext<TEntity>)entry.Value;
+        //                var resMysql = contextMysql.Insert(items);
+        //                result.Add(dbSettings, resMysql);
+        //                break;
+
+
+        //            case ProviderType.SQLite:
+        //                SqliteContext<TEntity> contextSqlite = (SqliteContext<TEntity>)entry.Value;
+        //                var resSqlite = contextSqlite.Insert(items);
+        //                result.Add(dbSettings, resSqlite);
+        //                break;
+        //        }
+        //    }
+
+        //    return result;
+        //}
 
         public async Task<Dictionary<IDbSettings, int>> Update(TEntity item)
         {

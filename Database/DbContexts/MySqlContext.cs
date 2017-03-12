@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using DataBase.Database.DbContexts.Interface;
 using DataBase.Database.DbSettings.Interface;
+using System.Collections.ObjectModel;
 
 namespace DataBase.Database.DbContexts
 {
@@ -21,10 +22,11 @@ namespace DataBase.Database.DbContexts
     /// The MySql Database Context
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    //[DbConfigurationType(typeof(MySQLConfiguration))]
-    [DbConfigurationType(typeof(MySqlEFConfiguration))]
+    [DbConfigurationType(typeof(MySQLConfiguration))]
+    //[DbConfigurationType(typeof(MySqlEFConfiguration))]
     public partial class MySqlContext<TEntity> : DbContext, IDbContexts where TEntity : class
     {
+
         /// <summary>
         /// The DbSet
         /// </summary>
@@ -47,18 +49,18 @@ namespace DataBase.Database.DbContexts
         /// Constructor
         /// </summary>
         /// <param name="settings"></param>
-        public MySqlContext(IDbSettings settings) : base(ConnectionStringBuilder.BuildConnectionString(ProviderType.MySQL, settings))
-        {
+        //public MySqlContext(IDbSettings settings) : base(ConnectionStringBuilder.BuildConnectionString(ProviderType.MySQL, settings))
+        //{
 
-        }
+        //}
 
         #endregion
 
-        //public MySqlContext(IDbSettings settings) : base(new MySqlConnection(ConnectionStringBuilder.BuildConnectionString(ProviderType.MySQL, settings)), true)
-        //{
-        //    //System.Data.Entity.Database.SetInitializer(new CreateDatabaseIfNotExists<MySqlContext<TEntity>>());
+        public MySqlContext(IDbSettings settings) : base(new MySqlConnection(ConnectionStringBuilder.BuildConnectionString(ProviderType.MySQL, settings)), true)
+        {
+            //System.Data.Entity.Database.SetInitializer(new CreateDatabaseIfNotExists<MySqlContext<TEntity>>());
 
-        //}
+        }
 
         /// <summary>
         /// Method called during the model creation
@@ -77,6 +79,8 @@ namespace DataBase.Database.DbContexts
         /// <returns></returns>
         public async Task<int> Insert(TEntity item)
         {
+            waitForDbSetLocal();
+
             this.DbSetT.Add(item);
             return await this.SaveChangesAsync();
         }
@@ -88,12 +92,26 @@ namespace DataBase.Database.DbContexts
         /// <returns></returns>
         public async Task<int> Insert(IEnumerable<TEntity> items)
         {
+            waitForDbSetLocal();
+
             foreach (var item in items)
             {
                 this.DbSetT.Add(item);
             }
             return await this.SaveChangesAsync();
         }
+
+        //public int Insert(IEnumerable<TEntity> items)
+        //{
+        //    //waitForLocal();
+        //    DataBaseUtils.waitFor(DbSetT.Local);
+
+        //    foreach (var item in items)
+        //    {
+        //        DbSetT.Add(item);
+        //    }
+        //    return this.SaveChanges();
+        //}
 
         /// <summary>
         /// Updates an entity
@@ -190,9 +208,39 @@ namespace DataBase.Database.DbContexts
         /// <returns></returns>
         public async Task<IEnumerable<TEntity>> CustomQuery(Criteria.Criteria criteria)
         {
+            waitForDbSetLocal();
+
             return await this.DbSetT.SqlQuery(criteria.MySQLCompute()).ToListAsync();
         }
         #endregion
 
+        /// <summary>
+        /// Workaround towait for DbSet.Local to be defined
+        /// </summary>
+        /// <returns></returns>
+        private void waitForDbSetLocal()
+        {
+            try
+            {
+                var localType = DbSetT.Local;
+            }
+            catch(Exception e)
+            {
+                var ex = e;
+                Task task = waitLocal();
+                task.Wait();
+            }
+        }
+        private async Task<ObservableCollection<TEntity>> waitLocal()
+        {
+            ObservableCollection<TEntity> result = null;
+            await Task.Factory.StartNew(() =>
+            {
+                result = DbSetT.Local;
+
+            });
+
+            return result;
+        }
     }
 }

@@ -29,17 +29,6 @@ namespace DataBase.Database.DbSettings.FluentInterface
         /// <returns></returns>
         public SqLiteDatabaseFI DatabaseName(string databaseName)
         {
-            IDbSettings db;
-            if (sqlite.DatabaseName != null && dbManager.Databases.TryGetValue(sqlite.DatabaseName, out db))
-            {
-                DataBaseUtils.UpdateKey<string, IDbSettings>(dbManager.Databases, sqlite.DatabaseName, databaseName);
-            }
-            else
-            {
-                // Register database into the database manager
-                dbManager.Databases.Add(databaseName, sqlite);
-            }
-
             sqlite.DatabaseName = databaseName;
             return this;
         }
