@@ -113,8 +113,9 @@ namespace DataBase
             var sqlparking = dbContext.Context(settingdb2)
                                       .Context(sqlDbSettings);
 
+            sqlparking.Insert(cars);
 
-            await sqlparking.InsertAsync(cars);
+            //await sqlparking.InsertAsync(cars);
             
             // delete car from cars
             // await sqlparking.Delete(cars[0]);

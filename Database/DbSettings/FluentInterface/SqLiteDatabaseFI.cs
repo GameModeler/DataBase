@@ -10,7 +10,7 @@ namespace DataBase.Database.DbSettings.FluentInterface
     public class SqLiteDatabaseFI : ISqLiteDatabaseFI, IDbSettingsFI
     {
         readonly SqLiteDatabase sqlite;
-        private GmDbManager dbManager = GmDbManager.Instance;
+        private DbManager dbManager = DbManager.Instance;
 
         /// <summary>
         /// Constructor

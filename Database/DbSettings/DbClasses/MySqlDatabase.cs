@@ -11,7 +11,7 @@ namespace DataBase.Database.DbSettings.DbClasses
     public class MySqlDatabase : IDbSettings, IMySqlDatabase
     {
 
-        GmDbManager dbManager = GmDbManager.Instance;
+        DbManager dbManager = DbManager.Instance;
 
         const ProviderType PROVIDER = ProviderType.MySQL;
 

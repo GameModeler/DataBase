@@ -11,7 +11,7 @@ namespace DataBase.Database.DbSettings.FluentInterface
     public class MySqlDatabaseFI : IDbSettingsFI, IMySqlDatabaseFI
     {
         private readonly MySqlDatabase mysql;
-        private GmDbManager dbManager = GmDbManager.Instance;
+        private DbManager dbManager = DbManager.Instance;
 
         /// <summary>
         /// Constructor

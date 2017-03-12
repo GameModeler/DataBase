@@ -13,7 +13,7 @@ namespace DataBase.Utils
     /// </summary>
     public class ConnectionStringBuilder
     {
-        private static GmDbManager dbManager = GmDbManager.Instance;
+        private static DbManager dbManager = DbManager.Instance;
 
         /// <summary>
         /// Build the database connection string

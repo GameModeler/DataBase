@@ -133,28 +133,11 @@ namespace DataBase.Database
             {
                 IDbSettings dbSettings = entry.Key;
                 ProviderType provider = dbSettings.Provider;
+                DbContextBase<TEntity> context = GetContext(entry, provider);
 
-                switch(provider)
-                {
-                    case ProviderType.MySQL:
-
-                        MySqlContext<TEntity> contextMySql = (MySqlContext<TEntity>)entry.Value;
-                        IAsyncCrudMethods<TEntity> asynchCallMysql = (IAsyncCrudMethods<TEntity>)contextMySql;
-                        var resMySql = await asynchCallMysql.Insert(item);
-                        result.Add(dbSettings, resMySql);
-                        break;
-
-                    case ProviderType.SQLite:
-
-                        SqliteContext<TEntity> contextSql = (SqliteContext<TEntity>)entry.Value;
-                        IAsyncCrudMethods<TEntity> asynchCallSqlite = (IAsyncCrudMethods<TEntity>)contextSql;
-                        var resSqlite = await asynchCallSqlite.Insert(item);
-                        result.Add(dbSettings, resSqlite);
-                        break;
-
-                    default:
-                        break;
-                }   
+                IAsyncCrudMethods<TEntity> asynchCall = (IAsyncCrudMethods<TEntity>)context;
+                var resMySql = await asynchCall.Insert(item);
+                result.Add(dbSettings, resMySql);
             }       
             return result;
         }
@@ -172,28 +155,11 @@ namespace DataBase.Database
             {
                 IDbSettings dbSettings = entry.Key;
                 ProviderType provider = dbSettings.Provider;
+                DbContextBase<TEntity> context = GetContext(entry, provider);
 
-                switch (provider)
-                {
-                    case ProviderType.MySQL:
-
-                        MySqlContext<TEntity> contextMySql = (MySqlContext<TEntity>)entry.Value;
-                        ISyncCrudMethods<TEntity> synchCallMysql = (ISyncCrudMethods<TEntity>) contextMySql;
-                        var resMySql = synchCallMysql.Insert(item);
-                        result.Add(dbSettings, resMySql);
-                        break;
-
-                    case ProviderType.SQLite:
-
-                        SqliteContext<TEntity> contextSql = (SqliteContext<TEntity>)entry.Value;
-                        ISyncCrudMethods<TEntity> synchCallSqlite = (ISyncCrudMethods<TEntity>) contextSql;
-                        var resSqlite = synchCallSqlite.Insert(item);
-                        result.Add(dbSettings, resSqlite);
-                        break;
-
-                    default:
-                        break;
-                }
+                ISyncCrudMethods<TEntity> synchCall = (ISyncCrudMethods<TEntity>)context;
+                var resMySql = synchCall.Insert(item);
+                result.Add(dbSettings, resMySql);
             }
             return result;
         }
@@ -244,29 +210,15 @@ namespace DataBase.Database
         {
             Dictionary<IDbSettings, int> result = new Dictionary<IDbSettings, int>();
 
-
             foreach (KeyValuePair<IDbSettings, DbContext> entry in DatabaseContexts)
             {
                 IDbSettings dbSettings = entry.Key;
                 ProviderType provider = dbSettings.Provider;
+                DbContextBase<TEntity> context = GetContext(entry, provider);
 
-                switch (provider)
-                {
-                    case ProviderType.MySQL:
-                        MySqlContext<TEntity> contextMysql = (MySqlContext<TEntity>)entry.Value;
-                        ISyncCrudMethods<TEntity> synchCallMysql = (ISyncCrudMethods<TEntity>)contextMysql;
-                        var resMysql = synchCallMysql.Insert(items);
-                        result.Add(dbSettings, resMysql);
-                        break;
-
-
-                    case ProviderType.SQLite:
-                        SqliteContext<TEntity> contextSqlite = (SqliteContext<TEntity>)entry.Value;
-                        ISyncCrudMethods<TEntity> synchCallSqlite = (ISyncCrudMethods<TEntity>)contextSqlite;
-                        var resSqlite = synchCallSqlite.Insert(items);
-                        result.Add(dbSettings, resSqlite);
-                        break;
-                }
+                ISyncCrudMethods<TEntity> synchCallMysql = (ISyncCrudMethods<TEntity>)context;
+                var resMysql = synchCallMysql.Insert(items);
+                result.Add(dbSettings, resMysql);
             }
 
             return result;
@@ -285,25 +237,11 @@ namespace DataBase.Database
             {
                 IDbSettings dbSettings = entry.Key;
                 ProviderType provider = dbSettings.Provider;
+                DbContextBase<TEntity> context = GetContext(entry, provider);
 
-                switch (provider)
-                {
-                    case ProviderType.MySQL:
-                        MySqlContext<TEntity> contextMysql = (MySqlContext<TEntity>)entry.Value;
-
-                        IAsyncCrudMethods<TEntity> asynchCallMysql = (IAsyncCrudMethods<TEntity>)contextMysql;
-                        var resMysql = await asynchCallMysql.Update(item);
-                        result.Add(dbSettings, resMysql);
-                        break;
-
-
-                    case ProviderType.SQLite:
-                        SqliteContext<TEntity> contextSqlite = (SqliteContext<TEntity>)entry.Value;
-                        IAsyncCrudMethods<TEntity> asynchCallSqlite = (IAsyncCrudMethods<TEntity>)contextSqlite;
-                        var resSqlite = await asynchCallSqlite.Update(item);
-                        result.Add(dbSettings, resSqlite);
-                        break;
-                }
+                IAsyncCrudMethods<TEntity> asynchCall = (IAsyncCrudMethods<TEntity>)context;
+                var resMysql = await asynchCall.Update(item);
+                result.Add(dbSettings, resMysql);
             }
 
             return result;
@@ -322,25 +260,12 @@ namespace DataBase.Database
             {
                 IDbSettings dbSettings = entry.Key;
                 ProviderType provider = dbSettings.Provider;
+                DbContextBase<TEntity> context = GetContext(entry, provider);
 
-                switch (provider)
-                {
-                    case ProviderType.MySQL:
-                        MySqlContext<TEntity> contextMysql = (MySqlContext<TEntity>)entry.Value;
-                        ISyncCrudMethods<TEntity> asynchCallMysql = (ISyncCrudMethods<TEntity>)contextMysql;
-                        var resMysql = asynchCallMysql.Update(item);
-                        result.Add(dbSettings, resMysql);
-                        break;
-
-                    case ProviderType.SQLite:
-                        SqliteContext<TEntity> contextSqlite = (SqliteContext<TEntity>)entry.Value;
-                        ISyncCrudMethods<TEntity> asynchCallSqlite = (ISyncCrudMethods<TEntity>)contextSqlite;
-                        var resSqlite = asynchCallSqlite.Update(item);
-                        result.Add(dbSettings, resSqlite);
-                        break;
-                }
+                ISyncCrudMethods<TEntity> synchCall = (ISyncCrudMethods<TEntity>)context;
+                var resMysql = synchCall.Update(item);
+                result.Add(dbSettings, resMysql);
             }
-
             return result;
         }
 
@@ -357,24 +282,11 @@ namespace DataBase.Database
             {
                 IDbSettings dbSettings = entry.Key;
                 ProviderType provider = dbSettings.Provider;
+                DbContextBase<TEntity> context = GetContext(entry, provider);
 
-                switch (provider)
-                {
-                    case ProviderType.MySQL:
-                        MySqlContext<TEntity> contextMysql = (MySqlContext<TEntity>)entry.Value;
-                        IAsyncCrudMethods<TEntity> asyncCallMysql = (IAsyncCrudMethods<TEntity>)contextMysql;
-                        var resMysql = await asyncCallMysql.Update(items);
-                        result.Add(dbSettings, resMysql);
-                        break;
-
-
-                    case ProviderType.SQLite:
-                        SqliteContext<TEntity> contextSqlite = (SqliteContext<TEntity>)entry.Value;
-                        IAsyncCrudMethods<TEntity> asyncCallSqlite = (IAsyncCrudMethods<TEntity>)contextSqlite;
-                        var resSqlite = await asyncCallSqlite.Update(items);
-                        result.Add(dbSettings, resSqlite);
-                        break;
-                }
+                IAsyncCrudMethods<TEntity> asyncCall = (IAsyncCrudMethods<TEntity>)context;
+                var resMysql = await asyncCall.Update(items);
+                result.Add(dbSettings, resMysql);
             }
             return result;
         }
@@ -392,24 +304,11 @@ namespace DataBase.Database
             {
                 IDbSettings dbSettings = entry.Key;
                 ProviderType provider = dbSettings.Provider;
+                DbContextBase<TEntity> context = GetContext(entry, provider);
 
-                switch (provider)
-                {
-                    case ProviderType.MySQL:
-                        MySqlContext<TEntity> contextMysql = (MySqlContext<TEntity>)entry.Value;
-                        ISyncCrudMethods<TEntity> asyncCallMysql = (ISyncCrudMethods<TEntity>)contextMysql;
-                        var resMysql = asyncCallMysql.Update(items);
-                        result.Add(dbSettings, resMysql);
-                        break;
-
-
-                    case ProviderType.SQLite:
-                        SqliteContext<TEntity> contextSqlite = (SqliteContext<TEntity>)entry.Value;
-                        ISyncCrudMethods<TEntity> asyncCallSqlite = (ISyncCrudMethods<TEntity>)contextSqlite;
-                        var resSqlite = asyncCallSqlite.Update(items);
-                        result.Add(dbSettings, resSqlite);
-                        break;
-                }
+                ISyncCrudMethods<TEntity> asyncCall = (ISyncCrudMethods<TEntity>)context;
+                var resMysql = asyncCall.Update(items);
+                result.Add(dbSettings, resMysql);
             }
             return result;
         }
@@ -427,25 +326,12 @@ namespace DataBase.Database
             {
                 IDbSettings dbSettings = entry.Key;
                 ProviderType provider = dbSettings.Provider;
+                DbContextBase<TEntity> context = GetContext(entry, provider);
 
-                switch (provider)
-                {
-                    case ProviderType.MySQL:
-                        MySqlContext<TEntity> contextMysql = (MySqlContext<TEntity>)entry.Value;
-                        IAsyncCrudMethods<TEntity> asyncCallMysql = (IAsyncCrudMethods<TEntity>) contextMysql;
-                        var resMysql = await asyncCallMysql.Get(id);
-                        result.Add(dbSettings, resMysql);
-                        break;
-
-                    case ProviderType.SQLite:
-                        SqliteContext<TEntity> contextSqlite = (SqliteContext<TEntity>)entry.Value;
-                        IAsyncCrudMethods<TEntity> asyncCallSqlite = (IAsyncCrudMethods<TEntity>)contextSqlite;
-                        var resSqlite = await asyncCallSqlite.Get(id);
-                        result.Add(dbSettings, resSqlite);
-                        break;
-                }
+                IAsyncCrudMethods<TEntity> asyncCall = (IAsyncCrudMethods<TEntity>)context;
+                var resMysql = await asyncCall.Get(id);
+                result.Add(dbSettings, resMysql);
             }
-
             return result;
         }
 
@@ -462,25 +348,12 @@ namespace DataBase.Database
             {
                 IDbSettings dbSettings = entry.Key;
                 ProviderType provider = dbSettings.Provider;
+                DbContextBase<TEntity> context = GetContext(entry, provider);
 
-                switch (provider)
-                {
-                    case ProviderType.MySQL:
-                        MySqlContext<TEntity> contextMysql = (MySqlContext<TEntity>)entry.Value;
-                        ISyncCrudMethods<TEntity> syncCallMysql = (ISyncCrudMethods<TEntity>)contextMysql;
-                        var resMysql = syncCallMysql.Get(id);
-                        result.Add(dbSettings, resMysql);
-                        break;
-
-                    case ProviderType.SQLite:
-                        SqliteContext<TEntity> contextSqlite = (SqliteContext<TEntity>)entry.Value;
-                        ISyncCrudMethods<TEntity> syncCallSqlite = (ISyncCrudMethods<TEntity>)contextSqlite;
-                        var resSqlite = syncCallSqlite.Get(id);
-                        result.Add(dbSettings, resSqlite);
-                        break;
-                }
+                ISyncCrudMethods<TEntity> syncCall = (ISyncCrudMethods<TEntity>)context;
+                var resMysql = syncCall.Get(id);
+                result.Add(dbSettings, resMysql);
             }
-
             return result;
         }
 
@@ -496,26 +369,12 @@ namespace DataBase.Database
             {
                 IDbSettings dbSettings = entry.Key;
                 ProviderType provider = dbSettings.Provider;
+                DbContextBase<TEntity> context = GetContext(entry, provider);
 
-                switch (provider)
-                {
-                    case ProviderType.MySQL:
-                        MySqlContext<TEntity> contextMysql = (MySqlContext<TEntity>)entry.Value;
-                        IAsyncCrudMethods<TEntity> asyncCallMysql = (IAsyncCrudMethods<TEntity>)contextMysql;
-                        var resMysql = await asyncCallMysql.Get();
-                        result.Add(dbSettings, resMysql);
-                        break;
-
-
-                    case ProviderType.SQLite:
-                        SqliteContext<TEntity> contextSqlite = (SqliteContext<TEntity>)entry.Value;
-                        IAsyncCrudMethods<TEntity> asyncCallSqlite = (IAsyncCrudMethods<TEntity>)contextSqlite;
-                        var resSqlite = await asyncCallSqlite.Get();
-                        result.Add(dbSettings, resSqlite);
-                        break;
-                }
+                IAsyncCrudMethods<TEntity> asyncCall = (IAsyncCrudMethods<TEntity>)context;
+                var resMysql = await asyncCall.Get();
+                result.Add(dbSettings, resMysql);
             }
-
             return result;
         }
 
@@ -531,26 +390,12 @@ namespace DataBase.Database
             {
                 IDbSettings dbSettings = entry.Key;
                 ProviderType provider = dbSettings.Provider;
+                DbContextBase<TEntity> context = GetContext(entry, provider);
 
-                switch (provider)
-                {
-                    case ProviderType.MySQL:
-                        MySqlContext<TEntity> contextMysql = (MySqlContext<TEntity>)entry.Value;
-                        ISyncCrudMethods<TEntity> syncCallMysql = (ISyncCrudMethods<TEntity>)contextMysql;
-                        var resMysql = syncCallMysql.Get();
-                        result.Add(dbSettings, resMysql);
-                        break;
-
-
-                    case ProviderType.SQLite:
-                        SqliteContext<TEntity> contextSqlite = (SqliteContext<TEntity>)entry.Value;
-                        ISyncCrudMethods<TEntity> syncCallSqlite = (ISyncCrudMethods<TEntity>)contextSqlite;
-                        var resSqlite = syncCallSqlite.Get();
-                        result.Add(dbSettings, resSqlite);
-                        break;
-                }
+                ISyncCrudMethods<TEntity> syncCall = (ISyncCrudMethods<TEntity>)context;
+                var resMysql = syncCall.Get();
+                result.Add(dbSettings, resMysql);
             }
-
             return result;
         }
 
@@ -567,26 +412,12 @@ namespace DataBase.Database
             {
                 IDbSettings dbSettings = entry.Key;
                 ProviderType provider = dbSettings.Provider;
+                DbContextBase<TEntity> context = GetContext(entry, provider);
 
-                switch (provider)
-                {
-                    case ProviderType.MySQL:
-                        MySqlContext<TEntity> contextMysql = (MySqlContext<TEntity>)entry.Value;
-                        IAsyncCrudMethods<TEntity> asyncCallMysql = (IAsyncCrudMethods<TEntity>)contextMysql;
-                        var resMysql = await asyncCallMysql.Delete(item);
-                        result.Add(dbSettings, resMysql);
-                        break;
-
-
-                    case ProviderType.SQLite:
-                        SqliteContext<TEntity> contextSqlite = (SqliteContext<TEntity>)entry.Value;
-                        IAsyncCrudMethods<TEntity> asyncCallSqlite = (IAsyncCrudMethods<TEntity>)contextSqlite;
-                        var resSqlite = await asyncCallSqlite.Delete(item);
-                        result.Add(dbSettings, resSqlite);
-                        break;
-                }
+                IAsyncCrudMethods<TEntity> asyncCall = (IAsyncCrudMethods<TEntity>)context;
+                var resMysql = await asyncCall.Delete(item);
+                result.Add(dbSettings, resMysql);
             }
-
             return result;
         }
 
@@ -603,26 +434,12 @@ namespace DataBase.Database
             {
                 IDbSettings dbSettings = entry.Key;
                 ProviderType provider = dbSettings.Provider;
+                DbContextBase<TEntity> context = GetContext(entry, provider);
 
-                switch (provider)
-                {
-                    case ProviderType.MySQL:
-                        MySqlContext<TEntity> contextMysql = (MySqlContext<TEntity>)entry.Value;
-                        ISyncCrudMethods<TEntity> syncCallMysql = (ISyncCrudMethods<TEntity>)contextMysql;
-                        var resMysql = syncCallMysql.Delete(item);
-                        result.Add(dbSettings, resMysql);
-                        break;
-
-
-                    case ProviderType.SQLite:
-                        SqliteContext<TEntity> contextSqlite = (SqliteContext<TEntity>)entry.Value;
-                        ISyncCrudMethods<TEntity> syncCallSqlite = (ISyncCrudMethods<TEntity>)contextSqlite;
-                        var resSqlite = syncCallSqlite.Delete(item);
-                        result.Add(dbSettings, resSqlite);
-                        break;
-                }
+                ISyncCrudMethods<TEntity> syncCall = (ISyncCrudMethods<TEntity>)context;
+                var resMysql = syncCall.Delete(item);
+                result.Add(dbSettings, resMysql);
             }
-
             return result;
         }
 
@@ -639,26 +456,12 @@ namespace DataBase.Database
             {
                 IDbSettings dbSettings = entry.Key;
                 ProviderType provider = dbSettings.Provider;
+                DbContextBase<TEntity> context = GetContext(entry, provider);
 
-                switch (provider)
-                {
-                    case ProviderType.MySQL:
-                        MySqlContext<TEntity> contextMysql = (MySqlContext<TEntity>)entry.Value;
-                        IAsyncCrudMethods<TEntity> asyncCallMysql = (IAsyncCrudMethods<TEntity>)contextMysql;
-                        var resMysql = await asyncCallMysql.Delete(items);
-                        result.Add(dbSettings, resMysql);
-                        break;
-
-
-                    case ProviderType.SQLite:
-                        SqliteContext<TEntity> contextSqlite = (SqliteContext<TEntity>)entry.Value;
-                        IAsyncCrudMethods<TEntity> asyncCallSqlite = (IAsyncCrudMethods<TEntity>)contextSqlite;
-                        var resSqlite = await asyncCallSqlite.Delete(items);
-                        result.Add(dbSettings, resSqlite);
-                        break;
-                }
+                IAsyncCrudMethods<TEntity> asyncCall = (IAsyncCrudMethods<TEntity>)context;
+                var resMysql = await asyncCall.Delete(items);
+                result.Add(dbSettings, resMysql);
             }
-
             return result;
         }
 
@@ -675,26 +478,12 @@ namespace DataBase.Database
             {
                 IDbSettings dbSettings = entry.Key;
                 ProviderType provider = dbSettings.Provider;
+                DbContextBase<TEntity> context = GetContext(entry, provider);
 
-                switch (provider)
-                {
-                    case ProviderType.MySQL:
-                        MySqlContext<TEntity> contextMysql = (MySqlContext<TEntity>)entry.Value;
-                        ISyncCrudMethods<TEntity> syncCallMysql = (ISyncCrudMethods<TEntity>)contextMysql;
-                        var resMysql = syncCallMysql.Delete(items);
-                        result.Add(dbSettings, resMysql);
-                        break;
-
-
-                    case ProviderType.SQLite:
-                        SqliteContext<TEntity> contextSqlite = (SqliteContext<TEntity>)entry.Value;
-                        ISyncCrudMethods<TEntity> syncCallSqlite = (ISyncCrudMethods<TEntity>)contextSqlite;
-                        var resSqlite = syncCallSqlite.Delete(items);
-                        result.Add(dbSettings, resSqlite);
-                        break;
-                }
+                ISyncCrudMethods<TEntity> syncCall = (ISyncCrudMethods<TEntity>)context;
+                var resMysql = syncCall.Delete(items);
+                result.Add(dbSettings, resMysql);   
             }
-
             return result;
         }
 
@@ -711,23 +500,11 @@ namespace DataBase.Database
             {
                 IDbSettings dbSettings = entry.Key;
                 ProviderType provider = dbSettings.Provider;
+                DbContextBase<TEntity> context = GetContext(entry, provider);
 
-                switch (provider)
-                {
-                    case ProviderType.MySQL:
-                        MySqlContext<TEntity> contextMysql = (MySqlContext<TEntity>)entry.Value;
-                        IAsyncCrudMethods<TEntity> asyncCallMysql = (IAsyncCrudMethods<TEntity>)contextMysql;
-                        var resMysql = await asyncCallMysql.CustomQuery(criteria);
-                        result.Add(dbSettings, resMysql);
-                        break;
-                 
-                    case ProviderType.SQLite:
-                        SqliteContext<TEntity> contextSqlite = (SqliteContext<TEntity>)entry.Value;
-                        IAsyncCrudMethods<TEntity> asyncCallSqlite = (IAsyncCrudMethods<TEntity>)contextSqlite;
-                        var resSqlite = await asyncCallSqlite.CustomQuery(criteria);
-                        result.Add(dbSettings, resSqlite);
-                        break;
-                }
+                IAsyncCrudMethods<TEntity> asyncCall = (IAsyncCrudMethods<TEntity>)context;
+                var resMysql = await asyncCall.CustomQuery(criteria);
+                result.Add(dbSettings, resMysql);
             }
             return result;
         }
@@ -745,26 +522,28 @@ namespace DataBase.Database
             {
                 IDbSettings dbSettings = entry.Key;
                 ProviderType provider = dbSettings.Provider;
+                DbContextBase<TEntity> context = GetContext(entry, provider);
 
-                switch (provider)
-                {
-                    case ProviderType.MySQL:
-                        MySqlContext<TEntity> contextMysql = (MySqlContext<TEntity>)entry.Value;
-                        ISyncCrudMethods<TEntity> syncCallMysql = (ISyncCrudMethods<TEntity>)contextMysql;
-                        var resMysql = syncCallMysql.CustomQuery(criteria);
-                        result.Add(dbSettings, resMysql);
-                        break;
-
-                    case ProviderType.SQLite:
-                        SqliteContext<TEntity> contextSqlite = (SqliteContext<TEntity>)entry.Value;
-                        ISyncCrudMethods<TEntity> syncCallSqlite = (ISyncCrudMethods<TEntity>)contextSqlite;
-                        var resSqlite = syncCallSqlite.CustomQuery(criteria);
-                        result.Add(dbSettings, resSqlite);
-                        break;
-                }
+                ISyncCrudMethods<TEntity> syncCall = (ISyncCrudMethods<TEntity>)context;
+                var resMysql = syncCall.CustomQuery(criteria);
+                result.Add(dbSettings, resMysql);
             }
             return result;
         }
         #endregion
+
+        private DbContextBase<TEntity> GetContext(KeyValuePair<IDbSettings, DbContext> entry, ProviderType provider)
+        {
+            switch (provider)
+            {
+                case ProviderType.MySQL:
+                    return (MySqlContext<TEntity>)entry.Value;
+                    
+                case ProviderType.SQLite:
+                    return (SqliteContext<TEntity>)entry.Value;
+                default:
+                    return null;
+            }
+        }
     }
 }

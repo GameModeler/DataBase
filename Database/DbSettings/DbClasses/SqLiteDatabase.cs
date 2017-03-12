@@ -16,7 +16,7 @@ namespace DataBase.Database.DbSettings.DbClasses
     {
         const ProviderType PROVIDER = ProviderType.SQLite;
 
-        private GmDbManager dbManager = GmDbManager.Instance;
+        private DbManager dbManager = DbManager.Instance;
 
         private readonly SqLiteDatabaseFI sqliteFI;
 
