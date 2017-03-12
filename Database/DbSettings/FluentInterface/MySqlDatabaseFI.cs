@@ -1,7 +1,6 @@
 ﻿using System;
 using DataBase.Database.DbSettings.DbClasses;
 using DataBase.Utils;
-using GMDataBase.Database.DbSettings.Interface;
 using DataBase.Database.DbSettings.Interface;
 
 namespace DataBase.Database.DbSettings.FluentInterface
@@ -41,7 +40,7 @@ namespace DataBase.Database.DbSettings.FluentInterface
         public MySqlDatabaseFI DatabaseName(string databaseName)
         {
             IDbSettings db;
-            if (dbManager.Databases.TryGetValue(mysql.DatabaseName, out db))
+            if (mysql.DatabaseName != null && dbManager.Databases.TryGetValue(mysql.DatabaseName, out db))
             {
                 DataBaseUtils.UpdateKey<string, IDbSettings>(dbManager.Databases, mysql.DatabaseName, databaseName);
             }

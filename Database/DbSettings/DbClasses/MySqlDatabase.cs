@@ -30,7 +30,7 @@ namespace DataBase.Database.DbSettings.DbClasses
             set {
 
                 IDbSettings db;
-                if(dbManager.Databases.TryGetValue(DatabaseName, out db))
+                if(DatabaseName != null && dbManager.Databases.TryGetValue(DatabaseName, out db))
                 {
                     DataBaseUtils.UpdateKey<string, IDbSettings>(dbManager.Databases, DatabaseName, value);
                 } else
@@ -99,9 +99,6 @@ namespace DataBase.Database.DbSettings.DbClasses
             // Sets a default name to the database
             DatabaseName = ConnectionStringBuilder.GetDefaultDbName(dbManager.NbDefaultDb);
 
-            // Register database into the database manager
-            dbManager.Databases.Add(DatabaseName, this);
-
             // Intitialization of the Fluent API
             mySqlFI = new MySqlDatabaseFI(this);
 
@@ -135,9 +132,6 @@ namespace DataBase.Database.DbSettings.DbClasses
 
             // Fluent API initialization
             mySqlFI = new MySqlDatabaseFI(this);
-
-            // Register database into the database manager
-            GmDbManager.Instance.Databases.Add(DatabaseName, this);
         }
 
         /// <summary>
@@ -150,10 +144,6 @@ namespace DataBase.Database.DbSettings.DbClasses
 
             // Fluent API initialization
             mySqlFI = new MySqlDatabaseFI(this);
-
-            // Register database into the database manager
-            GmDbManager.Instance.Databases.Add(DatabaseName, this);
-
         }
         #endregion
 

@@ -12,7 +12,7 @@ namespace DataBase
         public static async void InitTest()
         {
 
-            var db = DatabaseFactory.MySqlDb.Set.Server("myServer").ToConnectionString();
+            // var db = DatabaseFactory.MySqlDb.Set.Server("myServer").ToConnectionString();
                                     
 
             // Database information
@@ -28,13 +28,13 @@ namespace DataBase
             sqlDbSettings.DataSource = @"C:\Users\Anne\SQLDatabase\test.db.db";
 
             // Fluent API
-            SqLiteDatabase sqlDbSet = new SqLiteDatabase();
+            //SqLiteDatabase sqlDbSet = new SqLiteDatabase();
             
-            sqlDbSet.Set
-                    .DatabaseName("sql")
-                    .DataSource(@"C: \Users\Anne\SQLDatabase\test.db.db");
+            //sqlDbSet.Set
+            //        .DatabaseName("sql")
+            //        .DataSource(@"C: \Users\Anne\SQLDatabase\test.db.db");
 
-            MySqlDatabase dbset = DatabaseFactory.DatabaseSettings<MySqlDatabase>("dbSet");
+            //MySqlDatabase dbset = DatabaseFactory.DatabaseSettings<MySqlDatabase>("dbSet");
 
             // 1. Création d'un manager par type de provider.
             // Va permettre de gérer plusieurs bases de données ayant le même provider
@@ -99,12 +99,17 @@ namespace DataBase
 
             GmDbContext<Car> dbContext = dbManager.ContextFactory<Car>();
 
-            var sqlparking = dbContext
-                                      .Context(settingdb2)
-                                      .Context(sqlDbSettings);
-           //                           .MySqlContext(settingdb2);
-
+            var sqlparking = dbContext.Context(settingdb2);
+            //                          .Context(sqlDbSettings);
+        
             await sqlparking.Insert(cars);
+            
+            // delete car from cars
+            sqlparking.Delete(cars[0]);
+
+            var a = cars;
+
+
 
             //////////////////////////////////////////////////////////////
 

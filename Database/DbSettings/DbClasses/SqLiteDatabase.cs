@@ -32,7 +32,7 @@ namespace DataBase.Database.DbSettings.DbClasses
             set
             {
                 IDbSettings db;
-                if (dbManager.Databases.TryGetValue(DatabaseName, out db))
+                if (DatabaseName != null && dbManager.Databases.TryGetValue(DatabaseName, out db))
                 {
                     DataBaseUtils.UpdateKey<string, IDbSettings>(dbManager.Databases, DatabaseName, value);
                 }
@@ -97,9 +97,6 @@ namespace DataBase.Database.DbSettings.DbClasses
             // Sets a default name to the database
             DatabaseName = ConnectionStringBuilder.GetDefaultDbName(dbManager.NbDefaultDb);
 
-            // Register database into the database manager
-            dbManager.Databases.Add(DatabaseName, this);
-
             // Intitialization of the Fluent API
             sqliteFI = new SqLiteDatabaseFI(this);
         }
@@ -134,8 +131,6 @@ namespace DataBase.Database.DbSettings.DbClasses
             ConnectionString = "";
 
             sqliteFI = new SqLiteDatabaseFI(this);
-
-            dbManager.Databases.Add(DatabaseName, this);
         }
 
         /// <summary>
@@ -146,8 +141,6 @@ namespace DataBase.Database.DbSettings.DbClasses
         {
             SqLiteDbDefault(dbName);
             sqliteFI = new SqLiteDatabaseFI(this);
-            dbManager.Databases.Add(DatabaseName, this);
-
         }
         #endregion
 

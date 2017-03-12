@@ -21,7 +21,7 @@ namespace DataBase.Database
             set { databases = value; }
         }
 
-        private int nbDefaultDb = 0;
+        private int nbDefaultDb;
 
         /// <summary>
         /// Number for database default name
@@ -48,6 +48,9 @@ namespace DataBase.Database
             Databases = new Dictionary<string, IDbSettings>();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public static GmDbManager Instance
         {
             get

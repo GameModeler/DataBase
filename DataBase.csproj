@@ -95,7 +95,7 @@
     <Compile Include="Criteria\DbVerb.cs" />
     <Compile Include="Criteria\LinkCondition.cs" />
     <Compile Include="Criteria\Field.cs" />
-    <Compile Include="Database\ConnectionStringBuilder.cs" />
+    <Compile Include="Utils\ConnectionStringBuilder.cs" />
     <Compile Include="Database\DatabaseManager.cs" />
     <Compile Include="Database\DbContexts\Interface\IDbContexts.cs" />
     <Compile Include="Database\DbSettings\DatabaseFactory.cs" />
