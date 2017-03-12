@@ -7,7 +7,7 @@ namespace DataBase.Database
     /// <summary>
     /// To manage databases
     /// </summary>
-    public class GmDbManager
+    public class DbManager
     {
 
         private Dictionary<string, IDbSettings> databases;
@@ -45,18 +45,14 @@ namespace DataBase.Database
         /// <returns></returns>
         public int GetAndIncrNbDefaultDb()
         {
-            //var nbTemp = nbDefaultDb;
-            //nbDefaultDb++;
-            //return nbTemp;
-
             return nbDefaultDb++;
         }
 
         #region Singleton
-        private static volatile GmDbManager instance;
+        private static volatile DbManager instance;
         private static object syncRoot = new Object();
 
-        private GmDbManager()
+        private DbManager()
         {
             nbDefaultDb = 0;
             Databases = new Dictionary<string, IDbSettings>();
@@ -65,7 +61,7 @@ namespace DataBase.Database
         /// <summary>
         /// 
         /// </summary>
-        public static GmDbManager Instance
+        public static DbManager Instance
         {
             get
             {
@@ -74,7 +70,7 @@ namespace DataBase.Database
                     lock (syncRoot)
                     {
                         if (instance == null)
-                            instance = new GmDbManager();
+                            instance = new DbManager();
                     }
                 }
                 return instance;
@@ -101,22 +97,9 @@ namespace DataBase.Database
             }
         }
 
-        /// <summary>
-        /// Provide a way to look for database information into the list of databases
-        /// </summary>
-        /// <param name="crible"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        //public IEnumerable<IDbSettings> SearchInDatabases(String crible, String value)
-        //{
-        //    return from db in Databases.Values
-        //           where db.GetCrible(crible) == value
-        //           select db;
-        //}
-
-        public GmDbContext<T> ContextFactory<T>() where T : class
+        public GlobalContext<T> ContextFactory<T>() where T : class
         {
-            return new GmDbContext<T>();
+            return new GlobalContext<T>();
         }
     }
 }

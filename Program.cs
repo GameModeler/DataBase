@@ -11,10 +11,7 @@ namespace DataBase
 
         public static async void InitTest()
         {
-
-            // var db = DatabaseFactory.MySqlDb.Set.Server("myServer").ToConnectionString();
-
-            GmDbManager dbManager = GmDbManager.Instance;
+            DbManager dbManager = DbManager.Instance;
             var database = dbManager.Databases;
 
             var settingdb2 = DatabaseFactory
@@ -109,16 +106,15 @@ namespace DataBase
 
             //////////////////// GLOBAL CONTEXT /////////////////////////
 
-
             var mydb = dbManager.GetDatabase("db2");
 
-            GmDbContext<Car> dbContext = dbManager.ContextFactory<Car>();
+            GlobalContext<Car> dbContext = dbManager.ContextFactory<Car>();
 
             var sqlparking = dbContext.Context(settingdb2)
                                       .Context(sqlDbSettings);
 
 
-            await sqlparking.Insert(cars);
+            await sqlparking.InsertAsync(cars);
             
             // delete car from cars
             // await sqlparking.Delete(cars[0]);
