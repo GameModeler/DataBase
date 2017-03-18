@@ -43,11 +43,11 @@ namespace DataBase.Database.DbContexts
 
         #region SQL asynchrone CRUD methods
         /// <summary>
-        /// Inserts an entity
+        /// Inserts an entity asynchronously
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        async Task<int> IAsyncCrudMethods<TEntity>.Insert(TEntity item)
+        public async Task<int> InsertAsync(TEntity item)
         {
             waitForDbSetLocal();
 
@@ -55,12 +55,12 @@ namespace DataBase.Database.DbContexts
             return await this.SaveChangesAsync();
         }
 
-        ///// <summary>
-        ///// Inserts entities
-        ///// </summary>
-        ///// <param name="items"></param>
-        ///// <returns></returns>
-        async Task<int> IAsyncCrudMethods<TEntity>.Insert(IEnumerable<TEntity> items)
+        /// <summary>
+        /// Inserts entities asynchronously
+        /// </summary>
+        /// <param name="items"></param>
+        /// <returns></returns>
+        public async Task<int> InsertAsync(IEnumerable<TEntity> items)
         {
             waitForDbSetLocal();
 
@@ -71,12 +71,12 @@ namespace DataBase.Database.DbContexts
             return await SaveChangesAsync();
         }
 
-        ///// <summary>
-        ///// Updates an entity
-        ///// </summary>
-        ///// <param name="item"></param>
-        ///// <returns></returns>
-        async Task<int> IAsyncCrudMethods<TEntity>.Update(TEntity item)
+        /// <summary>
+        /// Updates an entity asynchronously
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public async Task<int> UpdateAsync(TEntity item)
         {
             await Task.Factory.StartNew(() =>
             {
@@ -85,12 +85,13 @@ namespace DataBase.Database.DbContexts
             return await this.SaveChangesAsync();
         }
 
-        ///// <summary>
-        ///// Updates entities
-        ///// </summary>
-        ///// <param name="items"></param>
-        ///// <returns></returns>
-        async Task<int> IAsyncCrudMethods<TEntity>.Update(IEnumerable<TEntity> items)
+
+        /// <summary>
+        /// Updates entities asynchronously
+        /// </summary>
+        /// <param name="items"></param>
+        /// <returns></returns>
+        public async Task<int> UpdateAsync(IEnumerable<TEntity> items)
         {
             await Task.Factory.StartNew(() =>
             {
@@ -102,21 +103,21 @@ namespace DataBase.Database.DbContexts
             return await this.SaveChangesAsync();
         }
 
-        ///// <summary>
-        ///// Gets an entity
-        ///// </summary>
-        ///// <param name="id"></param>
-        ///// <returns></returns>
-        async Task<TEntity> IAsyncCrudMethods<TEntity>.Get(Int32 id)
+        /// <summary>
+        /// Gets an entity asynchronously
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<TEntity> GetAsync(Int32 id)
         {
             return await this.DbSetT.FindAsync(id) as TEntity;
         }
 
-        ///// <summary>
-        ///// Gets entities
-        ///// </summary>
-        ///// <returns></returns>
-        async Task<IEnumerable<TEntity>> IAsyncCrudMethods<TEntity>.Get()
+        /// <summary>
+        /// Gets entities asynchronously
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<TEntity>> GetAsync()
         {
             DbSet<TEntity> temp = default(DbSet<TEntity>);
             List<TEntity> result = new List<TEntity>();
@@ -128,12 +129,12 @@ namespace DataBase.Database.DbContexts
             return result;
         }
 
-        ///// <summary>
-        ///// Deletes an entity
-        ///// </summary>
-        ///// <param name="item"></param>
-        ///// <returns></returns>
-        async Task<Int32> IAsyncCrudMethods<TEntity>.Delete(TEntity item)
+        /// <summary>
+        /// Deletes an entity asynchronously
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public async Task<Int32> DeleteAsync(TEntity item)
         {
             await Task.Factory.StartNew(() =>
             {
@@ -143,12 +144,12 @@ namespace DataBase.Database.DbContexts
             return await this.SaveChangesAsync();
         }
 
-        ///// <summary>
-        ///// Deletes entities
-        ///// </summary>
-        ///// <param name="items"></param>
-        ///// <returns></returns>
-        async Task<Int32> IAsyncCrudMethods<TEntity>.Delete(IEnumerable<TEntity> items)
+        /// <summary>
+        /// Deletes entities asynchronously
+        /// </summary>
+        /// <param name="items"></param>
+        /// <returns></returns>
+        public async Task<Int32> DeleteAsync(IEnumerable<TEntity> items)
         {
             await Task.Factory.StartNew(() =>
             {
@@ -159,12 +160,12 @@ namespace DataBase.Database.DbContexts
             return res;
         }
 
-        ///// <summary>
-        ///// Allows to execute a custom query
-        ///// </summary>
-        ///// <param name="criteria"></param>
-        ///// <returns></returns>
-        async Task<IEnumerable<TEntity>> IAsyncCrudMethods<TEntity>.CustomQuery(Criteria.Criteria criteria)
+        /// <summary>
+        /// Allows to execute a custom query asynchronously
+        /// </summary>
+        /// <param name="criteria"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<TEntity>> CustomQueryAsync(Criteria.Criteria criteria)
         {
             waitForDbSetLocal();
 
@@ -174,7 +175,12 @@ namespace DataBase.Database.DbContexts
 
         #region SQL synchrone Crud methods
 
-        int ISyncCrudMethods<TEntity>.Insert(TEntity item)
+        /// <summary>
+        /// Inserts an entity synchronously
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public int Insert(TEntity item)
         {
             waitForDbSetLocal();
 
@@ -182,7 +188,12 @@ namespace DataBase.Database.DbContexts
             return SaveChanges();
         }
 
-        int ISyncCrudMethods<TEntity>.Insert(IEnumerable<TEntity> items)
+        /// <summary>
+        /// Inserts entities asynchronously
+        /// </summary>
+        /// <param name="items"></param>
+        /// <returns></returns>
+        public int Insert(IEnumerable<TEntity> items)
         {
             waitForDbSetLocal();
 
@@ -193,13 +204,23 @@ namespace DataBase.Database.DbContexts
             return SaveChanges();
         }
 
-        int ISyncCrudMethods<TEntity>.Update(TEntity item)
+        /// <summary>
+        /// Updates an entity synchronously
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public int Update(TEntity item)
         {
             Entry<TEntity>(item).State = EntityState.Modified;
             return SaveChanges();
         }
 
-        int ISyncCrudMethods<TEntity>.Update(IEnumerable<TEntity> items)
+        /// <summary>
+        /// Updates entities synchronously
+        /// </summary>
+        /// <param name="items"></param>
+        /// <returns></returns>
+        public int Update(IEnumerable<TEntity> items)
         {
             foreach (var item in items)
             {
@@ -208,12 +229,21 @@ namespace DataBase.Database.DbContexts
             return SaveChanges();
         }
 
-        TEntity ISyncCrudMethods<TEntity>.Get(int id)
+        /// <summary>
+        /// Gets an entity synchronously
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public TEntity Get(int id)
         {
             return DbSetT.FindAsync(id) as TEntity;
         }
 
-        IEnumerable<TEntity> ISyncCrudMethods<TEntity>.Get()
+        /// <summary>
+        /// Gets all entities synchronously
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<TEntity> Get()
         {
             DbSet<TEntity> temp = default(DbSet<TEntity>);
             List<TEntity> result = new List<TEntity>();
@@ -222,7 +252,12 @@ namespace DataBase.Database.DbContexts
             return result;
         }
 
-        Int32 ISyncCrudMethods<TEntity>.Delete(TEntity item)
+        /// <summary>
+        /// Delete an entity synchronously
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public Int32 Delete(TEntity item)
         {
             DbSetT.Attach(item);
             DbSetT.Remove(item);
@@ -230,14 +265,24 @@ namespace DataBase.Database.DbContexts
             return SaveChanges();
         }
 
-        Int32 ISyncCrudMethods<TEntity>.Delete(IEnumerable<TEntity> items)
+        /// <summary>
+        /// Delete entities 
+        /// </summary>
+        /// <param name="items"></param>
+        /// <returns></returns>
+        public Int32 Delete(IEnumerable<TEntity> items)
         {
             DbSetT.Attach((items as List<TEntity>)[0]);
             DbSetT.RemoveRange(items);
             return SaveChanges();
         }
 
-        IEnumerable<TEntity> ISyncCrudMethods<TEntity>.CustomQuery(Criteria.Criteria criteria)
+        /// <summary>
+        /// Allows to execute a custom query synchronously
+        /// </summary>
+        /// <param name="criteria"></param>
+        /// <returns></returns>
+        public IEnumerable<TEntity> CustomQuery(Criteria.Criteria criteria)
         {
             waitForDbSetLocal();
             return DbSetT.SqlQuery(criteria.MySQLCompute()).ToList();
