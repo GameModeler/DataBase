@@ -96,15 +96,6 @@ namespace DataBase.Database.DbSettings.FluentInterface
             return ConnectionStringBuilder.BuildConnectionString(ProviderType.MySQL, mysql);
         }
 
-        /// <summary>
-        /// Convert to MySqlDatabse type
-        /// </summary>
-        /// <returns></returns>
-        //public MySqlDatabase ToMySqlDatabase()
-        //{
-        //    return mysql;
-        //}
-
         private MySqlDatabase toMySqlDatabase;
 
         /// <summary>

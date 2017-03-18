@@ -173,5 +173,16 @@ namespace DataBase.Database.DbSettings.FluentInterface
         {
             return ConnectionStringBuilder.BuildConnectionString(ProviderType.SQLite, sqlite);
         }
+
+        private MySqlDatabase toMySqlDatabase;
+
+        /// <summary>
+        /// Convert to SqLiteDatabase type
+        /// </summary>
+        /// <returns></returns>
+        public SqLiteDatabase ToSqLiteDatabase
+        {
+            get { return sqlite; }
+        }
     }
 }
