@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace DataBase.Utils
 {
+    /// <summary>
+    /// Persistant attribute
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class PersistentAttribute : Attribute
     {

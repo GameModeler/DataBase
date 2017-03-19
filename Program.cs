@@ -1,4 +1,5 @@
 ﻿using DataBase.Criteria;
+using DataBase.Criterias;
 using DataBase.Database;
 using DataBase.Database.DbContexts;
 using DataBase.Database.DbSettings;
@@ -134,7 +135,7 @@ namespace DataBase
 
             /////////////////////// CUSTOM QUERIES ///////////////////////
 
-            Criteria.Criteria myQuery = new Criteria.Criteria();
+            Criteria myQuery = new Criteria();
 
             Criterion criterion = new Criterion(DbVerb.AND, "Manufacturer", DbOperator.LIKE, "Niss%");
 
