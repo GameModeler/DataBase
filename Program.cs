@@ -1,4 +1,6 @@
-﻿using DataBase.Database;
+﻿using DataBase.Criteria;
+using DataBase.Database;
+using DataBase.Database.DbContexts;
 using DataBase.Database.DbSettings;
 using DataBase.Database.DbSettings.DbClasses;
 using DataBase.Entities;
@@ -21,6 +23,9 @@ namespace DataBase
                                 .Server("localhost")
                                 .UserId("root")
                                 .ToMySqlDatabase;
+
+            // Get the database name
+            string dbName = settingdb2.DatabaseName;
 
             // Database information
             //MySqlDatabase settingdb2 = new MySqlDatabase();
@@ -65,6 +70,9 @@ namespace DataBase
             cars.Add(new Car { Manufacturer = "Dodge", Model = "Charger", Year = 2013 });
 
             //////////////////// DB CONTEXT (using) /////////////////////////
+
+            MySqlContext<Car> parking = new MySqlContext<Car>(settingdb2);
+            await parking.InsertAsync(cars);
 
             //using (var sqlparking1 = new SqliteContext<Car>(sqlDbSettings))
             //{
@@ -116,11 +124,22 @@ namespace DataBase
             sqlparking.Insert(cars);
 
             //await sqlparking.InsertAsync(cars);
-            
+
             // delete car from cars
             // await sqlparking.Delete(cars[0]);
 
+            Car myCar = sqlparking.Get(0)[settingdb2];
+
             //////////////////////////////////////////////////////////////
+
+            /////////////////////// CUSTOM QUERIES ///////////////////////
+
+            Criteria.Criteria myQuery = new Criteria.Criteria();
+
+            Criterion criterion = new Criterion(DbVerb.AND, "Manufacturer", DbOperator.LIKE, "Niss%");
+
+            myQuery.AddDbLink("Car", DbLinks.FROM);
+            myQuery.AddCriterion(criterion);
 
             //List<Cat> cats = new List<Cat>();
 
