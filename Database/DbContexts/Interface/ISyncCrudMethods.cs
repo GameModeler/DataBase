@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataBase.Criterias;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -74,6 +75,6 @@ namespace DataBase.Database.DbContexts.Interface
         /// </summary>
         /// <param name="criteria"></param>
         /// <returns></returns>
-        IEnumerable<TEntity> CustomQuery(Criteria.Criteria criteria);
+        IEnumerable<TEntity> CustomQuery(Criteria criteria);
     }
 }

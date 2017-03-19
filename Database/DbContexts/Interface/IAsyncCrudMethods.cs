@@ -1,4 +1,5 @@
 ﻿using DataBase.Criteria;
+using DataBase.Criterias;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,6 +74,6 @@ namespace DataBase.Database.DbContexts.Interface
         /// </summary>
         /// <param name="criteria"></param>
         /// <returns></returns>
-        Task<IEnumerable<TEntity>> CustomQueryAsync(Criteria.Criteria criteria);
+        Task<IEnumerable<TEntity>> CustomQueryAsync(Criteria criteria);
     }
 }

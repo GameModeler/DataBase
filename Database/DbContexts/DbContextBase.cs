@@ -1,4 +1,5 @@
-﻿using DataBase.Database.DbContexts.Interface;
+﻿using DataBase.Criterias;
+using DataBase.Database.DbContexts.Interface;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -165,7 +166,7 @@ namespace DataBase.Database.DbContexts
         /// </summary>
         /// <param name="criteria"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<TEntity>> CustomQueryAsync(Criteria.Criteria criteria)
+        public async Task<IEnumerable<TEntity>> CustomQueryAsync(Criteria criteria)
         {
             waitForDbSetLocal();
 
@@ -282,7 +283,7 @@ namespace DataBase.Database.DbContexts
         /// </summary>
         /// <param name="criteria"></param>
         /// <returns></returns>
-        public IEnumerable<TEntity> CustomQuery(Criteria.Criteria criteria)
+        public IEnumerable<TEntity> CustomQuery(Criteria criteria)
         {
             waitForDbSetLocal();
             return DbSetT.SqlQuery(criteria.MySQLCompute()).ToList();

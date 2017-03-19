@@ -1,4 +1,5 @@
-﻿using DataBase.Database.DbContexts;
+﻿using DataBase.Criterias;
+using DataBase.Database.DbContexts;
 using DataBase.Database.DbContexts.Interface;
 using DataBase.Database.DbSettings.Interface;
 using DataBase.Utils;
@@ -453,7 +454,7 @@ namespace DataBase.Database
         /// </summary>
         /// <param name="criteria"></param>
         /// <returns></returns>
-        public async Task<Dictionary<IDbSettings, IEnumerable<TEntity>>> CustomQueryAsync(Criteria.Criteria criteria)
+        public async Task<Dictionary<IDbSettings, IEnumerable<TEntity>>> CustomQueryAsync(Criteria criteria)
         {
             Dictionary<IDbSettings, IEnumerable<TEntity>> result = new Dictionary<IDbSettings, IEnumerable<TEntity>>();
 
@@ -473,7 +474,7 @@ namespace DataBase.Database
         /// </summary>
         /// <param name="criteria"></param>
         /// <returns></returns>
-        public Dictionary<IDbSettings, IEnumerable<TEntity>> CustomQuery(Criteria.Criteria criteria)
+        public Dictionary<IDbSettings, IEnumerable<TEntity>> CustomQuery(Criteria criteria)
         {
             Dictionary<IDbSettings, IEnumerable<TEntity>> result = new Dictionary<IDbSettings, IEnumerable<TEntity>>();
 

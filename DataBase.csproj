@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0BFA181F-58C6-43AC-8635-D360710E185C}</ProjectGuid>
+    <ProjectGuid>{685A956E-2671-45E0-9145-11A8DA90991F}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DataBase</RootNamespace>
@@ -82,19 +82,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Criteria\Criteria.cs" />
-    <Compile Include="Criteria\Criterion.cs" />
-    <Compile Include="Criteria\DbAction.cs" />
-    <Compile Include="Criteria\DbConstraint.cs" />
-    <Compile Include="Criteria\DbDataBase.cs" />
-    <Compile Include="Criteria\DbLinks.cs" />
-    <Compile Include="Criteria\DbOperator.cs" />
-    <Compile Include="Criteria\DbSelector.cs" />
-    <Compile Include="Criteria\DbTablesLinks.cs" />
-    <Compile Include="Criteria\DbTypes.cs" />
-    <Compile Include="Criteria\DbVerb.cs" />
-    <Compile Include="Criteria\LinkCondition.cs" />
-    <Compile Include="Criteria\Field.cs" />
+    <Compile Include="Criterias\Criteria.cs" />
+    <Compile Include="Criterias\Criterion.cs" />
+    <Compile Include="Criterias\DbAction.cs" />
+    <Compile Include="Criterias\DbConstraint.cs" />
+    <Compile Include="Criterias\DbDataBase.cs" />
+    <Compile Include="Criterias\DbLinks.cs" />
+    <Compile Include="Criterias\DbOperator.cs" />
+    <Compile Include="Criterias\DbSelector.cs" />
+    <Compile Include="Criterias\DbTablesLinks.cs" />
+    <Compile Include="Criterias\DbTypes.cs" />
+    <Compile Include="Criterias\DbVerb.cs" />
+    <Compile Include="Criterias\Field.cs" />
+    <Compile Include="Criterias\LinkCondition.cs" />
     <Compile Include="Database\DbContexts\DbContextBase.cs" />
     <Compile Include="Database\DbContexts\Interface\IAsyncCrudMethods.cs" />
     <Compile Include="Database\DbContexts\Interface\ISyncCrudMethods.cs" />
