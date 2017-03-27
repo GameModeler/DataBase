@@ -1,5 +1,4 @@
-﻿using DataBase.Criteria;
-using DataBase.Criterias;
+﻿using DataBase.Criterias;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,5 +1,4 @@
-﻿using DataBase.Criteria;
-using DataBase.Criterias;
+﻿using DataBase.Criterias;
 using DataBase.Database;
 using DataBase.Database.DbContexts;
 using DataBase.Database.DbSettings;
