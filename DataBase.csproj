@@ -93,8 +93,8 @@
     <Compile Include="Criterias\DbTablesLinks.cs" />
     <Compile Include="Criterias\DbTypes.cs" />
     <Compile Include="Criterias\DbVerb.cs" />
-    <Compile Include="Criterias\LinkCondition.cs" />
     <Compile Include="Criterias\Field.cs" />
+    <Compile Include="Criterias\LinkCondition.cs" />
     <Compile Include="Database\DbContexts\DbContextBase.cs" />
     <Compile Include="Database\DbContexts\Interface\IAsyncCrudMethods.cs" />
     <Compile Include="Database\DbContexts\Interface\ISyncCrudMethods.cs" />
