@@ -37,7 +37,7 @@ namespace DataBase
 
             SqLiteDatabase sqlDbSettings = new SqLiteDatabase();
                 
-            sqlDbSettings.Set.DatabaseName("sqLiteDb")
+            sqlDbSettings.Set.DatabaseName("db")
                              .DataSource(@"C:\Users\Anne\SQLDatabase\test.db.db");
 
             //sqlDbSettings.DatabaseName = "sqLiteDb";
@@ -71,8 +71,8 @@ namespace DataBase
 
             //////////////////// DB CONTEXT (using) /////////////////////////
 
-            MySqlContext<Car> parking = new MySqlContext<Car>(settingdb2);
-            await parking.InsertAsync(cars);
+            //MySqlContext<Car> parking = new MySqlContext<Car>(settingdb2);
+            //await parking.InsertAsync(cars);
 
             //using (var sqlparking1 = new SqliteContext<Car>(sqlDbSettings))
             //{
@@ -121,6 +121,7 @@ namespace DataBase
             var sqlparking = dbContext.Context(settingdb2)
                                       .Context(sqlDbSettings);
 
+            
             sqlparking.Insert(cars);
 
             //await sqlparking.InsertAsync(cars);
@@ -134,12 +135,12 @@ namespace DataBase
 
             /////////////////////// CUSTOM QUERIES ///////////////////////
 
-            Criteria myQuery = new Criteria();
+            //Criteria myQuery = new Criteria();
 
-            Criterion criterion = new Criterion(DbVerb.AND, "Manufacturer", DbOperator.LIKE, "Niss%");
+            //Criterion criterion = new Criterion(DbVerb.AND, "Manufacturer", DbOperator.LIKE, "Niss%");
 
-            myQuery.AddDbLink("Car", DbLinks.FROM);
-            myQuery.AddCriterion(criterion);
+            //myQuery.AddDbLink("Car", DbLinks.FROM);
+            //myQuery.AddCriterion(criterion);
 
             //List<Cat> cats = new List<Cat>();
 

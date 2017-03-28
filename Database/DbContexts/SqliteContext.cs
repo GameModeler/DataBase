@@ -3,6 +3,8 @@ using DataBase.Database.DbSettings.Interface;
 using DataBase.Utils;
 using System.Data.Entity;
 using System.Data.SQLite;
+using SQLite.CodeFirst;
+
 
 namespace DataBase.Database.DbContexts
 {
@@ -26,6 +28,14 @@ namespace DataBase.Database.DbContexts
         /// <param name="settings"></param>
         public SqliteContext(IDbSettings settings) : base(new SQLiteConnection() { ConnectionString = ConnectionStringBuilder.BuildConnectionString(ProviderType.SQLite, settings) }, true)
         {
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            var sqliteConnectionInitializer = new SqliteCreateDatabaseIfNotExists<SqliteContext<TEntity>>(modelBuilder);
+            System.Data.Entity.Database.SetInitializer(sqliteConnectionInitializer);
+
+            DataBaseUtils.CreateModel(modelBuilder);
         }
 
         #endregion
