@@ -304,7 +304,15 @@ namespace DataBase.Database.DbContexts
             {
                 var ex = e;
                 Task task = waitLocal();
-                task.Wait();
+
+                try
+                {
+                    task.Wait();                  
+                }
+                catch (AggregateException ae)
+                {
+                    throw ae.Flatten();
+                } 
             }
         }
 

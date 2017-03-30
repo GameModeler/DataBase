@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataBase.Entities
 {
-    [Persistent]
+    [Persistent("db2", "db3")]
     public class Car
     {
         public int CarId { get; set; }

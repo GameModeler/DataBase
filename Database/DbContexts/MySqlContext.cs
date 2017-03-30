@@ -3,6 +3,7 @@ using MySql.Data.MySqlClient;
 using System.Data.Entity;
 using DataBase.Database.DbContexts.Interface;
 using DataBase.Database.DbSettings.Interface;
+using System.Data.Entity.Migrations;
 
 namespace DataBase.Database.DbContexts
 {
@@ -40,7 +41,11 @@ namespace DataBase.Database.DbContexts
         /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            DataBaseUtils.CreateModel(modelBuilder);
+            DataBaseUtils.CreateModel(modelBuilder, this);
+
+            //var config = new DbMigrationsConfiguration<MySqlContext<TEntity>> { AutomaticMigrationsEnabled = true };
+            //var migrator = new DbMigrator(config);
+            //migrator.Update();
         }
     }
 }

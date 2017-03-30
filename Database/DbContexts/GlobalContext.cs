@@ -1,6 +1,5 @@
 ﻿using DataBase.Criterias;
 using DataBase.Database.DbContexts;
-using DataBase.Database.DbContexts.Interface;
 using DataBase.Database.DbSettings.Interface;
 using DataBase.Utils;
 using System;
@@ -175,7 +174,6 @@ namespace DataBase.Database
             {
                 IDbSettings dbSettings = entry.Key;
                 ProviderType provider = dbSettings.Provider;
-
                 DbContextBase<TEntity> context = GetContext(entry, provider);
                 var resMysql = await context.InsertAsync(items);
                 result.Add(dbSettings, resMysql);
@@ -199,7 +197,6 @@ namespace DataBase.Database
                 IDbSettings dbSettings = entry.Key;
                 ProviderType provider = dbSettings.Provider;
                 DbContextBase<TEntity> context = GetContext(entry, provider);
-
                 var resMysql = context.Insert(items);
                 result.Add(dbSettings, resMysql);
             }
@@ -282,7 +279,6 @@ namespace DataBase.Database
                 IDbSettings dbSettings = entry.Key;
                 ProviderType provider = dbSettings.Provider;
                 DbContextBase<TEntity> context = GetContext(entry, provider);
-
                 var resMysql = context.Update(items);
                 result.Add(dbSettings, resMysql);
             }
@@ -442,7 +438,6 @@ namespace DataBase.Database
                 IDbSettings dbSettings = entry.Key;
                 ProviderType provider = dbSettings.Provider;
                 DbContextBase<TEntity> context = GetContext(entry, provider);
-
                 var resMysql = context.Delete(items);
                 result.Add(dbSettings, resMysql);   
             }

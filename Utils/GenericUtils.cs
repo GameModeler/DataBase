@@ -58,5 +58,7 @@ namespace DataBase.Utils
             MethodInfo generic = method.MakeGenericMethod(typeArg);
            return generic.Invoke(null, new object[] { value });
         }
+
+
     }
 }

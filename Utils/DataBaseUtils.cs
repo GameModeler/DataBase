@@ -4,6 +4,7 @@ using System.Linq;
 using System.Data.Entity;
 using DataBase.Database.DbSettings.Interface;
 using System.Threading.Tasks;
+using DataBase.Database.DbContexts;
 
 namespace DataBase.Utils
 {
@@ -41,9 +42,12 @@ namespace DataBase.Utils
         /// Create a model from a DbModelBuilder
         /// </summary>
         /// <param name="modelBuilder"></param>
-        public static void CreateModel(DbModelBuilder modelBuilder)
+        /// <param name="context"></param>
+        public static void CreateModel(DbModelBuilder modelBuilder, DbContext context)
         {
             var entityMethod = typeof(DbModelBuilder).GetMethod("Entity");
+
+            var dbname = context.Database.Connection.Database;
 
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
@@ -55,8 +59,12 @@ namespace DataBase.Utils
 
                 foreach (var type in entityTypes)
                 {
-                    entityMethod.MakeGenericMethod(type)
-                      .Invoke(modelBuilder, new object[] { });
+                    List<string> dbNames = GetAttribute(type);
+
+                    if(dbNames.Count == 0 || dbNames.Contains(dbname)) {
+                        entityMethod.MakeGenericMethod(type)
+                        .Invoke(modelBuilder, new object[] { });
+                    }
                 }
             }
         }
@@ -74,6 +82,16 @@ namespace DataBase.Utils
             TValue value = dic[fromKey];
             dic.Remove(fromKey);
             dic[toKey] = value;
+        }
+
+        public static List<string> GetAttribute(Type t)
+        {
+            // Get instance of the attribute.
+            PersistentAttribute persistantAttributes =
+                (PersistentAttribute)Attribute.GetCustomAttribute(t, typeof(PersistentAttribute));
+
+            return persistantAttributes.DbNames.ToList<string>();
+
         }
     }
 }
