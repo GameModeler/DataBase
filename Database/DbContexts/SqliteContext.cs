@@ -1,48 +1,51 @@
-﻿using DataBase.Database.DbContexts.Interface;
-using DataBase.Database.DbSettings.Interface;
-using DataBase.Utils;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Data.SQLite;
 using SQLite.CodeFirst;
-using System.Data.Entity.Migrations;
+using DataBase.Database.DbContexts.Configurations;
+using DataBase.Database.DbContexts.Interfaces;
+using DataBase.Database.Utils;
+using DataBase.Database.DbSettings.Interfaces;
 
 namespace DataBase.Database.DbContexts
 {
+    /// <summary>
+    /// SqLite context
+    /// </summary>
     [DbConfigurationType(typeof(SqliteConfiguration))]
-    class SqliteContext<TEntity> : DbContextBase<TEntity>, IDbContexts where TEntity : class
+    public class SqLiteContext : UniversalContext, IProvider
     {
-
         private ProviderType provider;
-
+        /// <summary>
+        /// The Provider
+        /// </summary>
         public ProviderType Provider
         {
             get { return provider; }
-            set { provider = ProviderType.MySQL; }
+            set { provider = ProviderType.SQLite; }
         }
 
         #region Constructor
-
         /// <summary>
         /// Construcor
         /// </summary>
         /// <param name="settings"></param>
-        public SqliteContext(IDbSettings settings) : base(new SQLiteConnection() { ConnectionString = ConnectionStringBuilder.BuildConnectionString(ProviderType.SQLite, settings) }, true)
+        public SqLiteContext(IDbSettings settings) : base(new SQLiteConnection() { ConnectionString = ConnectionStringBuilder.BuildConnectionString(ProviderType.SQLite, settings) }, true)
         {
+            dbSettings = settings;
+            dbManager.ApplicationContexts.Add(this);
         }
         #endregion
 
+        /// <summary>
+        /// Method called during the creation of the model
+        /// </summary>
+        /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            var sqliteConnectionInitializer = new SqliteCreateDatabaseIfNotExists<SqliteContext<TEntity>>(modelBuilder);
+            var sqliteConnectionInitializer = new SqliteCreateDatabaseIfNotExists<SqLiteContext>(modelBuilder);
             System.Data.Entity.Database.SetInitializer(sqliteConnectionInitializer);
 
             DataBaseUtils.CreateModel(modelBuilder, this);
-
-            //var config = new DbMigrationsConfiguration<SqliteContext<TEntity>> { AutomaticMigrationsEnabled = true };
-            //var migrator = new DbMigrator(config);
-            //migrator.Update();
         }
-
-        
     }
 }

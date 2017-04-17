@@ -1,7 +1,6 @@
-﻿using System;
-using DataBase.Database.DbSettings.Interface;
-using DataBase.Utils;
-using DataBase.Database.DbSettings.FluentInterface;
+﻿using DataBase.Database.DbSettings.FluentApi;
+using DataBase.Database.DbSettings.Interfaces;
+using DataBase.Database.Utils;
 
 namespace DataBase.Database.DbSettings.DbClasses
 {
@@ -15,7 +14,7 @@ namespace DataBase.Database.DbSettings.DbClasses
 
         const ProviderType PROVIDER = ProviderType.MySQL;
 
-        private readonly MySqlDatabaseFI mySqlFI;
+        private readonly MySqlDatabaseFApi mySqlFI;
 
         #region Database basic settings
 
@@ -83,7 +82,7 @@ namespace DataBase.Database.DbSettings.DbClasses
         /// <summary>
         /// Initialize the fluent API
         /// </summary>
-        public MySqlDatabaseFI Set
+        public MySqlDatabaseFApi Set
         {
             get { return mySqlFI; }
         }
@@ -100,7 +99,7 @@ namespace DataBase.Database.DbSettings.DbClasses
             DatabaseName = ConnectionStringBuilder.GetDefaultDbName(dbManager.GetAndIncrNbDefaultDb());
 
             // Intitialization of the Fluent API
-            mySqlFI = new MySqlDatabaseFI(this);
+            mySqlFI = new MySqlDatabaseFApi(this);
 
         }
 
@@ -131,7 +130,7 @@ namespace DataBase.Database.DbSettings.DbClasses
             ConnectionString = "";
 
             // Fluent API initialization
-            mySqlFI = new MySqlDatabaseFI(this);
+            mySqlFI = new MySqlDatabaseFApi(this);
         }
 
         /// <summary>
@@ -143,7 +142,7 @@ namespace DataBase.Database.DbSettings.DbClasses
             MySqlDbDefault(dbName);
 
             // Fluent API initialization
-            mySqlFI = new MySqlDatabaseFI(this);
+            mySqlFI = new MySqlDatabaseFApi(this);
         }
         #endregion
 

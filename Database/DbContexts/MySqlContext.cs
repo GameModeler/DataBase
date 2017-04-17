@@ -1,20 +1,24 @@
-﻿using DataBase.Utils;
+﻿using DataBase.Database.DbContexts.Configurations;
+using DataBase.Database.DbContexts.Interfaces;
+using DataBase.Database.DbSettings.Interfaces;
+using DataBase.Database.Utils;
+using MySql.Data.Entity;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
 using System.Data.Entity;
-using DataBase.Database.DbContexts.Interface;
-using DataBase.Database.DbSettings.Interface;
-using System.Data.Entity.Migrations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DataBase.Database.DbContexts
 {
     /// <summary>
-    /// The MySql Database Context
+    /// MySql Context
     /// </summary>
-    /// <typeparam name="TEntity"></typeparam>
     [DbConfigurationType(typeof(MySQLConfiguration))]
-    public partial class MySqlContext<TEntity> : DbContextBase<TEntity>, IDbContexts where TEntity : class
+    public class MySqlContext : UniversalContext, IProvider
     {
-
         private ProviderType provider;
         /// <summary>
         /// The Provider
@@ -32,20 +36,19 @@ namespace DataBase.Database.DbContexts
         /// <param name="settings"></param>
         public MySqlContext(IDbSettings settings) : base(new MySqlConnection(ConnectionStringBuilder.BuildConnectionString(ProviderType.MySQL, settings)), true)
         {
+            dbSettings = settings;
+            dbManager.ApplicationContexts.Add(this);
         }
+
         #endregion
 
         /// <summary>
-        /// Method called during the model creation
+        /// Method called during the creation of the model
         /// </summary>
         /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            DataBaseUtils.CreateModel(modelBuilder, this);
-
-            //var config = new DbMigrationsConfiguration<MySqlContext<TEntity>> { AutomaticMigrationsEnabled = true };
-            //var migrator = new DbMigrator(config);
-            //migrator.Update();
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

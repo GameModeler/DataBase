@@ -1,4 +1,7 @@
-﻿using DataBase.Database.DbSettings.Interface;
+﻿using DataBase.Database.DbContexts;
+using DataBase.Database.DbContexts.Interfaces;
+using DataBase.Database.DbSettings.Interfaces;
+using DataBase.Database.Utils;
 using System;
 using System.Collections.Generic;
 
@@ -11,6 +14,20 @@ namespace DataBase.Database
     {
 
         private Dictionary<string, IDbSettings> databases;
+
+        private List<IDbContext> applicationContexts;
+
+        /// <summary>
+        /// All contexts of the application
+        /// </summary>
+        public List<IDbContext> ApplicationContexts
+        {
+            get { return applicationContexts; }
+            set { applicationContexts = value; }
+        }
+
+
+        private const string nsp = "DbContexts";
 
         /// <summary>
         /// List of databases
@@ -38,7 +55,6 @@ namespace DataBase.Database
             }
         }
 
-
         /// <summary>
         /// Return and incrcement the database default number
         /// </summary>
@@ -56,10 +72,11 @@ namespace DataBase.Database
         {
             nbDefaultDb = 0;
             Databases = new Dictionary<string, IDbSettings>();
+            ApplicationContexts = new List<IDbContext>();
         }
 
         /// <summary>
-        /// 
+        /// Gets the database manager Instance
         /// </summary>
         public static DbManager Instance
         {
@@ -92,14 +109,45 @@ namespace DataBase.Database
             }
             else
             {
-                //database not found
                 return null;
             }
         }
 
-        public GlobalContext<T> ContextFactory<T>() where T : class
+        /// <summary>
+        /// Gets a universal context
+        /// </summary>
+        /// <param name="dbsettings"></param>
+        /// <returns></returns>
+
+        public UniversalContext CreateContext(IDbSettings dbsettings)
         {
-            return new GlobalContext<T>();
+            ProviderType provider = dbsettings.Provider;
+
+            switch(provider)
+            {
+                case ProviderType.MySQL:
+                    return new MySqlContext(dbsettings);
+
+                case ProviderType.SQLite:
+                    return new SqLiteContext(dbsettings);
+
+                default:
+                    // Get all classes from DbContexts namespace
+                    List<Type> listTypeDbClasses = GenericUtils.AllClassesFromNamespace(nsp);
+
+                    // Get the class type to instantiate
+                    var clazz = GenericUtils.GetClassesFromProperty(listTypeDbClasses, "Provider", provider);
+                    return (UniversalContext)Activator.CreateInstance(clazz, dbsettings);
+            }
+        }
+        
+        /// <summary>
+        /// Gets a global context
+        /// </summary>
+        /// <returns></returns>
+        public GlobalContext CreateGlobalContext()
+        {
+            return new GlobalContext();
         }
     }
 }

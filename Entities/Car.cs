@@ -1,4 +1,4 @@
-﻿using DataBase.Utils;
+﻿using DataBase.Database.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataBase.Entities
 {
-    [Persistent("db2", "db3")]
+    [Persistent]
     public class Car
     {
         public int CarId { get; set; }

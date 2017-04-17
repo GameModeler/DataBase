@@ -1,10 +1,5 @@
 ﻿using DataBase.Database.DbSettings.DbClasses;
-using DataBase.Database.DbSettings.Interface;
-using DataBase.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
+using DataBase.Database.DbSettings.Interfaces;
 
 namespace DataBase.Database.DbSettings
 {

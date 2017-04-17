@@ -1,24 +1,19 @@
-﻿using DataBase.Database.DbSettings.Interface;
-using DataBase.Utils;
-using DataBase.Database.DbSettings.FluentInterface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DataBase.Database.DbSettings.FluentApi;
+using DataBase.Database.DbSettings.Interfaces;
+using DataBase.Database.Utils;
 
 namespace DataBase.Database.DbSettings.DbClasses
 {
     /// <summary>
     /// Sqlite database settings
     /// </summary>
-    public class SqLiteDatabase : IDbSettings
+    public class SqLiteDatabase : IDbSettings, ISqLiteDatabase
     {
         const ProviderType PROVIDER = ProviderType.SQLite;
 
         private DbManager dbManager = DbManager.Instance;
 
-        private readonly SqLiteDatabaseFI sqliteFI;
+        private readonly SqLiteDatabaseFApi sqliteFI;
 
         #region Database basic settings
         private string databaseName;
@@ -98,13 +93,13 @@ namespace DataBase.Database.DbSettings.DbClasses
             DatabaseName = ConnectionStringBuilder.GetDefaultDbName(dbManager.GetAndIncrNbDefaultDb());
 
             // Intitialization of the Fluent API
-            sqliteFI = new SqLiteDatabaseFI(this);
+            sqliteFI = new SqLiteDatabaseFApi(this);
         }
 
         /// <summary>
         /// Initialize the fluent API
         /// </summary>
-        public SqLiteDatabaseFI Set
+        public SqLiteDatabaseFApi Set
         {
             get { return sqliteFI; }
         }
@@ -130,7 +125,7 @@ namespace DataBase.Database.DbSettings.DbClasses
             Version = version;
             ConnectionString = "";
 
-            sqliteFI = new SqLiteDatabaseFI(this);
+            sqliteFI = new SqLiteDatabaseFApi(this);
         }
 
         /// <summary>
@@ -140,7 +135,7 @@ namespace DataBase.Database.DbSettings.DbClasses
         public SqLiteDatabase(string dbName)
         {
             SqLiteDbDefault(dbName);
-            sqliteFI = new SqLiteDatabaseFI(this);
+            sqliteFI = new SqLiteDatabaseFApi(this);
         }
         #endregion
 

@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{685A956E-2671-45E0-9145-11A8DA90991F}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DataBase</RootNamespace>
     <AssemblyName>DataBase</AssemblyName>
@@ -97,55 +97,60 @@
   <ItemGroup>
     <Compile Include="Binary\BinaryManager.cs" />
     <Compile Include="Character\CharacterManager.cs" />
-    <Compile Include="Criterias\Criteria.cs" />
-    <Compile Include="Criterias\Criterion.cs" />
-    <Compile Include="Criterias\DbAction.cs" />
-    <Compile Include="Criterias\DbConstraint.cs" />
-    <Compile Include="Criterias\DbDataBase.cs" />
-    <Compile Include="Criterias\DbLinks.cs" />
-    <Compile Include="Criterias\DbOperator.cs" />
-    <Compile Include="Criterias\DbSelector.cs" />
-    <Compile Include="Criterias\DbTablesLinks.cs" />
-    <Compile Include="Criterias\DbTypes.cs" />
-    <Compile Include="Criterias\DbVerb.cs" />
-    <Compile Include="Criterias\Field.cs" />
-    <Compile Include="Criterias\LinkCondition.cs" />
+    <Compile Include="Database\Criterias\Criteria.cs" />
+    <Compile Include="Database\Criterias\Criterion.cs" />
+    <Compile Include="Database\Criterias\DbAction.cs" />
+    <Compile Include="Database\Criterias\DbConstraint.cs" />
+    <Compile Include="Database\Criterias\DbDataBase.cs" />
+    <Compile Include="Database\Criterias\DbLinks.cs" />
+    <Compile Include="Database\Criterias\DbOperator.cs" />
+    <Compile Include="Database\Criterias\DbSelector.cs" />
+    <Compile Include="Database\Criterias\DbTablesLinks.cs" />
+    <Compile Include="Database\Criterias\DbTypes.cs" />
+    <Compile Include="Database\Criterias\DbVerb.cs" />
+    <Compile Include="Database\Criterias\Field.cs" />
+    <Compile Include="Database\Criterias\LinkCondition.cs" />
     <Compile Include="Csv\CsvManager.cs" />
-    <Compile Include="Database\DbContexts\DbContextBase.cs" />
-    <Compile Include="Database\DbContexts\Interface\IAsyncCrudMethods.cs" />
-    <Compile Include="Database\DbContexts\Interface\ISyncCrudMethods.cs" />
+    <Compile Include="Database\DbContexts\GlobalContext.cs" />
+    <Compile Include="Database\DbContexts\Interfaces\IDbContext.cs" />
+    <Compile Include="Database\DbContexts\Interfaces\IProvider.cs" />
+    <Compile Include="Database\DbContexts\MySqlContext.cs" />
+    <Compile Include="Database\DbContexts\SqLiteContext.cs" />
+    <Compile Include="Database\DbContexts\UniversalContext.cs" />
+    <Compile Include="Database\DbContexts\Interfaces\IAsyncCrudMethods.cs" />
+    <Compile Include="Database\DbContexts\Interfaces\ISyncCrudMethods.cs" />
+    <Compile Include="Database\Repositories\GlobalRepository.cs" />
+    <Compile Include="Database\Repositories\Interfaces\IRepository.cs" />
+    <Compile Include="Database\Repositories\Repository.cs" />
     <Compile Include="Dynamic\DynamicManager.cs" />
     <Compile Include="Json\JsonManager.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Sql\SqlManager.cs" />
-    <Compile Include="Utils\ConnectionStringBuilder.cs" />
-    <Compile Include="Database\DbContexts\Interface\IDbContexts.cs" />
+    <Compile Include="Database\Utils\ConnectionStringBuilder.cs" />
     <Compile Include="Database\DbSettings\DatabaseFactory.cs" />
     <Compile Include="Database\DbSettings\DbClasses\MySqlDatabase.cs" />
-    <Compile Include="Database\DbSettings\FluentInterface\MySqlDatabaseFI.cs" />
+    <Compile Include="Database\DbSettings\FluentApi\MySqlDatabaseFApi.cs" />
     <Compile Include="Database\DbSettings\DbClasses\SqLiteDatabase.cs" />
-    <Compile Include="Database\DbContexts\GlobalContext.cs" />
-    <Compile Include="Database\DbSettings\Interface\IDbSettingsFI.cs" />
-    <Compile Include="Database\DbSettings\Interface\IMySqlDatabaseFI.cs" />
-    <Compile Include="Database\DbSettings\FluentInterface\SqLiteDatabaseFI.cs" />
-    <Compile Include="Database\DbSettings\Interface\IMySqlDatabase.cs" />
-    <Compile Include="Database\DbSettings\Interface\ISqLiteDatabase.cs" />
-    <Compile Include="Database\DbSettings\Interface\ISqLiteDatabaseFI.cs" />
+    <Compile Include="Database\DbSettings\FluentApi\Interfaces\IDbSettingsFApi.cs" />
+    <Compile Include="Database\DbSettings\FluentApi\Interfaces\IMySqlDatabaseFApi.cs" />
+    <Compile Include="Database\DbSettings\FluentApi\SqLiteDatabaseFApi.cs" />
+    <Compile Include="Database\DbSettings\Interfaces\IMySqlDatabase.cs" />
+    <Compile Include="Database\DbSettings\Interfaces\ISqLiteDatabase.cs" />
+    <Compile Include="Database\DbSettings\FluentApi\Interfaces\ISqLiteDatabaseFApi.cs" />
     <Compile Include="Database\DbManager.cs" />
-    <Compile Include="Database\MySQLConfiguration.cs" />
-    <Compile Include="Database\DbContexts\MySqlContext.cs" />
-    <Compile Include="Database\SqliteConfiguration.cs" />
-    <Compile Include="Database\DbContexts\SqliteContext.cs" />
+    <Compile Include="Database\DbContexts\Configurations\MySQLConfiguration.cs" />
+    <Compile Include="Database\DbContexts\Configurations\SqliteConfiguration.cs" />
     <Compile Include="Entities\Car.cs" />
     <Compile Include="Entities\Cat.cs" />
-    <Compile Include="Interfaces\IConnectionStringBuilder.cs" />
-    <Compile Include="Interfaces\IDatabaseManager.cs" />
-    <Compile Include="Database\DbSettings\Interface\IDbSettings.cs" />
+    <Compile Include="Database\Interfaces\IConnectionStringBuilder.cs" />
+    <Compile Include="Database\Interfaces\IDatabaseManager.cs" />
+    <Compile Include="Database\DbSettings\Interfaces\IDbSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\DataBaseUtils.cs" />
-    <Compile Include="Utils\GenericUtils.cs" />
-    <Compile Include="Utils\PersistentAttribute.cs" />
-    <Compile Include="Utils\ProviderType.cs" />
-    <Compile Include="Utils\StringValueAttribute.cs" />
+    <Compile Include="Database\Utils\DataBaseUtils.cs" />
+    <Compile Include="Database\Utils\GenericUtils.cs" />
+    <Compile Include="Database\Utils\PersistentAttribute.cs" />
+    <Compile Include="Database\Utils\ProviderType.cs" />
+    <Compile Include="Database\Utils\StringValueAttribute.cs" />
     <Compile Include="Xml\XmlManager.cs" />
     <Compile Include="Yaml\YamlManager.cs" />
   </ItemGroup>
@@ -155,6 +160,10 @@
     <None Include="Nuspec\Package.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include=".gitignore" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\System.Data.SQLite.Core.1.0.104.0\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('packages\System.Data.SQLite.Core.1.0.104.0\build\net451\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
