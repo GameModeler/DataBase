@@ -117,8 +117,8 @@
     <Compile Include="Database\DbContexts\MySqlContext.cs" />
     <Compile Include="Database\DbContexts\SqLiteContext.cs" />
     <Compile Include="Database\DbContexts\UniversalContext.cs" />
-    <Compile Include="Database\DbContexts\Interfaces\IAsyncCrudMethods.cs" />
-    <Compile Include="Database\DbContexts\Interfaces\ISyncCrudMethods.cs" />
+    <Compile Include="Database\Repositories\Interfaces\IAsyncCrudMethods.cs" />
+    <Compile Include="Database\Repositories\Interfaces\ISyncCrudMethods.cs" />
     <Compile Include="Database\Repositories\GlobalRepository.cs" />
     <Compile Include="Database\Repositories\Interfaces\IRepository.cs" />
     <Compile Include="Database\Repositories\Repository.cs" />
@@ -156,6 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="Nuspec\GameModeler.DataBase.1.0.0.nupkg" />
     <None Include="Nuspec\Package.nuspec" />
     <None Include="packages.config" />

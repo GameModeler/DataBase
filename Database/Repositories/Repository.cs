@@ -1,6 +1,5 @@
 ﻿using DataBase.Database.Criterias;
 using DataBase.Database.DbContexts;
-using DataBase.Database.DbContexts.Interfaces;
 using DataBase.Database.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
