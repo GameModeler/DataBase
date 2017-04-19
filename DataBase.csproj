@@ -159,7 +159,9 @@
     <None Include="ClassDiagram1.cd" />
     <None Include="Nuspec\GameModeler.DataBase.1.0.0.nupkg" />
     <None Include="Nuspec\Package.nuspec" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
