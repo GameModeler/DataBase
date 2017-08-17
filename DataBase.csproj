@@ -124,7 +124,6 @@
     <Compile Include="Database\Repositories\Repository.cs" />
     <Compile Include="Dynamic\DynamicManager.cs" />
     <Compile Include="Json\JsonManager.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Sql\SqlManager.cs" />
     <Compile Include="Database\Utils\ConnectionStringBuilder.cs" />
     <Compile Include="Database\DbSettings\DatabaseFactory.cs" />
@@ -156,7 +155,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="ClassDiagram1.cd" />
     <None Include="Nuspec\GameModeler.DataBase.1.0.0.nupkg" />
     <None Include="Nuspec\Package.nuspec" />
     <None Include="packages.config">
