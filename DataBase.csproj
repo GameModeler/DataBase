@@ -139,8 +139,6 @@
     <Compile Include="Database\DbManager.cs" />
     <Compile Include="Database\DbContexts\Configurations\MySQLConfiguration.cs" />
     <Compile Include="Database\DbContexts\Configurations\SqliteConfiguration.cs" />
-    <Compile Include="Entities\Car.cs" />
-    <Compile Include="Entities\Cat.cs" />
     <Compile Include="Database\Interfaces\IConnectionStringBuilder.cs" />
     <Compile Include="Database\Interfaces\IDatabaseManager.cs" />
     <Compile Include="Database\DbSettings\Interfaces\IDbSettings.cs" />
