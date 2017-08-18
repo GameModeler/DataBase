@@ -7,7 +7,7 @@ namespace DataBase.Database.DbSettings.DbClasses
     /// <summary>
     /// MySql Database settings implementation
     /// </summary>
-    public class MySqlDatabase : IDbSettings, IMySqlDatabase
+    public class MySqlDatabase : IMySqlDatabase
     {
 
         DbManager dbManager = DbManager.Instance;

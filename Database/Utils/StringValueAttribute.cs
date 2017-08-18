@@ -34,6 +34,9 @@ namespace DataBase.Database.Utils
         #endregion
     }
 
+    /// <summary>
+    /// Enum String
+    /// </summary>
     public static class EnumString
     {
 

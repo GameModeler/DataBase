@@ -1,23 +1,38 @@
 ﻿using DataBase.Database.Criterias;
 using DataBase.Database.DbContexts;
+using DataBase.Database.DbContexts.Interfaces;
+using DataBase.Database.Repositories;
 using DataBase.Database.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace DataBase.Database.Repositories
 {
     /// <summary>
-    /// 
+    /// Repository
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public class Repository<TEntity> : IRepository, IAsyncCrudMethods<TEntity>, ISyncCrudMethods<TEntity> where TEntity : class
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
 
+        /// <summary>
+        /// Context
+        /// </summary>
         private UniversalContext context;
+
+        /// <summary>
+        /// Context
+        /// </summary>
+        public IUniversalContext Context
+        {
+            get { return context; }
+        }
+
 
         #region Constructor
         /// <summary>
@@ -30,14 +45,16 @@ namespace DataBase.Database.Repositories
         }
         #endregion
 
-        private DbSet<TEntity> DbSetT
+        /// <summary>
+        /// Create DbSet if not exists yet
+        /// </summary>
+        public DbSet<TEntity> DbSet
         {
             get
             {
                 return context.Set<TEntity>();
             }
         }
-
 
         #region SQL asynchrone CRUD methods
         /// <summary>
@@ -47,9 +64,9 @@ namespace DataBase.Database.Repositories
         /// <returns></returns>
         public async Task<int> InsertAsync(TEntity item)
         {
-            waitForDbSetLocal();
-
-            this.DbSetT.Add(item);
+            DbSet<TEntity> localDbSet = DbSet;
+            waitForDbSetLocal(localDbSet);
+            localDbSet.Add(item);
             return await context.SaveChangesAsync();
         }
 
@@ -60,11 +77,13 @@ namespace DataBase.Database.Repositories
         /// <returns></returns>
         public async Task<int> InsertAsync(IEnumerable<TEntity> items)
         {
-            waitForDbSetLocal();
+
+            DbSet<TEntity> localDbSet = DbSet;
+            waitForDbSetLocal(localDbSet);
 
             foreach (var item in items)
             {
-                DbSetT.Add(item);
+                localDbSet.Add(item);
             }
             return await context.SaveChangesAsync();
         }
@@ -108,7 +127,7 @@ namespace DataBase.Database.Repositories
         /// <returns></returns>
         public async Task<TEntity> GetAsync(Int32 id)
         {
-            return await this.DbSetT.FindAsync(id) as TEntity;
+            return await this.DbSet.FindAsync(id) as TEntity;
         }
 
         /// <summary>
@@ -136,8 +155,8 @@ namespace DataBase.Database.Repositories
         {
             await Task.Factory.StartNew(() =>
             {
-                DbSetT.Attach(item);
-                DbSetT.Remove(item);
+                DbSet.Attach(item);
+                DbSet.Remove(item);
             });
             return await context.SaveChangesAsync();
         }
@@ -151,8 +170,8 @@ namespace DataBase.Database.Repositories
         {
             await Task.Factory.StartNew(() =>
             {
-                DbSetT.Attach((items as List<TEntity>)[0]);
-                DbSetT.RemoveRange(items);
+                DbSet.Attach((items as List<TEntity>)[0]);
+                DbSet.RemoveRange(items);
             });
             var res = await context.SaveChangesAsync();
             return res;
@@ -165,9 +184,10 @@ namespace DataBase.Database.Repositories
         /// <returns></returns>
         public async Task<IEnumerable<TEntity>> CustomQueryAsync(Criteria criteria)
         {
-            waitForDbSetLocal();
+            DbSet<TEntity> dbset = DbSet;
+            waitForDbSetLocal(dbset);
 
-            return await DbSetT.SqlQuery(criteria.Compute()).ToListAsync();
+            return await dbset.SqlQuery(criteria.Compute()).ToListAsync();
         }
         #endregion
 
@@ -180,9 +200,10 @@ namespace DataBase.Database.Repositories
         /// <returns></returns>
         public int Insert(TEntity item)
         {
-            waitForDbSetLocal();
 
-            DbSetT.Add(item);
+            DbSet<TEntity> localDbSet = DbSet;
+            waitForDbSetLocal(localDbSet);
+            localDbSet.Add(item);
             return context.SaveChanges();
         }
 
@@ -193,11 +214,14 @@ namespace DataBase.Database.Repositories
         /// <returns></returns>
         public int Insert(IEnumerable<TEntity> items)
         {
-            waitForDbSetLocal();
+
+            DbSet<TEntity> localDbSet = DbSet;
+
+            waitForDbSetLocal(localDbSet);
 
             foreach (var item in items)
             {
-                this.DbSetT.Add(item);
+                localDbSet.Add(item);
             }
             return context.SaveChanges();
         }
@@ -234,7 +258,7 @@ namespace DataBase.Database.Repositories
         /// <returns></returns>
         public TEntity Get(int id)
         {
-            return DbSetT.FindAsync(id) as TEntity;
+            return DbSet.Find(id) as TEntity;
         }
 
         /// <summary>
@@ -257,8 +281,8 @@ namespace DataBase.Database.Repositories
         /// <returns></returns>
         public Int32 Delete(TEntity item)
         {
-            DbSetT.Attach(item);
-            DbSetT.Remove(item);
+            DbSet.Attach(item);
+            DbSet.Remove(item);
 
             return context.SaveChanges();
         }
@@ -270,8 +294,8 @@ namespace DataBase.Database.Repositories
         /// <returns></returns>
         public Int32 Delete(IEnumerable<TEntity> items)
         {
-            DbSetT.Attach((items as List<TEntity>)[0]);
-            DbSetT.RemoveRange(items);
+            DbSet.Attach((items as List<TEntity>)[0]);
+            DbSet.RemoveRange(items);
             return context.SaveChanges();
         }
 
@@ -282,8 +306,9 @@ namespace DataBase.Database.Repositories
         /// <returns></returns>
         public IEnumerable<TEntity> CustomQuery(Criteria criteria)
         {
-            waitForDbSetLocal();
-            return DbSetT.SqlQuery(criteria.Compute()).ToList();
+            DbSet<TEntity> dbset = DbSet;
+            waitForDbSetLocal(dbset);
+            return dbset.SqlQuery(criteria.Compute()).ToList();
         }
         #endregion
 
@@ -291,11 +316,11 @@ namespace DataBase.Database.Repositories
         /// Workaround to wait for DbSet.Local to be defined
         /// </summary>
         /// <returns></returns>
-        private void waitForDbSetLocal()
+        private void waitForDbSetLocal(DbSet<TEntity> dbset)
         {
             try
             {
-                var localType = DbSetT.Local;
+                var localType = dbset.Local;
             }
             catch (Exception e)
             {
@@ -318,7 +343,7 @@ namespace DataBase.Database.Repositories
             ObservableCollection<TEntity> result = null;
             await Task.Factory.StartNew(() =>
             {
-                result = DbSetT.Local;
+                result = DbSet.Local;
 
             });
 

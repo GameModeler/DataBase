@@ -14,6 +14,7 @@ namespace DataBase.Database.DbContexts.Configurations
         /// </summary>
         public SqliteConfiguration()
         {
+            // Set the provider for sqlite databases
             SetProviderServices("System.Data.SQLite.EF6", (DbProviderServices)SQLiteProviderFactory.Instance.GetService(typeof(DbProviderServices)));
         }
     }

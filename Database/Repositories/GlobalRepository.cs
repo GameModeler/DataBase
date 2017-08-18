@@ -12,9 +12,19 @@ namespace DataBase.Database.Repositories
     /// Global Repository
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public class GlobalRepository<TEntity> : IRepository where TEntity : class
+    public class GlobalRepository<TEntity> : IGlobalRepository<TEntity> where TEntity : class
     {
         private GlobalContext context;
+
+        private Dictionary<IUniversalContext, IRepository<TEntity>> repositories;
+
+        /// <summary>
+        /// Context
+        /// </summary>
+        public IGlobalContext Context
+        {
+            get { return context; }
+        }
 
         #region Constructor
         /// <summary>
@@ -24,10 +34,29 @@ namespace DataBase.Database.Repositories
         public GlobalRepository(GlobalContext context)
         {
             this.context = context;
+            repositories = new Dictionary<IUniversalContext, IRepository<TEntity>>();
+
+            InitReposFromContexts();
         }
+
+        private void InitReposFromContexts()
+        {
+            foreach (IUniversalContext ctx in context.ContextList)
+            {
+                var repo = ctx.Entity<TEntity>();
+                repositories.Add(ctx, repo);
+            }
+        }
+
+        /// <summary>
+        /// Get All the repositories
+        /// </summary>
+        public Dictionary<IUniversalContext, IRepository<TEntity>> Repositories
+        {
+            get { return repositories; }
+        }
+
         #endregion
-
-
 
         #region SQL methods
         /// <summary>
@@ -35,13 +64,13 @@ namespace DataBase.Database.Repositories
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public async Task<Dictionary<IDbContext, int>> InsertAsync(TEntity item)
+        public async Task<Dictionary<IUniversalContext, int>> InsertAsync(TEntity item)
         {
-            Dictionary<IDbContext, int> result = new Dictionary<IDbContext, int>();
+            Dictionary<IUniversalContext, int> result = new Dictionary<IUniversalContext, int>();
 
-            foreach(var context in context.Contexts)
+            foreach(var context in context.ContextList)
             {
-                var res = await context.Entity<TEntity>().InsertAsync(item);
+                var res = await repositories[context].InsertAsync(item);           
                 result.Add(context, res);
             }
 
@@ -53,13 +82,13 @@ namespace DataBase.Database.Repositories
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public Dictionary<IDbContext, int> Insert(TEntity item)
+        public Dictionary<IUniversalContext, int> Insert(TEntity item)
         {
-            Dictionary<IDbContext, int> result = new Dictionary<IDbContext, int>();
+            Dictionary<IUniversalContext, int> result = new Dictionary<IUniversalContext, int>();
 
-            foreach (var context in context.Contexts)
+            foreach (var context in context.ContextList)
             {
-                var res = context.Entity<TEntity>().Insert(item);
+                var res = repositories[context].Insert(item);
                 result.Add(context, res);
             }
             return result;
@@ -70,13 +99,13 @@ namespace DataBase.Database.Repositories
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
-        public async Task<Dictionary<IDbContext, int>> InsertAsync(IEnumerable<TEntity> items)
+        public async Task<Dictionary<IUniversalContext, int>> InsertAsync(IEnumerable<TEntity> items)
         {
-            Dictionary<IDbContext, int> result = new Dictionary<IDbContext, int>();
+            Dictionary<IUniversalContext, int> result = new Dictionary<IUniversalContext, int>();
 
-            foreach (var context in context.Contexts)
+            foreach (var context in context.ContextList)
             {
-                var res = await context.Entity<TEntity>().InsertAsync(items);
+                var res = await repositories[context].InsertAsync(items);           
                 result.Add(context, res);
             }
           
@@ -88,16 +117,15 @@ namespace DataBase.Database.Repositories
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
-        public Dictionary<IDbContext, int> Insert(IEnumerable<TEntity> items)
+        public Dictionary<IUniversalContext, int> Insert(IEnumerable<TEntity> items)
         {
-            Dictionary<IDbContext, int> result = new Dictionary<IDbContext, int>();
+            Dictionary<IUniversalContext, int> result = new Dictionary<IUniversalContext, int>();
 
-            foreach (var context in context.Contexts)
+            foreach (var context in context.ContextList)
             {
-                var res = context.Entity<TEntity>().Insert(items);
+                var res = repositories[context].Insert(items);
                 result.Add(context, res);
             }
-
             return result;
         }
 
@@ -106,13 +134,13 @@ namespace DataBase.Database.Repositories
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public async Task<Dictionary<IDbContext, int>> UpdateAsync(TEntity item)
+        public async Task<Dictionary<IUniversalContext, int>> UpdateAsync(TEntity item)
         {
-            Dictionary<IDbContext, int> result = new Dictionary<IDbContext, int>();
+            Dictionary<IUniversalContext, int> result = new Dictionary<IUniversalContext, int>();
 
-            foreach (var context in context.Contexts)
+            foreach (var context in context.ContextList)
             {
-                var res = await context.Entity<TEntity>().UpdateAsync(item);
+                var res = await repositories[context].UpdateAsync(item);
                 result.Add(context, res);
             }
 
@@ -124,13 +152,13 @@ namespace DataBase.Database.Repositories
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public Dictionary<IDbContext, int> Update(TEntity item)
+        public Dictionary<IUniversalContext, int> Update(TEntity item)
         {
-            Dictionary<IDbContext, int> result = new Dictionary<IDbContext, int>();
+            Dictionary<IUniversalContext, int> result = new Dictionary<IUniversalContext, int>();
 
-            foreach (var context in context.Contexts)
+            foreach (var context in context.ContextList)
             {
-                var res = context.Entity<TEntity>().Update(item);
+                var res = repositories[context].Update(item);               
                 result.Add(context, res);
             }
 
@@ -142,13 +170,13 @@ namespace DataBase.Database.Repositories
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
-        public async Task<Dictionary<IDbContext, int>> UpdateAsync(IEnumerable<TEntity> items)
+        public async Task<Dictionary<IUniversalContext, int>> UpdateAsync(IEnumerable<TEntity> items)
         {
-            Dictionary<IDbContext, int> result = new Dictionary<IDbContext, int>();
+            Dictionary<IUniversalContext, int> result = new Dictionary<IUniversalContext, int>();
 
-            foreach (var context in context.Contexts)
+            foreach (var context in context.ContextList)
             {
-                var res = await context.Entity<TEntity>().UpdateAsync(items);
+                var res = await repositories[context].UpdateAsync(items);
                 result.Add(context, res);
             }
 
@@ -160,13 +188,13 @@ namespace DataBase.Database.Repositories
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
-        public Dictionary<IDbContext, int> Update(IEnumerable<TEntity> items)
+        public Dictionary<IUniversalContext, int> Update(IEnumerable<TEntity> items)
         {
-            Dictionary<IDbContext, int> result = new Dictionary<IDbContext, int>();
+            Dictionary<IUniversalContext, int> result = new Dictionary<IUniversalContext, int>();
 
-            foreach (var context in context.Contexts)
+            foreach (var context in context.ContextList)
             {
-                var res = context.Entity<TEntity>().Update(items);
+                var res = repositories[context].Update(items);
                 result.Add(context, res);
             }
 
@@ -178,13 +206,13 @@ namespace DataBase.Database.Repositories
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<Dictionary<IDbContext, TEntity>> GetAsync(Int32 id)
+        public async Task<Dictionary<IUniversalContext, TEntity>> GetAsync(Int32 id)
         {
-            Dictionary<IDbContext, TEntity> result = new Dictionary<IDbContext, TEntity>();
+            Dictionary<IUniversalContext, TEntity> result = new Dictionary<IUniversalContext, TEntity>();
 
-            foreach (var context in context.Contexts)
+            foreach (var context in context.ContextList)
             {
-                var res = await context.Entity<TEntity>().GetAsync(id);
+                var res = await repositories[context].GetAsync(id);
                 result.Add(context, res);
             }
 
@@ -196,13 +224,13 @@ namespace DataBase.Database.Repositories
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Dictionary<IDbContext, TEntity> Get(Int32 id)
+        public Dictionary<IUniversalContext, TEntity> Get(Int32 id)
         {
-            Dictionary<IDbContext, TEntity> result = new Dictionary<IDbContext, TEntity>();
+            Dictionary<IUniversalContext, TEntity> result = new Dictionary<IUniversalContext, TEntity>();
 
-            foreach (var context in context.Contexts)
+            foreach (var context in context.ContextList)
             {
-                var res = context.Entity<TEntity>().Get(id);
+                var res = repositories[context].Get(id);
                 result.Add(context, res);
             }
 
@@ -213,13 +241,13 @@ namespace DataBase.Database.Repositories
         /// Get all items Asynchrone method
         /// </summary>
         /// <returns></returns>
-        public async Task<Dictionary<IDbContext, IEnumerable<TEntity>>> GetAsync()
+        public async Task<Dictionary<IUniversalContext, IEnumerable<TEntity>>> GetAsync()
         {
-            Dictionary<IDbContext, IEnumerable<TEntity>> result = new Dictionary<IDbContext, IEnumerable<TEntity>>();
+            Dictionary<IUniversalContext, IEnumerable<TEntity>> result = new Dictionary<IUniversalContext, IEnumerable<TEntity>>();
 
-            foreach (var context in context.Contexts)
+            foreach (var context in context.ContextList)
             {
-                var res = await context.Entity<TEntity>().GetAsync();
+                var res = await repositories[context].GetAsync();
                 result.Add(context, res);
             }
 
@@ -230,13 +258,13 @@ namespace DataBase.Database.Repositories
         /// Get all items Synchrone method
         /// </summary>
         /// <returns></returns>
-        public Dictionary<IDbContext, IEnumerable<TEntity>> Get()
+        public Dictionary<IUniversalContext, IEnumerable<TEntity>> Get()
         {
-            Dictionary<IDbContext, IEnumerable<TEntity>> result = new Dictionary<IDbContext, IEnumerable<TEntity>>();
+            Dictionary<IUniversalContext, IEnumerable<TEntity>> result = new Dictionary<IUniversalContext, IEnumerable<TEntity>>();
 
-            foreach (var context in context.Contexts)
+            foreach (var context in context.ContextList)
             {
-                var res = context.Entity<TEntity>().Get();
+                var res = repositories[context].Get();             
                 result.Add(context, res);
             }
 
@@ -248,13 +276,13 @@ namespace DataBase.Database.Repositories
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public async Task<Dictionary<IDbContext, Int32>> DeleteAsync(TEntity item)
+        public async Task<Dictionary<IUniversalContext, Int32>> DeleteAsync(TEntity item)
         {
-            Dictionary<IDbContext, Int32> result = new Dictionary<IDbContext, Int32>();
+            Dictionary<IUniversalContext, Int32> result = new Dictionary<IUniversalContext, Int32>();
 
-            foreach (var context in context.Contexts)
+            foreach (var context in context.ContextList)
             {
-                var res = await context.Entity<TEntity>().DeleteAsync(item);
+                var res = await repositories[context].DeleteAsync(item);
                 result.Add(context, res);
             }
 
@@ -266,13 +294,13 @@ namespace DataBase.Database.Repositories
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public Dictionary<IDbContext, Int32> Delete(TEntity item)
+        public Dictionary<IUniversalContext, Int32> Delete(TEntity item)
         {
-            Dictionary<IDbContext, Int32> result = new Dictionary<IDbContext, Int32>();
+            Dictionary<IUniversalContext, Int32> result = new Dictionary<IUniversalContext, Int32>();
 
-            foreach (var context in context.Contexts)
+            foreach (var context in context.ContextList)
             {
-                var res = context.Entity<TEntity>().Delete(item);
+                var res = repositories[context].Delete(item);
                 result.Add(context, res);
             }
 
@@ -284,13 +312,13 @@ namespace DataBase.Database.Repositories
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
-        public async Task<Dictionary<IDbContext, Int32>> DeleteAsync(IEnumerable<TEntity> items)
+        public async Task<Dictionary<IUniversalContext, Int32>> DeleteAsync(IEnumerable<TEntity> items)
         {
-            Dictionary<IDbContext, Int32> result = new Dictionary<IDbContext, Int32>();
+            Dictionary<IUniversalContext, Int32> result = new Dictionary<IUniversalContext, Int32>();
 
-            foreach (var context in context.Contexts)
+            foreach (var context in context.ContextList)
             {
-                var res = await context.Entity<TEntity>().DeleteAsync(items);
+                var res = await repositories[context].DeleteAsync(items);
                 result.Add(context, res);
             }
 
@@ -302,13 +330,13 @@ namespace DataBase.Database.Repositories
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
-        public Dictionary<IDbContext, Int32> Delete(IEnumerable<TEntity> items)
+        public Dictionary<IUniversalContext, Int32> Delete(IEnumerable<TEntity> items)
         {
-            Dictionary<IDbContext, Int32> result = new Dictionary<IDbContext, Int32>();
+            Dictionary<IUniversalContext, Int32> result = new Dictionary<IUniversalContext, Int32>();
 
-            foreach (var context in context.Contexts)
+            foreach (var context in context.ContextList)
             {
-                var res = context.Entity<TEntity>().Delete(items);
+                var res = repositories[context].Delete(items);               
                 result.Add(context, res);
             }
 
@@ -320,13 +348,13 @@ namespace DataBase.Database.Repositories
         /// </summary>
         /// <param name="criteria"></param>
         /// <returns></returns>
-        public async Task<Dictionary<IDbContext, IEnumerable<TEntity>>> CustomQueryAsync(Criteria criteria)
+        public async Task<Dictionary<IUniversalContext, IEnumerable<TEntity>>> CustomQueryAsync(Criteria criteria)
         {
-            Dictionary<IDbContext, IEnumerable<TEntity>> result = new Dictionary<IDbContext, IEnumerable<TEntity>>();
+            Dictionary<IUniversalContext, IEnumerable<TEntity>> result = new Dictionary<IUniversalContext, IEnumerable<TEntity>>();
 
-            foreach (var context in context.Contexts)
+            foreach (var context in context.ContextList)
             {
-                var res = await context.Entity<TEntity>().CustomQueryAsync(criteria);
+                var res = await repositories[context].CustomQueryAsync(criteria);              
                 result.Add(context, res);
             }
 
@@ -338,16 +366,15 @@ namespace DataBase.Database.Repositories
         /// </summary>
         /// <param name="criteria"></param>
         /// <returns></returns>
-        public Dictionary<IDbContext, IEnumerable<TEntity>> CustomQuery(Criteria criteria)
+        public Dictionary<IUniversalContext, IEnumerable<TEntity>> CustomQuery(Criteria criteria)
         {
-            Dictionary<IDbContext, IEnumerable<TEntity>> result = new Dictionary<IDbContext, IEnumerable<TEntity>>();
+            Dictionary<IUniversalContext, IEnumerable<TEntity>> result = new Dictionary<IUniversalContext, IEnumerable<TEntity>>();
 
-            foreach (var context in context.Contexts)
+            foreach (var context in context.ContextList)
             {
-                var res = context.Entity<TEntity>().CustomQuery(criteria);
+                var res = repositories[context].CustomQuery(criteria);
                 result.Add(context, res);
             }
-
             return result;
         }
         #endregion
