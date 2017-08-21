@@ -3,14 +3,8 @@
     /// <summary>
     /// SqLite database settings interface
     /// </summary>
-    public interface ISqLiteDatabase
+    public interface ISqLiteDatabase : IDbSettings
     {
-        /// <summary>
-        /// SqLite database name
-        /// </summary>
-        /// <returns></returns>
-        string DatabaseName { get; set; }
-
         /// <summary>
         /// SqLite data source
         /// </summary>

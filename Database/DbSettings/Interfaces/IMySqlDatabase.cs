@@ -3,7 +3,7 @@
     /// <summary>
     /// MySql Database settings interface
     /// </summary>
-    public interface IMySqlDatabase
+    public interface IMySqlDatabase : IDbSettings
     {
         /// <summary>
         /// Server adresse

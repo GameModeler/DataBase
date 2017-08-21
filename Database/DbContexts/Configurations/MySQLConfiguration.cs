@@ -1,6 +1,7 @@
 ﻿using MySql.Data.Entity;
 using MySql.Data.MySqlClient;
 using System.Data.Entity;
+using System.Data.Entity.Migrations.Sql;
 
 namespace DataBase.Database.DbContexts.Configurations
 {
@@ -14,6 +15,7 @@ namespace DataBase.Database.DbContexts.Configurations
         /// </summary>
         public MySQLConfiguration()
         {
+            // Set the provider
             SetProviderServices(MySqlProviderInvariantName.ProviderName, new MySqlProviderServices());
         }
     }

@@ -2,14 +2,9 @@
 using DataBase.Database.DbContexts.Interfaces;
 using DataBase.Database.DbSettings.Interfaces;
 using DataBase.Database.Utils;
-using MySql.Data.Entity;
 using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data.Entity.Infrastructure;
 
 namespace DataBase.Database.DbContexts
 {
@@ -30,6 +25,7 @@ namespace DataBase.Database.DbContexts
         }
 
         #region Constructor
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -38,17 +34,9 @@ namespace DataBase.Database.DbContexts
         {
             dbSettings = settings;
             dbManager.ApplicationContexts.Add(this);
+            Initialize();
         }
 
         #endregion
-
-        /// <summary>
-        /// Method called during the creation of the model
-        /// </summary>
-        /// <param name="modelBuilder"></param>
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-        }
     }
 }

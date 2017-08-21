@@ -7,7 +7,7 @@ namespace DataBase.Database.DbSettings.FluentApi
     /// <summary>
     /// SqLite Fluent API
     /// </summary>
-    public class SqLiteDatabaseFApi : ISqLiteDatabaseFApi, IDbSettingsFApi
+    public class SqLiteDatabaseFApi : ISqLiteDatabaseFApi
     {
         readonly SqLiteDatabase sqlite;
         private DbManager dbManager = DbManager.Instance;
@@ -27,7 +27,7 @@ namespace DataBase.Database.DbSettings.FluentApi
         /// </summary>
         /// <param name="databaseName"></param>
         /// <returns></returns>
-        public SqLiteDatabaseFApi DatabaseName(string databaseName)
+        public ISqLiteDatabaseFApi DatabaseName(string databaseName)
         {
             sqlite.DatabaseName = databaseName;
             return this;
@@ -38,7 +38,7 @@ namespace DataBase.Database.DbSettings.FluentApi
         /// </summary>
         /// <param name="dataSource"></param>
         /// <returns></returns>
-        public SqLiteDatabaseFApi DataSource(string dataSource)
+        public ISqLiteDatabaseFApi DataSource(string dataSource)
         {
             sqlite.DataSource = dataSource;
             return this;
@@ -49,7 +49,7 @@ namespace DataBase.Database.DbSettings.FluentApi
         /// </summary>
         /// <param name="version"></param>
         /// <returns></returns>
-        public SqLiteDatabaseFApi Version(int version)
+        public ISqLiteDatabaseFApi Version(int version)
         {
             sqlite.Version = version;
             return this;
@@ -60,7 +60,7 @@ namespace DataBase.Database.DbSettings.FluentApi
         /// </summary>
         /// <param name="isNew"></param>
         /// <returns></returns>
-        public SqLiteDatabaseFApi New(bool isNew)
+        public ISqLiteDatabaseFApi New(bool isNew)
         {
             sqlite.New = isNew;
             return this;
@@ -71,7 +71,7 @@ namespace DataBase.Database.DbSettings.FluentApi
         /// </summary>
         /// <param name="useUTF16encoding"></param>
         /// <returns></returns>
-        public SqLiteDatabaseFApi UseUTF16Encoding(bool useUTF16encoding)
+        public ISqLiteDatabaseFApi UseUTF16Encoding(bool useUTF16encoding)
         {
             sqlite.UseUTF16Encoding = useUTF16encoding;
             return this;
@@ -82,7 +82,7 @@ namespace DataBase.Database.DbSettings.FluentApi
         /// </summary>
         /// <param name="port"></param>
         /// <returns></returns>
-        public SqLiteDatabaseFApi Port(string port)
+        public ISqLiteDatabaseFApi Port(string port)
         {
             sqlite.Port = port;
             return this;
@@ -93,7 +93,7 @@ namespace DataBase.Database.DbSettings.FluentApi
         /// </summary>
         /// <param name="password"></param>
         /// <returns></returns>
-        public SqLiteDatabaseFApi Password(string password)
+        public ISqLiteDatabaseFApi Password(string password)
         {
             sqlite.Password = password;
             return this;
@@ -104,7 +104,7 @@ namespace DataBase.Database.DbSettings.FluentApi
         /// </summary>
         /// <param name="legacyFormat"></param>
         /// <returns></returns>
-        public SqLiteDatabaseFApi LegacyFormat(bool legacyFormat)
+        public ISqLiteDatabaseFApi LegacyFormat(bool legacyFormat)
         {
             sqlite.LegacyFormat = legacyFormat;
             return this;
@@ -115,7 +115,7 @@ namespace DataBase.Database.DbSettings.FluentApi
         /// </summary>
         /// <param name="pooling"></param>
         /// <returns></returns>
-        public SqLiteDatabaseFApi Pooling(bool pooling)
+        public ISqLiteDatabaseFApi Pooling(bool pooling)
         {
             sqlite.Pooling = pooling;
             return this;
@@ -126,7 +126,7 @@ namespace DataBase.Database.DbSettings.FluentApi
         /// </summary>
         /// <param name="maxPoolSize"></param>
         /// <returns></returns>
-        public SqLiteDatabaseFApi MaxPoolSize(int maxPoolSize)
+        public ISqLiteDatabaseFApi MaxPoolSize(int maxPoolSize)
         {
             sqlite.MaxPoolSize = maxPoolSize;
             return this;
@@ -137,7 +137,7 @@ namespace DataBase.Database.DbSettings.FluentApi
         /// </summary>
         /// <param name="readOnly"></param>
         /// <returns></returns>
-        public SqLiteDatabaseFApi ReadOnly(bool readOnly)
+        public ISqLiteDatabaseFApi ReadOnly(bool readOnly)
         {
             sqlite.ReadOnly = readOnly;
             return this;
@@ -148,7 +148,7 @@ namespace DataBase.Database.DbSettings.FluentApi
         /// </summary>
         /// <param name="dateTimeFormat"></param>
         /// <returns></returns>
-        public SqLiteDatabaseFApi DateTimeFormat(string dateTimeFormat)
+        public ISqLiteDatabaseFApi DateTimeFormat(string dateTimeFormat)
         {
             sqlite.DateTimeFormat = dateTimeFormat;
             return this;
@@ -159,7 +159,7 @@ namespace DataBase.Database.DbSettings.FluentApi
         /// </summary>
         /// <param name="cacheSize"></param>
         /// <returns></returns>
-        public SqLiteDatabaseFApi CacheSize(int cacheSize)
+        public ISqLiteDatabaseFApi CacheSize(int cacheSize)
         {
             sqlite.CacheSize = cacheSize;
             return this;

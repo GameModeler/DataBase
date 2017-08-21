@@ -1,4 +1,5 @@
 ﻿using DataBase.Database.DbContexts;
+using DataBase.Database.DbContexts.Initializer;
 using DataBase.Database.DbContexts.Interfaces;
 using DataBase.Database.DbSettings.Interfaces;
 using DataBase.Database.Utils;
@@ -15,17 +16,16 @@ namespace DataBase.Database
 
         private Dictionary<string, IDbSettings> databases;
 
-        private List<IDbContext> applicationContexts;
+        private List<IUniversalContext> applicationContexts;
 
         /// <summary>
         /// All contexts of the application
         /// </summary>
-        public List<IDbContext> ApplicationContexts
+        public List<IUniversalContext> ApplicationContexts
         {
             get { return applicationContexts; }
             set { applicationContexts = value; }
         }
-
 
         private const string nsp = "DbContexts";
 
@@ -72,7 +72,7 @@ namespace DataBase.Database
         {
             nbDefaultDb = 0;
             Databases = new Dictionary<string, IDbSettings>();
-            ApplicationContexts = new List<IDbContext>();
+            ApplicationContexts = new List<IUniversalContext>();
         }
 
         /// <summary>
@@ -118,8 +118,7 @@ namespace DataBase.Database
         /// </summary>
         /// <param name="dbsettings"></param>
         /// <returns></returns>
-
-        public UniversalContext CreateContext(IDbSettings dbsettings)
+        public IUniversalContext CreateContext(IDbSettings dbsettings)
         {
             ProviderType provider = dbsettings.Provider;
 
@@ -137,7 +136,7 @@ namespace DataBase.Database
 
                     // Get the class type to instantiate
                     var clazz = GenericUtils.GetClassesFromProperty(listTypeDbClasses, "Provider", provider);
-                    return (UniversalContext)Activator.CreateInstance(clazz, dbsettings);
+                    return (IUniversalContext)Activator.CreateInstance(clazz, dbsettings);
             }
         }
         
@@ -145,7 +144,7 @@ namespace DataBase.Database
         /// Gets a global context
         /// </summary>
         /// <returns></returns>
-        public GlobalContext CreateGlobalContext()
+        public IGlobalContext CreateGlobalContext()
         {
             return new GlobalContext();
         }

@@ -27,5 +27,6 @@ namespace DataBase.Database.DbSettings.Interfaces
         /// </summary>
         /// <returns></returns>
         string ToConnectionString();
+
     }
 }

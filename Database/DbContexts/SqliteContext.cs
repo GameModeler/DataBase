@@ -25,6 +25,7 @@ namespace DataBase.Database.DbContexts
         }
 
         #region Constructor
+        
         /// <summary>
         /// Construcor
         /// </summary>
@@ -33,6 +34,19 @@ namespace DataBase.Database.DbContexts
         {
             dbSettings = settings;
             dbManager.ApplicationContexts.Add(this);
+            Initialize();
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <param name="connection"></param>
+        public SqLiteContext(IDbSettings settings, SQLiteConnection connection) : base(connection, true)
+        {
+            dbSettings = settings;
+            dbManager.ApplicationContexts.Add(this);
+            Initialize();
         }
         #endregion
 

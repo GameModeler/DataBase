@@ -1,4 +1,6 @@
-﻿using DataBase.Database.DbContexts.Interfaces;
+﻿using DataBase.Database.DbContexts.Initializer;
+using DataBase.Database.DbContexts.Interfaces;
+using DataBase.Database.DbSettings.DbClasses;
 using DataBase.Database.DbSettings.Interfaces;
 using DataBase.Database.Repositories;
 using DataBase.Database.Repositories.Interfaces;
@@ -7,13 +9,16 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.IO;
+using static DataBase.Database.Utils.GenericUtils;
 
 namespace DataBase.Database.DbContexts
 {
     /// <summary>
     /// Universal Context
     /// </summary>
-    public class UniversalContext : DbContext, IDbContext
+    public class UniversalContext : DbContext, IUniversalContext
     {
         /// <summary>
         /// Databse settings related the context
@@ -24,7 +29,7 @@ namespace DataBase.Database.DbContexts
         /// DbManager instance
         /// </summary>
         protected DbManager dbManager = DbManager.Instance;
-
+                                                                                                    
         /// <summary>
         /// Database settings
         /// </summary>
@@ -33,15 +38,39 @@ namespace DataBase.Database.DbContexts
             get { return dbSettings; }
         }
 
+        /// <summary>
+        /// List of DbSet
+        /// </summary>
+        public GenericDictionary DbSets { get; set; }
 
-        private Dictionary<Type, IRepository> entities = new Dictionary<Type, IRepository>();
+        private GenericDictionary entities = new GenericDictionary();
 
         /// <summary>
         /// Repositories of the context
         /// </summary>
-        public Dictionary<Type, IRepository> Entities
+        public GenericDictionary Entities
         {
             get { return entities; }
+        }
+
+        /// <summary>
+        /// Enable Lazy Loading
+        /// </summary>
+        public bool EnableLazyLoading
+        {
+            get { return Configuration.LazyLoadingEnabled; }
+            set { Configuration.LazyLoadingEnabled = value; }
+        }
+
+        /// <summary>
+        /// Get the Entity Framework DbContext
+        /// </summary>
+        public DbContext DbContext
+        {
+            get
+            {
+                return this;
+            }
         }
 
         /// <summary>
@@ -51,47 +80,57 @@ namespace DataBase.Database.DbContexts
         /// <returns></returns>
         public new DbSet<TEntity> Set<TEntity>() where TEntity : class
         {
-            return base.Set<TEntity>();
-        }
+            DbSet<TEntity> dbSet = DbSet<TEntity>();
+            if (dbSet == null)
+            {
+                dbSet = base.Set<TEntity>();
+                DbSets.Add(typeof(TEntity), dbSet);
+            }
+            
+            return dbSet;
+         }
 
         /// <summary>
         /// Set a repository
         /// </summary>
         /// <typeparam name="TEntity"></typeparam>
         /// <returns></returns>
-        public Repository<TEntity> Entity<TEntity>() where TEntity : class
+        public IRepository<TEntity> Entity<TEntity>() where TEntity : class
         {
-            IRepository repo;
-            if(entities.TryGetValue(typeof(TEntity), out repo)) {
+            Type entityType = typeof(TEntity);
+            IRepository<TEntity> repo;
+            if(entities.TryGetValue(entityType, out repo)) {
 
-                return (Repository<TEntity>)repo;
+                return (IRepository<TEntity>)repo;
 
             } else
             {
                 Repository<TEntity> repository = new Repository<TEntity>(this);
-                entities.Add(typeof(TEntity), repository);
+                entities.Add(entityType, repository);
 
                 return repository;
             }          
         }
 
         #region Constructors
+
         /// <summary>
         /// Create a database with a given provider and settings
         /// </summary>
         /// <param name="connection"></param>
         /// <param name="option"></param>
-        protected UniversalContext(DbConnection connection, bool option) : base(connection, option)
+        public UniversalContext(DbConnection connection, bool option) : base(connection, option)
         {
-
+            DbSets = new GenericDictionary();
         }
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="connectionString"></param>
-        protected UniversalContext(string connectionString) : base(connectionString) {
-
+        public UniversalContext(string connectionString) : base(connectionString)
+        {
+            DbSets = new GenericDictionary();
         }
         #endregion
 
@@ -106,5 +145,47 @@ namespace DataBase.Database.DbContexts
         }
         #endregion
 
+        /// <summary>
+        /// Get a dbSet from an entity
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        private DbSet<T> DbSet<T>() where T : class
+        {
+            Type entityType = typeof(T);
+            DbSet<T> dbset;
+            DbSets.TryGetValue(entityType, out dbset);
+            return dbset;
+        }
+       
+
+        /// <summary>
+        /// Initialize the database
+        /// </summary>
+        public void Initialize()
+        {
+            var dbExist = false;
+
+            switch (DbSettings.Provider)
+            {
+                case ProviderType.SQLite:
+
+                    ISqLiteDatabase sqliteSetting = (ISqLiteDatabase)DbSettings;
+                    FileInfo fileInfo = new FileInfo(sqliteSetting.DataSource);
+                    dbExist = (File.Exists(sqliteSetting.DataSource) && fileInfo.Length != 0);
+                    break;
+
+                case ProviderType.MySQL:
+                    dbExist = Database.Exists();
+                    break;
+            }
+
+            if (!dbExist)
+            {
+                Database.Initialize(true);
+                new DbInitializer().Seed(this);
+
+            }
+        }
     }
 }

@@ -116,7 +116,6 @@ namespace DataBase.Database.Utils
 
             //sqlBuilder.
 
-
             // Build the SqlConnection connection string.
             return sqlBuilder.ToString();
         }

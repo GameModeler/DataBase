@@ -7,7 +7,7 @@ namespace DataBase.Database.DbSettings.DbClasses
     /// <summary>
     /// Sqlite database settings
     /// </summary>
-    public class SqLiteDatabase : IDbSettings, ISqLiteDatabase
+    public class SqLiteDatabase : ISqLiteDatabase
     {
         const ProviderType PROVIDER = ProviderType.SQLite;
 
@@ -46,29 +46,53 @@ namespace DataBase.Database.DbSettings.DbClasses
         /// Data source
         /// </summary>
         public string DataSource { get; set; }
-
         /// <summary>
         /// Database version
         /// </summary>
         public int Version { get; set; }
-
         /// <summary>
         /// New
         /// </summary>
         public bool New { get; set; }
-
         /// <summary>
         /// Database UTF16 encoding
         /// </summary>
         public bool UseUTF16Encoding { get; set; }
+        /// <summary>
+        /// Port
+        /// </summary>
         public string Port { get; set; }
+        /// <summary>
+        /// Password
+        /// </summary>
         public string Password { get; set; }
+        /// <summary>
+        /// LegacyFormat
+        /// </summary>
         public bool LegacyFormat { get; set; }
+        /// <summary>
+        /// Pooling
+        /// </summary>
         public bool Pooling { get; set; }
+        /// <summary>
+        /// MaxPoolSize
+        /// </summary>
         public int MaxPoolSize { get; set; }
+        /// <summary>
+        /// ReadOnly
+        /// </summary>
         public bool ReadOnly { get; set; }
+        /// <summary>
+        /// DateTimeFormat
+        /// </summary>
         public string DateTimeFormat { get; set; }
+        /// <summary>
+        /// CacheSize
+        /// </summary>
         public int CacheSize { get; set; }
+        /// <summary>
+        /// ConnectionString
+        /// </summary>
         public string ConnectionString { get; set; }
 
         private ProviderType provider = PROVIDER;

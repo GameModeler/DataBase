@@ -22,7 +22,7 @@ namespace DataBase.Database.Utils
         /// <summary>
         /// Define DbName property
         /// </summary>
-        public virtual  string[] DbNames
+        public virtual string[] DbNames
         {
             get { return dbNames; }
         }

@@ -7,7 +7,7 @@ namespace DataBase.Database.DbSettings.FluentApi
     /// <summary>
     /// MySql Fluent API
     /// </summary>
-    public class MySqlDatabaseFApi : IDbSettingsFApi, IMySqlDatabaseFApi
+    public class MySqlDatabaseFApi : IMySqlDatabaseFApi
     {
         private readonly MySqlDatabase mysql;
         private DbManager dbManager = DbManager.Instance;
@@ -25,7 +25,7 @@ namespace DataBase.Database.DbSettings.FluentApi
         /// </summary>
         /// <param name="connectionString"></param>
         /// <returns></returns>
-        public MySqlDatabaseFApi ConnectionString(string connectionString)
+        public IMySqlDatabaseFApi ConnectionString(string connectionString)
         {
             mysql.ConnectionString = connectionString;
             return this;
@@ -36,7 +36,7 @@ namespace DataBase.Database.DbSettings.FluentApi
         /// </summary>
         /// <param name="databaseName"></param>
         /// <returns></returns>
-        public MySqlDatabaseFApi DatabaseName(string databaseName)
+        public IMySqlDatabaseFApi DatabaseName(string databaseName)
         {
             mysql.DatabaseName = databaseName;
             return this;
@@ -47,7 +47,7 @@ namespace DataBase.Database.DbSettings.FluentApi
         /// </summary>
         /// <param name="password"></param>
         /// <returns></returns>
-        public MySqlDatabaseFApi Password(string password)
+        public IMySqlDatabaseFApi Password(string password)
         {
             mysql.Password = password;
             return this;
@@ -58,7 +58,7 @@ namespace DataBase.Database.DbSettings.FluentApi
         /// </summary>
         /// <param name="port"></param>
         /// <returns></returns>
-        public MySqlDatabaseFApi Port(int port)
+        public IMySqlDatabaseFApi Port(int port)
         {
             mysql.Port = port.ToString();
             return this;
@@ -69,7 +69,7 @@ namespace DataBase.Database.DbSettings.FluentApi
         /// </summary>
         /// <param name="server"></param>
         /// <returns></returns>
-        public MySqlDatabaseFApi Server(string server)
+        public IMySqlDatabaseFApi Server(string server)
         {
             mysql.Server = server;
             return this;
@@ -80,7 +80,7 @@ namespace DataBase.Database.DbSettings.FluentApi
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public MySqlDatabaseFApi UserId(string userId)
+        public IMySqlDatabaseFApi UserId(string userId)
         {
             mysql.UserId = userId;
             return this;
