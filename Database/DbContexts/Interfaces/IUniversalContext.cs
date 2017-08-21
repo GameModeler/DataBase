@@ -1,11 +1,15 @@
-﻿using DataBase.Database.DbSettings.Interfaces;
-using DataBase.Database.Repositories.Interfaces;
-using System;
-using System.Data.Entity;
-using static DataBase.Database.Utils.GenericUtils;
+﻿// <copyright file="IUniversalContext.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace DataBase.Database.DbContexts.Interfaces
 {
+    using System;
+    using System.Data.Entity;
+    using DataBase.Database.DbSettings.Interfaces;
+    using DataBase.Database.Repositories.Interfaces;
+    using static DataBase.Database.Utils.GenericUtils;
+
     /// <summary>
     /// Universal context interface
     /// </summary>
@@ -13,36 +17,37 @@ namespace DataBase.Database.DbContexts.Interfaces
     {
 
         /// <summary>
-        /// Database settings
+        /// Gets database settings
         /// </summary>
         IDbSettings DbSettings { get; }
 
         /// <summary>
-        /// List of DbSets
+        /// Gets list of DbSets
         /// </summary>
         GenericDictionary DbSets { get; }
 
         /// <summary>
-        /// Enable or disable lazy loading mode
+        /// Gets or sets a value indicating whether enable or disable lazy loading mode
         /// </summary>
         bool EnableLazyLoading { get; set; }
 
         /// <summary>
-        /// All the entities
+        /// Gets all the entities
         /// </summary>
         GenericDictionary Entities { get;  }
 
         /// <summary>
-        /// Get a repository from a given entity or create it if not exists 
-        /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
-        /// <returns></returns>
-        IRepository<TEntity> Entity<TEntity>() where TEntity : class;
-
-        /// <summary>
-        /// Give access to the Entity framework DbContext methods
+        /// Gets the access to the Entity framework DbContext methods
         /// </summary>
         DbContext DbContext { get; }
+
+        /// <summary>
+        /// Get a repository from a given entity or create it if not exists
+        /// </summary>
+        /// <typeparam name="TEntity">The entity type</typeparam>
+        /// <returns>IRepository<TEntity></returns>
+        IRepository<TEntity> Entity<TEntity>()
+            where TEntity : class;
 
         /// <summary>
         /// Manually initialize a context

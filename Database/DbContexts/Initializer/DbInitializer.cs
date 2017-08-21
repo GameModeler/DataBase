@@ -1,11 +1,15 @@
-﻿using DataBase.Database.Utils;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity.Core.Metadata.Edm;
-using System.Linq;
+﻿// <copyright file="DbInitializer.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace DataBase.Database.DbContexts.Initializer
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Entity.Core.Metadata.Edm;
+    using System.Linq;
+    using DataBase.Database.Utils;
+
     /// <summary>
     /// Initialize the databases
     /// </summary>
@@ -14,17 +18,17 @@ namespace DataBase.Database.DbContexts.Initializer
         /// <summary>
         /// Do Initialize the datatabases
         /// </summary>
-        /// <param name="context"></param>
+        /// <param name="context">The context</param>
         public void Seed(UniversalContext context)
         {
-            SeedDatabases(context);
+            this.SeedDatabases(context);
         }
 
         /// <summary>
         /// Delete database tables that not part of the database 
         /// and create the repositories for the entities
         /// </summary>
-        /// <param name="context"></param>
+        /// <param name="context">The context</param>
         private void SeedDatabases(UniversalContext context)
         {
             List<string> tablesNames = new List<string>();
@@ -34,7 +38,7 @@ namespace DataBase.Database.DbContexts.Initializer
             var dbname = context.DbSettings.DatabaseName;
 
             // Get all tables names
-            List<EntitySet> dbTables =  DataBaseUtils.getTables(context);       
+            List<EntitySet> dbTables = DataBaseUtils.GetTables(context);
 
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
@@ -42,13 +46,13 @@ namespace DataBase.Database.DbContexts.Initializer
                   .GetTypes()
                   .Where(t =>
                     t.GetCustomAttributes(typeof(PersistentAttribute), inherit: true)
-                    .Any());          
+                    .Any());
 
                 foreach (var type in entityTypes)
                 {
                     // 1. Get the Persistance Attribute
                     List<string> dbNames = DataBaseUtils.GetPersistanceAttribute(type);
-                    
+
                     // Get table name
                     var table = dbTables.Find(tb => tb.Name == type.Name);
 
@@ -57,20 +61,20 @@ namespace DataBase.Database.DbContexts.Initializer
                         // Add table name into array
                         tablesNames.Add(table.Table);
                         entitiesNames.Add(type.Name);
-                    } else
+                    }
+                    else
                     {
                         // Create repo for each entity
                         GenericUtils.CallMathodByReflection(typeof(UniversalContext), "Entity", type, context);
                     }
 
                     dbTables.Remove(table);
-                } 
+                }
             }
 
             // Delete mapping tables
             if (dbTables.Count > 0)
             {
-
                 foreach (var fkTable in dbTables)
                 {
                     var entityNames = DataBaseUtils.SplitCamelCase(fkTable.Name);
@@ -88,9 +92,8 @@ namespace DataBase.Database.DbContexts.Initializer
             // Delete tables
             if (tablesNames.Count > 0)
             {
-                switch(context.DbSettings.Provider)
+                switch (context.DbSettings.Provider)
                 {
-
                     case ProviderType.MySQL:
 
                         var tablesNamesStr = string.Join(",", tablesNames.ToArray());
@@ -105,8 +108,8 @@ namespace DataBase.Database.DbContexts.Initializer
                         }
 
                         break;
-                }               
-            }   
+                }
+            }
         }
     }
 }

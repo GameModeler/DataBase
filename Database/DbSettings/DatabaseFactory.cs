@@ -52,23 +52,25 @@ namespace DataBase.Database.DbSettings
         public static IUniversalContext CreateContext(IDbSettings settings)
         {
             ProviderType provider = settings.Provider;
-
+            
             switch (provider)
             {
                 case ProviderType.MySQL:
-                   return new MySqlContext(settings);
 
-                case ProviderType.SQLite:          
-                   return new SqLiteContext(settings);
+                    return new MySqlContext(settings);
+
+                case ProviderType.SQLite:
+
+                    return new SqLiteContext(settings);
 
                 default:
 
-                   // Get all classes from DbContexts namespace
-                   List<Type> listTypeDbClasses = GenericUtils.AllClassesFromNamespace(nsp);
+                    // Get all classes from DbContexts namespace
+                    List<Type> listTypeDbClasses = GenericUtils.AllClassesFromNamespace(nsp);
 
-                   // Get the class type to instantiate
-                   var clazz = GenericUtils.GetClassesFromProperty(listTypeDbClasses, "Provider", provider);
-                   return (IUniversalContext)Activator.CreateInstance(clazz, settings);
+                    // Get the class type to instantiate
+                    var clazz = GenericUtils.GetClassesFromProperty(listTypeDbClasses, "Provider", provider);
+                    return (IUniversalContext)Activator.CreateInstance(clazz, settings);
             }
         }
 

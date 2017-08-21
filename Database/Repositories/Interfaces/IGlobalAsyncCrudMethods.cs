@@ -1,13 +1,17 @@
-﻿using DataBase.Database.Criterias;
-using DataBase.Database.DbContexts.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// <copyright file="IGlobalAsyncCrudMethods.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace DataBase.Database.Repositories.Interfaces
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using DataBase.Database.Criterias;
+    using DataBase.Database.DbContexts.Interfaces;
+
     /// <summary>
     /// Global Async Crud Methods Interface
     /// </summary>
@@ -48,7 +52,7 @@ namespace DataBase.Database.Repositories.Interfaces
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<Dictionary<IUniversalContext, TEntity>> GetAsync(Int32 id);
+        Task<Dictionary<IUniversalContext, TEntity>> GetAsync(int id);
 
         /// <summary>
         /// Gets entities
@@ -61,14 +65,14 @@ namespace DataBase.Database.Repositories.Interfaces
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        Task<Dictionary<IUniversalContext, Int32>> DeleteAsync(TEntity item);
+        Task<Dictionary<IUniversalContext, int>> DeleteAsync(TEntity item);
 
         /// <summary>
         /// Deletes entities
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
-        Task<Dictionary<IUniversalContext, Int32>> DeleteAsync(IEnumerable<TEntity> items);
+        Task<Dictionary<IUniversalContext, int>> DeleteAsync(IEnumerable<TEntity> items);
 
         /// <summary>
         /// Allows to execute a custom query
