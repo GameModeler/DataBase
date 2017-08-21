@@ -258,6 +258,7 @@ namespace DataBase.Database.Repositories
             foreach (var context in this.context.ContextList)
             {
                 var res = this.repositories[context].Get();
+                result.Add(context, res);
             }
 
             return result;

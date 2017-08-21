@@ -56,7 +56,7 @@ namespace DataBase.Database.DbContexts.Initializer
                     // Get table name
                     var table = dbTables.Find(tb => tb.Name == type.Name);
 
-                    if (dbNames.Count > 0 && !dbNames.Contains(dbname))
+                    if (dbNames.Count > 0 && !dbNames.Contains(dbname) && table != null)
                     {
                         // Add table name into array
                         tablesNames.Add(table.Table);

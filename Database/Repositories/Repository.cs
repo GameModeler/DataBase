@@ -181,7 +181,7 @@ namespace DataBase.Database.Repositories
         /// <returns>Task</returns>
         public async Task<IEnumerable<TEntity>> CustomQueryAsync(Criteria criteria)
         {
-            DbSet<TEntity> dbset = DbSet;
+            DbSet<TEntity> dbset = this.DbSet;
             this.WaitForDbSetLocal(dbset);
 
             return await dbset.SqlQuery(criteria.Compute()).ToListAsync();
@@ -191,8 +191,8 @@ namespace DataBase.Database.Repositories
         /// <summary>
         /// Inserts an entity synchronously
         /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
+        /// <param name="item">The item to insert</param>
+        /// <returns>the number of items inserted</returns>
         public int Insert(TEntity item)
         {
 
@@ -205,8 +205,8 @@ namespace DataBase.Database.Repositories
         /// <summary>
         /// Inserts entities asynchronously
         /// </summary>
-        /// <param name="items"></param>
-        /// <returns></returns>
+        /// <param name="items">The items to insert</param>
+        /// <returns>The number of items inserted</returns>
         public int Insert(IEnumerable<TEntity> items)
         {
 
@@ -225,8 +225,8 @@ namespace DataBase.Database.Repositories
         /// <summary>
         /// Updates an entity synchronously
         /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
+        /// <param name="item">The item to update</param>
+        /// <returns>The number of items updated</returns>
         public int Update(TEntity item)
         {
             this.context.Entry<TEntity>(item).State = EntityState.Modified;
@@ -236,8 +236,8 @@ namespace DataBase.Database.Repositories
         /// <summary>
         /// Updates entities synchronously
         /// </summary>
-        /// <param name="items"></param>
-        /// <returns></returns>
+        /// <param name="items">The items to update</param>
+        /// <returns>The number of items updated</returns>
         public int Update(IEnumerable<TEntity> items)
         {
             foreach (var item in items)
@@ -250,8 +250,8 @@ namespace DataBase.Database.Repositories
         /// <summary>
         /// Gets an entity synchronously
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">the id of the item to get</param>
+        /// <returns>The entity</returns>
         public TEntity Get(int id)
         {
             return this.DbSet.Find(id) as TEntity;
@@ -260,7 +260,7 @@ namespace DataBase.Database.Repositories
         /// <summary>
         /// Gets all entities synchronously
         /// </summary>
-        /// <returns></returns>
+        /// <returns>All the entities</returns>
         public IEnumerable<TEntity> Get()
         {
             DbSet<TEntity> temp = default(DbSet<TEntity>);
@@ -273,8 +273,8 @@ namespace DataBase.Database.Repositories
         /// <summary>
         /// Delete an entity synchronously
         /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
+        /// <param name="item">The item to delete</param>
+        /// <returns>The number of row deleted</returns>
         public int Delete(TEntity item)
         {
             this.DbSet.Attach(item);
@@ -288,7 +288,7 @@ namespace DataBase.Database.Repositories
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
-        public Int32 Delete(IEnumerable<TEntity> items)
+        public int Delete(IEnumerable<TEntity> items)
         {
             this.DbSet.Attach((items as List<TEntity>)[0]);
             this.DbSet.RemoveRange(items);
@@ -310,7 +310,7 @@ namespace DataBase.Database.Repositories
         /// <summary>
         /// Workaround to wait for DbSet.Local to be defined
         /// </summary>
-        /// <returns></returns>
+        /// <param name="dbset">the dbset</param>
         private void WaitForDbSetLocal(DbSet<TEntity> dbset)
         {
             try
@@ -338,8 +338,7 @@ namespace DataBase.Database.Repositories
             ObservableCollection<TEntity> result = null;
             await Task.Factory.StartNew(() =>
             {
-                result = DbSet.Local;
-
+                result = this.DbSet.Local;
             });
 
             return result;
