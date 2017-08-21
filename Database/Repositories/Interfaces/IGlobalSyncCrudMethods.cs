@@ -1,13 +1,13 @@
-﻿using DataBase.Database.Criterias;
-using DataBase.Database.DbContexts.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// <copyright file="IGlobalSyncCrudMethods.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace DataBase.Database.Repositories.Interfaces
 {
+    using System.Collections.Generic;
+    using DataBase.Database.Criterias;
+    using DataBase.Database.DbContexts.Interfaces;
+
     /// <summary>
     /// Global Sync Crud Methods Interface
     /// </summary>
@@ -47,7 +47,7 @@ namespace DataBase.Database.Repositories.Interfaces
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Dictionary<IUniversalContext, TEntity> Get(Int32 id);
+        Dictionary<IUniversalContext, TEntity> Get(int id);
 
         /// <summary>
         /// Gets entities
@@ -60,14 +60,14 @@ namespace DataBase.Database.Repositories.Interfaces
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        Dictionary<IUniversalContext, Int32> Delete(TEntity item);
+        Dictionary<IUniversalContext, int> Delete(TEntity item);
 
         /// <summary>
         /// Deletes entities
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
-        Dictionary<IUniversalContext, Int32> Delete(IEnumerable<TEntity> items);
+        Dictionary<IUniversalContext, int> Delete(IEnumerable<TEntity> items);
 
         /// <summary>
         /// Allows to execute a custom query

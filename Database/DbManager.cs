@@ -1,78 +1,39 @@
-﻿using DataBase.Database.DbContexts;
-using DataBase.Database.DbContexts.Initializer;
-using DataBase.Database.DbContexts.Interfaces;
-using DataBase.Database.DbSettings.Interfaces;
-using DataBase.Database.Utils;
-using System;
-using System.Collections.Generic;
+﻿// <copyright file="DbManager.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace DataBase.Database
 {
+    using System;
+    using System.Collections.Generic;
+    using DataBase.Database.DbContexts;
+    using DataBase.Database.DbContexts.Initializer;
+    using DataBase.Database.DbContexts.Interfaces;
+    using DataBase.Database.DbSettings.Interfaces;
+    using DataBase.Database.Utils;
+
     /// <summary>
     /// To manage databases
     /// </summary>
     public class DbManager
     {
 
+        private const string Nsp = "DbContexts";
+
+        private static volatile DbManager instance;
+        private static object syncRoot = new object();
+
         private Dictionary<string, IDbSettings> databases;
 
         private List<IUniversalContext> applicationContexts;
 
-        /// <summary>
-        /// All contexts of the application
-        /// </summary>
-        public List<IUniversalContext> ApplicationContexts
-        {
-            get { return applicationContexts; }
-            set { applicationContexts = value; }
-        }
-
-        private const string nsp = "DbContexts";
-
-        /// <summary>
-        /// List of databases
-        /// </summary>
-        public Dictionary<string, IDbSettings> Databases
-        {
-            get { return databases; }
-            set { databases = value; }
-        }
-
         private int nbDefaultDb;
-
-        /// <summary>
-        /// Number for database default name
-        /// </summary>
-        public int NbDefaultDb
-        {
-            get
-            {
-                return nbDefaultDb;
-            }
-            set
-            {
-                nbDefaultDb = value;
-            }
-        }
-
-        /// <summary>
-        /// Return and incrcement the database default number
-        /// </summary>
-        /// <returns></returns>
-        public int GetAndIncrNbDefaultDb()
-        {
-            return nbDefaultDb++;
-        }
-
-        #region Singleton
-        private static volatile DbManager instance;
-        private static object syncRoot = new Object();
 
         private DbManager()
         {
-            nbDefaultDb = 0;
-            Databases = new Dictionary<string, IDbSettings>();
-            ApplicationContexts = new List<IUniversalContext>();
+            this.nbDefaultDb = 0;
+            this.Databases = new Dictionary<string, IDbSettings>();
+            this.ApplicationContexts = new List<IUniversalContext>();
         }
 
         /// <summary>
@@ -93,17 +54,59 @@ namespace DataBase.Database
                 return instance;
             }
         }
-        #endregion
+
+        /// <summary>
+        /// Gets or sets all created contexts
+        /// </summary>
+        public List<IUniversalContext> ApplicationContexts
+        {
+            get { return this.applicationContexts; }
+            set { this.applicationContexts = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets list of databases
+        /// </summary>
+        public Dictionary<string, IDbSettings> Databases
+        {
+            get { return this.databases; }
+            set { this.databases = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets number for database default name
+        /// </summary>
+        public int NbDefaultDb
+        {
+            get
+            {
+                return this.nbDefaultDb;
+            }
+
+            set
+            {
+                this.nbDefaultDb = value;
+            }
+        }
+
+        /// <summary>
+        /// Return and incrcement the database default number
+        /// </summary>
+        /// <returns>the incremented default number</returns>
+        public int GetAndIncrNbDefaultDb()
+        {
+            return this.nbDefaultDb++;
+        }
 
         /// <summary>
         /// Get database from a database name
         /// </summary>
-        /// <param name="dbName"></param>
-        /// <returns></returns>
-        public IDbSettings GetDatabase(String dbName)
+        /// <param name="dbName">The database name</param>
+        /// <returns>IDbSettings</returns>
+        public IDbSettings GetDatabase(string dbName)
         {
             IDbSettings dbResult;
-            if (Databases.TryGetValue(dbName, out dbResult))
+            if (this.Databases.TryGetValue(dbName, out dbResult))
             {
                 return dbResult;
             }
@@ -116,13 +119,13 @@ namespace DataBase.Database
         /// <summary>
         /// Gets a universal context
         /// </summary>
-        /// <param name="dbsettings"></param>
-        /// <returns></returns>
+        /// <param name="dbsettings">the database settings</param>
+        /// <returns>IUniversalContext</returns>
         public IUniversalContext CreateContext(IDbSettings dbsettings)
         {
             ProviderType provider = dbsettings.Provider;
 
-            switch(provider)
+            switch (provider)
             {
                 case ProviderType.MySQL:
                     return new MySqlContext(dbsettings);
@@ -132,18 +135,18 @@ namespace DataBase.Database
 
                 default:
                     // Get all classes from DbContexts namespace
-                    List<Type> listTypeDbClasses = GenericUtils.AllClassesFromNamespace(nsp);
+                    List<Type> listTypeDbClasses = GenericUtils.AllClassesFromNamespace(Nsp);
 
                     // Get the class type to instantiate
                     var clazz = GenericUtils.GetClassesFromProperty(listTypeDbClasses, "Provider", provider);
                     return (IUniversalContext)Activator.CreateInstance(clazz, dbsettings);
             }
         }
-        
+
         /// <summary>
         /// Gets a global context
         /// </summary>
-        /// <returns></returns>
+        /// <returns>IGlobalContext</returns>
         public IGlobalContext CreateGlobalContext()
         {
             return new GlobalContext();

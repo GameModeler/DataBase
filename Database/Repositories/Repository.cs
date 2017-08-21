@@ -1,131 +1,128 @@
-﻿using DataBase.Database.Criterias;
-using DataBase.Database.DbContexts;
-using DataBase.Database.DbContexts.Interfaces;
-using DataBase.Database.Repositories;
-using DataBase.Database.Repositories.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Linq;
-using System.Threading.Tasks;
+﻿// <copyright file="Repository.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace DataBase.Database.Repositories
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Data.Entity;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Criterias;
+    using DbContexts;
+    using DbContexts.Interfaces;
+    using Interfaces;
+
     /// <summary>
     /// Repository
     /// </summary>
-    /// <typeparam name="TEntity"></typeparam>
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+    /// <typeparam name="TEntity">The entity</typeparam>
+    public class Repository<TEntity> : IRepository<TEntity>
+        where TEntity : class
     {
-
         /// <summary>
         /// Context
         /// </summary>
         private UniversalContext context;
 
         /// <summary>
-        /// Context
+        /// Initializes a new instance of the <see cref="Repository{TEntity}"/> class.
         /// </summary>
-        public IUniversalContext Context
-        {
-            get { return context; }
-        }
-
-
-        #region Constructor
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="context"></param>
+        /// <param name="context">The context</param>
         public Repository(UniversalContext context)
         {
             this.context = context;
         }
-        #endregion
 
         /// <summary>
-        /// Create DbSet if not exists yet
+        /// Gets context
+        /// </summary>
+        public IUniversalContext Context
+        {
+            get { return this.context; }
+        }
+
+        /// <summary>
+        /// Gets create DbSet if not exists yet
         /// </summary>
         public DbSet<TEntity> DbSet
         {
             get
             {
-                return context.Set<TEntity>();
+                return this.context.Set<TEntity>();
             }
         }
 
-        #region SQL asynchrone CRUD methods
         /// <summary>
         /// Inserts an entity asynchronously
         /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
+        /// <param name="item">The item to insert</param>
+        /// <returns>Task</returns>
         public async Task<int> InsertAsync(TEntity item)
         {
-            DbSet<TEntity> localDbSet = DbSet;
-            waitForDbSetLocal(localDbSet);
+            DbSet<TEntity> localDbSet = this.DbSet;
+            this.WaitForDbSetLocal(localDbSet);
             localDbSet.Add(item);
-            return await context.SaveChangesAsync();
+            return await this.context.SaveChangesAsync();
         }
 
         /// <summary>
         /// Inserts entities asynchronously
         /// </summary>
-        /// <param name="items"></param>
-        /// <returns></returns>
+        /// <param name="items">The items to insert</param>
+        /// <returns>Task</returns>
         public async Task<int> InsertAsync(IEnumerable<TEntity> items)
         {
-
             DbSet<TEntity> localDbSet = DbSet;
-            waitForDbSetLocal(localDbSet);
+            this.WaitForDbSetLocal(localDbSet);
 
             foreach (var item in items)
             {
                 localDbSet.Add(item);
             }
-            return await context.SaveChangesAsync();
+
+            return await this.context.SaveChangesAsync();
         }
 
         /// <summary>
         /// Updates an entity asynchronously
         /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
+        /// <param name="item">The item to update</param>
+        /// <returns>Task</returns>
         public async Task<int> UpdateAsync(TEntity item)
         {
             await Task.Factory.StartNew(() =>
             {
-                context.Entry<TEntity>(item).State = EntityState.Modified;
+                this.context.Entry<TEntity>(item).State = EntityState.Modified;
             });
-            return await context.SaveChangesAsync();
+            return await this.context.SaveChangesAsync();
         }
-
 
         /// <summary>
         /// Updates entities asynchronously
         /// </summary>
-        /// <param name="items"></param>
-        /// <returns></returns>
+        /// <param name="items">The items to update</param>
+        /// <returns>Task</returns>
         public async Task<int> UpdateAsync(IEnumerable<TEntity> items)
         {
             await Task.Factory.StartNew(() =>
             {
                 foreach (var item in items)
                 {
-                    context.Entry<TEntity>(item).State = EntityState.Modified;
+                    this.context.Entry<TEntity>(item).State = EntityState.Modified;
                 }
             });
-            return await context.SaveChangesAsync();
+            return await this.context.SaveChangesAsync();
         }
 
         /// <summary>
         /// Gets an entity asynchronously
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<TEntity> GetAsync(Int32 id)
+        /// <param name="id">id</param>
+        /// <returns>Task</returns>
+        public async Task<TEntity> GetAsync(int id)
         {
             return await this.DbSet.FindAsync(id) as TEntity;
         }
@@ -133,14 +130,14 @@ namespace DataBase.Database.Repositories
         /// <summary>
         /// Gets entities asynchronously
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Task</returns>
         public async Task<IEnumerable<TEntity>> GetAsync()
         {
             DbSet<TEntity> temp = default(DbSet<TEntity>);
             List<TEntity> result = new List<TEntity>();
             await Task.Factory.StartNew(() =>
             {
-                temp = context.Set<TEntity>();
+                temp = this.context.Set<TEntity>();
             });
             result.AddRange(temp);
             return result;
@@ -149,49 +146,47 @@ namespace DataBase.Database.Repositories
         /// <summary>
         /// Deletes an entity asynchronously
         /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        public async Task<Int32> DeleteAsync(TEntity item)
+        /// <param name="item">The item to delete</param>
+        /// <returns>Task</returns>
+        public async Task<int> DeleteAsync(TEntity item)
         {
             await Task.Factory.StartNew(() =>
             {
-                DbSet.Attach(item);
-                DbSet.Remove(item);
+                this.DbSet.Attach(item);
+                this.DbSet.Remove(item);
             });
-            return await context.SaveChangesAsync();
+            return await this.context.SaveChangesAsync();
         }
 
         /// <summary>
         /// Deletes entities asynchronously
         /// </summary>
-        /// <param name="items"></param>
-        /// <returns></returns>
-        public async Task<Int32> DeleteAsync(IEnumerable<TEntity> items)
+        /// <param name="items">the items to delete</param>
+        /// <returns>Task</returns>
+        public async Task<int> DeleteAsync(IEnumerable<TEntity> items)
         {
             await Task.Factory.StartNew(() =>
             {
-                DbSet.Attach((items as List<TEntity>)[0]);
-                DbSet.RemoveRange(items);
+                this.DbSet.Attach((items as List<TEntity>)[0]);
+                this.DbSet.RemoveRange(items);
             });
-            var res = await context.SaveChangesAsync();
+            var res = await this.context.SaveChangesAsync();
             return res;
         }
 
         /// <summary>
         /// Allows to execute a custom query asynchronously
         /// </summary>
-        /// <param name="criteria"></param>
-        /// <returns></returns>
+        /// <param name="criteria">Criteria</param>
+        /// <returns>Task</returns>
         public async Task<IEnumerable<TEntity>> CustomQueryAsync(Criteria criteria)
         {
             DbSet<TEntity> dbset = DbSet;
-            waitForDbSetLocal(dbset);
+            this.WaitForDbSetLocal(dbset);
 
             return await dbset.SqlQuery(criteria.Compute()).ToListAsync();
         }
-        #endregion
 
-        #region SQL synchrone Crud methods
 
         /// <summary>
         /// Inserts an entity synchronously
@@ -201,10 +196,10 @@ namespace DataBase.Database.Repositories
         public int Insert(TEntity item)
         {
 
-            DbSet<TEntity> localDbSet = DbSet;
-            waitForDbSetLocal(localDbSet);
+            DbSet<TEntity> localDbSet = this.DbSet;
+            this.WaitForDbSetLocal(localDbSet);
             localDbSet.Add(item);
-            return context.SaveChanges();
+            return this.context.SaveChanges();
         }
 
         /// <summary>
@@ -215,15 +210,16 @@ namespace DataBase.Database.Repositories
         public int Insert(IEnumerable<TEntity> items)
         {
 
-            DbSet<TEntity> localDbSet = DbSet;
+            DbSet<TEntity> localDbSet = this.DbSet;
 
-            waitForDbSetLocal(localDbSet);
+            this.WaitForDbSetLocal(localDbSet);
 
             foreach (var item in items)
             {
                 localDbSet.Add(item);
             }
-            return context.SaveChanges();
+
+            return this.context.SaveChanges();
         }
 
         /// <summary>
@@ -233,8 +229,8 @@ namespace DataBase.Database.Repositories
         /// <returns></returns>
         public int Update(TEntity item)
         {
-            context.Entry<TEntity>(item).State = EntityState.Modified;
-            return context.SaveChanges();
+            this.context.Entry<TEntity>(item).State = EntityState.Modified;
+            return this.context.SaveChanges();
         }
 
         /// <summary>
@@ -246,9 +242,9 @@ namespace DataBase.Database.Repositories
         {
             foreach (var item in items)
             {
-                context.Entry<TEntity>(item).State = EntityState.Modified;
+                this.context.Entry<TEntity>(item).State = EntityState.Modified;
             }
-            return context.SaveChanges();
+            return this.context.SaveChanges();
         }
 
         /// <summary>
@@ -258,7 +254,7 @@ namespace DataBase.Database.Repositories
         /// <returns></returns>
         public TEntity Get(int id)
         {
-            return DbSet.Find(id) as TEntity;
+            return this.DbSet.Find(id) as TEntity;
         }
 
         /// <summary>
@@ -269,7 +265,7 @@ namespace DataBase.Database.Repositories
         {
             DbSet<TEntity> temp = default(DbSet<TEntity>);
             List<TEntity> result = new List<TEntity>();
-            temp = context.Set<TEntity>();
+            temp = this.context.Set<TEntity>();
             result.AddRange(temp);
             return result;
         }
@@ -279,12 +275,12 @@ namespace DataBase.Database.Repositories
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public Int32 Delete(TEntity item)
+        public int Delete(TEntity item)
         {
-            DbSet.Attach(item);
-            DbSet.Remove(item);
+            this.DbSet.Attach(item);
+            this.DbSet.Remove(item);
 
-            return context.SaveChanges();
+            return this.context.SaveChanges();
         }
 
         /// <summary>
@@ -294,9 +290,9 @@ namespace DataBase.Database.Repositories
         /// <returns></returns>
         public Int32 Delete(IEnumerable<TEntity> items)
         {
-            DbSet.Attach((items as List<TEntity>)[0]);
-            DbSet.RemoveRange(items);
-            return context.SaveChanges();
+            this.DbSet.Attach((items as List<TEntity>)[0]);
+            this.DbSet.RemoveRange(items);
+            return this.context.SaveChanges();
         }
 
         /// <summary>
@@ -306,17 +302,16 @@ namespace DataBase.Database.Repositories
         /// <returns></returns>
         public IEnumerable<TEntity> CustomQuery(Criteria criteria)
         {
-            DbSet<TEntity> dbset = DbSet;
-            waitForDbSetLocal(dbset);
+            DbSet<TEntity> dbset = this.DbSet;
+            this.WaitForDbSetLocal(dbset);
             return dbset.SqlQuery(criteria.Compute()).ToList();
         }
-        #endregion
 
         /// <summary>
         /// Workaround to wait for DbSet.Local to be defined
         /// </summary>
         /// <returns></returns>
-        private void waitForDbSetLocal(DbSet<TEntity> dbset)
+        private void WaitForDbSetLocal(DbSet<TEntity> dbset)
         {
             try
             {
@@ -325,7 +320,7 @@ namespace DataBase.Database.Repositories
             catch (Exception e)
             {
                 var ex = e;
-                Task task = waitLocal();
+                Task task = this.WaitLocal();
 
                 try
                 {
@@ -338,7 +333,7 @@ namespace DataBase.Database.Repositories
             }
         }
 
-        private async Task<ObservableCollection<TEntity>> waitLocal()
+        private async Task<ObservableCollection<TEntity>> WaitLocal()
         {
             ObservableCollection<TEntity> result = null;
             await Task.Factory.StartNew(() =>

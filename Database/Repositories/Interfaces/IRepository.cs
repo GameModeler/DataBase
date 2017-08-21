@@ -1,24 +1,28 @@
-﻿using DataBase.Database.DbContexts;
-using DataBase.Database.DbContexts.Interfaces;
-using System.Data.Entity;
+﻿// <copyright file="IRepository.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace DataBase.Database.Repositories.Interfaces
 {
+    using System.Data.Entity;
+    using DataBase.Database.DbContexts.Interfaces;
+
     /// <summary>
     /// Repository interface
     /// </summary>
+    /// <typeparam name="TEntity">The entity type</typeparam>
     public interface IRepository<TEntity> : IAsyncCrudMethods<TEntity>, ISyncCrudMethods<TEntity> where TEntity : class
 
     {
         /// <summary>
-        /// Context
+        /// Gets context
         /// </summary>
         IUniversalContext Context { get;  }
 
         /// <summary>
-        /// DbSet
+        /// Gets dbSet
         /// </summary>
-        /// <returns></returns>
+        /// <returns>DbSet</returns>
         DbSet<TEntity> DbSet { get; }
 
     }

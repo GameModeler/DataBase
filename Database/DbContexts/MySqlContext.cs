@@ -1,13 +1,16 @@
-﻿using DataBase.Database.DbContexts.Configurations;
-using DataBase.Database.DbContexts.Interfaces;
-using DataBase.Database.DbSettings.Interfaces;
-using DataBase.Database.Utils;
-using MySql.Data.MySqlClient;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
+﻿// <copyright file="MySqlContext.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace DataBase.Database.DbContexts
 {
+    using System.Data.Entity;
+    using DataBase.Database.DbContexts.Configurations;
+    using DataBase.Database.DbSettings.Interfaces;
+    using DataBase.Database.Utils;
+    using Interfaces;
+    using MySql.Data.MySqlClient;
+
     /// <summary>
     /// MySql Context
     /// </summary>
@@ -15,28 +18,26 @@ namespace DataBase.Database.DbContexts
     public class MySqlContext : UniversalContext, IProvider
     {
         private ProviderType provider;
+
         /// <summary>
-        /// The Provider
+        /// Initializes a new instance of the <see cref="MySqlContext"/> class.
+        /// </summary>
+        /// <param name="settings">the database settings</param>
+        public MySqlContext(IDbSettings settings)
+            : base(new MySqlConnection(ConnectionStringBuilder.BuildConnectionString(ProviderType.MySQL, settings)), true)
+        {
+            this.dbSettings = settings;
+            this.dbManager.ApplicationContexts.Add(this);
+            this.Initialize();
+        }
+
+        /// <summary>
+        /// Gets or sets the Provider
         /// </summary>
         public ProviderType Provider
         {
-            get { return provider; }
-            set { provider = ProviderType.MySQL; }
+            get { return this.provider; }
+            set { this.provider = ProviderType.MySQL; }
         }
-
-        #region Constructor
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="settings"></param>
-        public MySqlContext(IDbSettings settings) : base(new MySqlConnection(ConnectionStringBuilder.BuildConnectionString(ProviderType.MySQL, settings)), true)
-        {
-            dbSettings = settings;
-            dbManager.ApplicationContexts.Add(this);
-            Initialize();
-        }
-
-        #endregion
     }
 }

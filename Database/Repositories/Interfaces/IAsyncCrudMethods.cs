@@ -1,10 +1,14 @@
-﻿using DataBase.Database.Criterias;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿// <copyright file="IAsyncCrudMethods.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace DataBase.Database.Repositories.Interfaces
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using DataBase.Database.Criterias;
+
     /// <summary>
     /// Asynchrone CRUD methods interface
     /// </summary>
@@ -44,7 +48,7 @@ namespace DataBase.Database.Repositories.Interfaces
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<TEntity> GetAsync(Int32 id);
+        Task<TEntity> GetAsync(int id);
 
         /// <summary>
         /// Gets entities
@@ -57,14 +61,14 @@ namespace DataBase.Database.Repositories.Interfaces
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        Task<Int32> DeleteAsync(TEntity item);
+        Task<int> DeleteAsync(TEntity item);
 
         /// <summary>
         /// Deletes entities
         /// </summary>
         /// <param name="items"></param>
-        /// <returns></returns>
-        Task<Int32> DeleteAsync(IEnumerable<TEntity> items);
+        /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous operation.</placeholder></returns>
+        Task<int> DeleteAsync(IEnumerable<TEntity> items);
 
         /// <summary>
         /// Allows to execute a custom query
