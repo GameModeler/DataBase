@@ -1,12 +1,7 @@
 ﻿using CsvHelper;
-using CsvHelper.Configuration;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataBase.Csv
 {
@@ -33,7 +28,9 @@ namespace DataBase.Csv
             finally
             {
                 if (writer != null)
+                {
                     writer.Close();
+                }
             }
         }
  
@@ -47,7 +44,7 @@ namespace DataBase.Csv
         public static T ReadFromCsvFile<T>(string path, string fileName) where T : new()
         {
             string filePath = path + fileName;
-            String[] values = File.ReadAllText(filePath).Split(',');
+            string[] values = File.ReadAllText(filePath).Split(',');
             T obj = new T();
             TextReader reader = null;
             try
@@ -64,20 +61,23 @@ namespace DataBase.Csv
                         // Type of obj
                         Type type = obj.GetType();
                         // Property of obj
-                        PropertyInfo propToWrite = type.GetProperty(objProp);                 
+                        PropertyInfo propToWrite = type.GetProperty(objProp);
                         // Set value on obj property (with cast on value, each save value is a string)
                         propToWrite.SetValue(obj, Convert.ChangeType(prop, typeProp), null);
-                     
                     }
+
                     i += 1;
                 }
+
                 return obj;
             }
             finally
             {
                 if (reader != null)
+                {
                     reader.Close();
+                }
             }
-        }   
+        }
     }
 }

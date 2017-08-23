@@ -10,8 +10,7 @@ namespace DataBase.Sql
     public class SqlManager
     {
 
-
-        /// <summary>
+       /// <summary>
         /// Convert T object in sql script
         /// </summary>
         /// <typeparam name="T">T object</typeparam>
@@ -22,23 +21,24 @@ namespace DataBase.Sql
         /// <param name="execute">execute or not script</param>
         /// <returns>return script</returns>
         public static string ConvertObjectInScript<T>(T objectToWrite, bool append = false, string dbName = "Test",
-                                                      bool createDB = false, bool execute = false, string user="root", string pwd="") where T : new()
+                                                      bool createDB = false, bool execute = false, string user = "root", string pwd ="") where T : new()
         {
-            string contents = "";
-            string insert = "";
-            string createTable = "";
+            string contents = string.Empty;
+            string insert = string.Empty;
+            string createTable = string.Empty;
             if (append)
             {
                 contents += "\n\n";
-            }      
+            }
 
             if (createDB)
             {
                 contents += "CREATE DATABASE " + dbName + ";\n";
             }
+
             contents += "USE " + dbName + ";\n";
 
-            if (null != objectToWrite)
+            if (objectToWrite != null)
             {
                 var properties = objectToWrite.GetType().GetProperties();
                 int propCount = properties.Count();
@@ -51,7 +51,7 @@ namespace DataBase.Sql
                     // Create table
                     string name = p.Name;
                     Type typeProp = objectToWrite.GetType().GetProperties()[i].PropertyType;
-                    String columnName = "";
+                    string columnName = string.Empty;
 
                     // Insert into table
                     var value = p.GetValue(objectToWrite, null);
@@ -61,9 +61,14 @@ namespace DataBase.Sql
                     {
                         case "Int32":
                             if (name == "Id")
+                            {
                                 columnName = "INT PRIMARY KEY NOT NULL";
+                            }
                             else
+                            {
                                 columnName = "INT(11)";
+                            }
+
                             break;
                         case "Boolean":
                             columnName = "TINYINT(1)";
@@ -78,6 +83,7 @@ namespace DataBase.Sql
                             value = "'" + value + "'";
                             break;
                     }
+
                     createTable += name + " " + columnName;
                     insert += value;
 
@@ -86,22 +92,24 @@ namespace DataBase.Sql
                         createTable += ",\n";
                         insert += ",";
                     }
+
                     i += 1;
                 }
+
                 createTable += ");\n";
                 insert += ");";
             }
+
             contents += createTable;
             contents += insert;
 
-            if(execute)
+            if (execute)
             {
                 ExecuteStringSql(contents, user, pwd);
             }
-  
+
             return contents;
         }
-
 
         /// <summary>
         /// Execute Sql script
@@ -111,7 +119,6 @@ namespace DataBase.Sql
         /// <param name="pwd">password mysql</param>
         public static void ExecuteStringSql(string script, string user = "root", string pwd = "")
         {
-
             string myConnectionString = "server=127.0.0.1;Uid= " + user + ";Pwd= " + pwd + ";";
             try
             {
@@ -155,10 +162,13 @@ namespace DataBase.Sql
             finally
             {
                 if (writer != null)
+                {
                     writer.Close();
+                }
             }
-            if(execute)
-            {             
+
+            if (execute)
+            {
                 Process cmd = new Process();
                 cmd.StartInfo.FileName = "cmd.exe";
                 cmd.StartInfo.RedirectStandardInput = true;
@@ -167,7 +177,7 @@ namespace DataBase.Sql
                 cmd.StartInfo.UseShellExecute = false;
                 cmd.Start();
 
-                cmd.StandardInput.WriteLine("mysql -u"+user+" -p"+pwd+" < "+path+fileName);
+                cmd.StandardInput.WriteLine("mysql -u" + user + " -p" + pwd + " < " + path + fileName);
                 cmd.StandardInput.Flush();
                 cmd.StandardInput.Close();
                 cmd.WaitForExit();

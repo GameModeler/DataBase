@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.Serialization;
 
 namespace DataBase.Character
 {
@@ -29,7 +26,7 @@ namespace DataBase.Character
             {
                 var object_name = objectToWrite.GetType();
                 contentsToWriteToFile += object_name + ">";
-     
+
                 // Catch object properties
                 var properties = objectToWrite.GetType().GetProperties();
                 int propCount = properties.Count();
@@ -43,17 +40,24 @@ namespace DataBase.Character
 
                     i += 1;
                     if (i < propCount)
+                    {
                         contentsToWriteToFile += delimiter;
+                    }
                     else
+                    {
                         contentsToWriteToFile += "\n";
+                    }
                 }
+
                 writer = new StreamWriter(filePath, append);
                 writer.Write(contentsToWriteToFile);
             }
             finally
             {
                 if (writer != null)
+                {
                     writer.Close();
+                }
             }
         }
 
@@ -79,51 +83,61 @@ namespace DataBase.Character
                 reader = new StreamReader(filePath);
                 while ((line = reader.ReadLine()) != null)
                 {
- 
+
                     T obj = new T();
-     
+
                     string[] res = line.Split('>');
                     if (Type.GetType(res[0]) == typeof(T))
                     {
-                   
+
                         string[] properties = res[1].Split(delimiter);
-                                        
+
                         int i = 0;
                         foreach (var prop in properties)
-                        {                          
+                        {
                             if (string.IsNullOrEmpty(prop) == false)
                             {
                                 // Property of obj
                                 string objProp = obj.GetType().GetProperties()[i].Name;
+
                                 // Property on file
                                 string attribute = prop.Split(':')[0];
+
                                 // Value on file
                                 string value = prop.Split(':')[1];
+
                                 // Type of obj property
                                 Type typeProp = obj.GetType().GetProperties()[i].PropertyType;
+
                                 // Type of obj
                                 Type type = obj.GetType();
+
                                 // Property of obj
                                 PropertyInfo propToWrite = type.GetProperty(objProp);
 
                                 // Property of obj == property on file && property is not null && property of obj is ready to write ?
-                                if (objProp == attribute && (null != propToWrite && propToWrite.CanWrite))
+                                if (objProp == attribute && (propToWrite != null && propToWrite.CanWrite))
                                 {
                                     // Set value on obj property (with cast on value, each save value is a string)
-                                    propToWrite.SetValue(obj, Convert.ChangeType(value, typeProp), null);                       
+                                    propToWrite.SetValue(obj, Convert.ChangeType(value, typeProp), null);
                                 }
-                            }                    
+                            }
+
                             i += 1;
                         }
+
                         objList.Add(obj);
                     }
-                }                     
+                }
+
                 return objList;
             }
             finally
             {
                 if (reader != null)
+                {
                     reader.Close();
+                }
             }
         }
     }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using System.Xml.Serialization;
 
 namespace DataBase.Xml
@@ -31,7 +26,9 @@ namespace DataBase.Xml
             finally
             {
                 if (writer != null)
+                {
                     writer.Close();
+                }
             }
         }
 
@@ -55,7 +52,9 @@ namespace DataBase.Xml
             finally
             {
                 if (reader != null)
+                {
                     reader.Close();
+                }
             }
         }
     }

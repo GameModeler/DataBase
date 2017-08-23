@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Yaml.Serialization;
 
 namespace DataBase.Yaml
@@ -34,7 +29,9 @@ namespace DataBase.Yaml
             finally
             {
                 if (writer != null)
+                {
                     writer.Close();
+                }
             }
         }
 
@@ -59,7 +56,9 @@ namespace DataBase.Yaml
             finally
             {
                 if (reader != null)
+                {
                     reader.Close();
+                }
             }
         }
     }

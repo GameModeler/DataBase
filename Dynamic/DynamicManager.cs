@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataBase.Dynamic
 {
@@ -43,7 +40,7 @@ namespace DataBase.Dynamic
             foreach (var t in results2)
             {
                 dic[t.Key] = t.Value;
-            }        
+            }
             return dic;
         }
 
@@ -58,7 +55,10 @@ namespace DataBase.Dynamic
         {
             MySqlCommand myCommand = new MySqlCommand(query, connection);
             if (openclose)
+            {
                 myCommand.Connection.Open();
+            }
+
             List<string> results = new List<string>();
             using (var reader = myCommand.ExecuteReader())
             {
@@ -75,7 +75,9 @@ namespace DataBase.Dynamic
             string[] array = results.ToArray();
 
             if (openclose)
+            {
                 connection.Close();
+            }
 
             return array;
         }
@@ -91,7 +93,10 @@ namespace DataBase.Dynamic
         {
             MySqlCommand myCommand = new MySqlCommand(query, connection);
             if (openclose)
+            {
                 myCommand.Connection.Open();
+            }
+
             Dictionary<string, string> results = new Dictionary<string, string>();
             using (var reader = myCommand.ExecuteReader())
             {
@@ -99,15 +104,17 @@ namespace DataBase.Dynamic
                 {
                     int nbColumns = reader.VisibleFieldCount;
                     Console.WriteLine(nbColumns);
-                    for(int i = 0; i < nbColumns; i++)
-                    {                                         
+                    for (int i = 0; i < nbColumns; i++)
+                    {
                         results.Add(reader.GetName(i), reader.GetString(i));
                     }
                 }
             }
 
             if (openclose)
+            {
                 connection.Close();
+            }
 
             return results;
         }
