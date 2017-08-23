@@ -19,19 +19,11 @@ namespace DataBase.Csv
         {
             string filePath = path + fileName;
             TextWriter writer = null;
-            try
-            {
-                writer = new StreamWriter(filePath, append);
-                var csv = new CsvWriter(writer);
-                csv.WriteRecord(objectToWrite);
-            }
-            finally
-            {
-                if (writer != null)
-                {
-                    writer.Close();
-                }
-            }
+
+            writer = new StreamWriter(filePath, append);
+            var csv = new CsvWriter(writer);
+            csv.WriteRecord(objectToWrite);
+            writer.Close();
         }
  
         /// <summary>
@@ -47,37 +39,33 @@ namespace DataBase.Csv
             string[] values = File.ReadAllText(filePath).Split(',');
             T obj = new T();
             TextReader reader = null;
-            try
-            {
-                int i = 0;
-                foreach (var prop in values)
-                {
-                    if (string.IsNullOrEmpty(prop) == false)
-                    {
-                        // Property of obj
-                        string objProp = obj.GetType().GetProperties()[i].Name;
-                        // Type of obj property
-                        Type typeProp = obj.GetType().GetProperties()[i].PropertyType;
-                        // Type of obj
-                        Type type = obj.GetType();
-                        // Property of obj
-                        PropertyInfo propToWrite = type.GetProperty(objProp);
-                        // Set value on obj property (with cast on value, each save value is a string)
-                        propToWrite.SetValue(obj, Convert.ChangeType(prop, typeProp), null);
-                    }
 
-                    i += 1;
+            int i = 0;
+            foreach (var prop in values)
+            {
+                if (string.IsNullOrEmpty(prop) == false)
+                {
+                    // Property of obj
+                    string objProp = obj.GetType().GetProperties()[i].Name;
+
+                    // Type of obj property
+                    Type typeProp = obj.GetType().GetProperties()[i].PropertyType;
+
+                    // Type of obj
+                    Type type = obj.GetType();
+
+                    // Property of obj
+                    PropertyInfo propToWrite = type.GetProperty(objProp);
+
+                    // Set value on obj property (with cast on value, each save value is a string)
+                    propToWrite.SetValue(obj, Convert.ChangeType(prop, typeProp), null);
                 }
 
-                return obj;
+                i += 1;
             }
-            finally
-            {
-                if (reader != null)
-                {
-                    reader.Close();
-                }
-            }
+
+            reader.Close();
+            return obj;
         }
     }
 }

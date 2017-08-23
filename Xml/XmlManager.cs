@@ -17,19 +17,11 @@ namespace DataBase.Xml
         {
             string filePath = path + fileName;
             TextWriter writer = null;
-            try
-            {
-                var serializer = new XmlSerializer(typeof(T));
-                writer = new StreamWriter(filePath, append);
-                serializer.Serialize(writer, objectToWrite);
-            }
-            finally
-            {
-                if (writer != null)
-                {
-                    writer.Close();
-                }
-            }
+
+            var serializer = new XmlSerializer(typeof(T));
+            writer = new StreamWriter(filePath, append);
+            serializer.Serialize(writer, objectToWrite);
+            writer.Close();
         }
 
         /// <summary>
@@ -43,19 +35,13 @@ namespace DataBase.Xml
         {
             string filePath = path + fileName;
             TextReader reader = null;
-            try
-            {
-                var serializer = new XmlSerializer(typeof(T));
-                reader = new StreamReader(filePath);
-                return (T)serializer.Deserialize(reader);
-            }
-            finally
-            {
-                if (reader != null)
-                {
-                    reader.Close();
-                }
-            }
+
+            var serializer = new XmlSerializer(typeof(T));
+            reader = new StreamReader(filePath);
+
+            T ob = (T)serializer.Deserialize(reader);
+            reader.Close();
+            return ob;
         }
     }
 }

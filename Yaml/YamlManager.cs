@@ -19,20 +19,12 @@ namespace DataBase.Yaml
         {
             string filePath = path + fileName;
             TextWriter writer = null;
-            try
-            {
-                var serializer = new YamlSerializer();
-                string contentsToWriteToFile = serializer.Serialize(objectToWrite);
-                writer = new StreamWriter(filePath, append);
-                writer.Write(contentsToWriteToFile);
-            }
-            finally
-            {
-                if (writer != null)
-                {
-                    writer.Close();
-                }
-            }
+
+            var serializer = new YamlSerializer();
+            string contentsToWriteToFile = serializer.Serialize(objectToWrite);
+            writer = new StreamWriter(filePath, append);
+            writer.Write(contentsToWriteToFile);
+            writer.Close();
         }
 
         /// <summary>
@@ -46,20 +38,12 @@ namespace DataBase.Yaml
         {
             string filePath = path + fileName;
             TextReader reader = null;
-            try
-            {
-                var serializer = new YamlSerializer();
-                Console.WriteLine(serializer.DeserializeFromFile(filePath));
-                object obj = serializer.DeserializeFromFile(filePath)[0];
-                return (T)Convert.ChangeType(obj, typeof(T));
-            }
-            finally
-            {
-                if (reader != null)
-                {
-                    reader.Close();
-                }
-            }
+            var serializer = new YamlSerializer();
+            object obj = serializer.DeserializeFromFile(filePath)[0];
+
+            T ob = (T)Convert.ChangeType(obj, typeof(T));
+            reader.Close();
+            return ob;
         }
     }
 }
