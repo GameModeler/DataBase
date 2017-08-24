@@ -1,36 +1,27 @@
-﻿using DataBase.Database.DbContexts;
-using DataBase.Database.DbContexts.Interfaces;
-using DataBase.Database.DbSettings.DbClasses;
-using DataBase.Database.DbSettings.Interfaces;
-using DataBase.Database.Utils;
-using System;
-using System.Collections.Generic;
+﻿// <copyright file="DatabaseFactory.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace DataBase.Database.DbSettings
 {
+    using System;
+    using System.Collections.Generic;
+    using DbClasses;
+    using DbContexts;
+    using DbContexts.Interfaces;
+    using Interfaces;
+    using Utils;
+
     /// <summary>
     /// Database facotry
     /// </summary>
     public class DatabaseFactory
     {
 
-        private const string nsp = "DbContexts";
+        private const string Nsp = "DbContexts";
 
         /// <summary>
-        /// Set a new Database settings from a IDbSettings
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="dnName"></param>
-        /// <returns></returns>
-        public static T DatabaseSettings<T>(string dnName) where T : IDbSettings, new()
-        {
-            T obj = new T();
-            obj.DatabaseName = dnName;
-            return obj;
-        }
-
-        /// <summary>
-        /// Get a MySql database
+        /// Gets a MySql database
         /// </summary>
         public static MySqlDatabase MySqlDb
         {
@@ -38,7 +29,7 @@ namespace DataBase.Database.DbSettings
         }
 
         /// <summary>
-        /// Get a SqLite database
+        /// Gets a SqLite database
         /// </summary>
         public static SqLiteDatabase SqLiteDb
         {
@@ -46,13 +37,27 @@ namespace DataBase.Database.DbSettings
         }
 
         /// <summary>
-        /// 
+        /// Set a new Database settings from a IDbSettings
         /// </summary>
-        /// <param name="settings"></param>
+        /// <typeparam name="T">The database type</typeparam>
+        /// <param name="dnName">The database name</param>
+        /// <returns>T</returns>
+        public static T DatabaseSettings<T>(string dnName)
+            where T : IDbSettings, new()
+        {
+            T obj = new T();
+            obj.DatabaseName = dnName;
+            return obj;
+        }
+
+        /// <summary>
+        /// Create a context
+        /// </summary>
+        /// <param name="settings">The database settings</param>
+        /// <returns>IUniversalContext</returns>
         public static IUniversalContext CreateContext(IDbSettings settings)
         {
             ProviderType provider = settings.Provider;
-            
             switch (provider)
             {
                 case ProviderType.MySQL:
@@ -66,7 +71,7 @@ namespace DataBase.Database.DbSettings
                 default:
 
                     // Get all classes from DbContexts namespace
-                    List<Type> listTypeDbClasses = GenericUtils.AllClassesFromNamespace(nsp);
+                    List<Type> listTypeDbClasses = GenericUtils.AllClassesFromNamespace(Nsp);
 
                     // Get the class type to instantiate
                     var clazz = GenericUtils.GetClassesFromProperty(listTypeDbClasses, "Provider", provider);
@@ -75,9 +80,9 @@ namespace DataBase.Database.DbSettings
         }
 
         /// <summary>
-        /// 
+        /// Create a global context
         /// </summary>
-        /// <returns></returns>
+        /// <returns>IGlobalContext</returns>
         public static IGlobalContext CreateGlobalContext()
         {
             return new GlobalContext();

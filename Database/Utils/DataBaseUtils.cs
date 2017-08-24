@@ -8,8 +8,8 @@
     using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using DataBase.Database.DbContexts;
-    using DataBase.Database.DbSettings.Interfaces;
+    using DbContexts;
+    using DbSettings.Interfaces;
 
     /// <summary>
     ///  Util class for the DataBase Module
@@ -31,7 +31,7 @@
         }
 
         /// <summary>
-        /// Concatene database' server and port
+        /// Concatene database server and port
         /// </summary>
         /// <param name="server">the server name</param>
         /// <param name="port">the port</param>
@@ -95,9 +95,6 @@
                 (PersistentAttribute)Attribute.GetCustomAttribute(t, typeof(PersistentAttribute));
 
             return persistantAttributes.DbNames.ToList<string>();
-
-            // List<PersistentAttribute> persistanceAttr = GenericUtils.GetAttribute<PersistentAttribute>(t);
-            // return (persistanceAttr.Count > 0) ? persistanceAttr[0].DbNames.ToList<string>() : null;
         }
 
         /// <summary>
