@@ -1,10 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿// <copyright file="GenericUtils.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace DataBase.Database.Utils
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+
     /// <summary>
     /// Generic Utils
     /// </summary>
@@ -13,10 +17,10 @@ namespace DataBase.Database.Utils
         /// <summary>
         /// Instantiate a generic class
         /// </summary>
-        /// <param name="clazz"></param>
-        /// <param name="entity"></param>
-        /// <param name="param"></param>
-        /// <returns></returns>
+        /// <param name="clazz">The class</param>
+        /// <param name="entity">The entity</param>
+        /// <param name="param">Parameters</param>
+        /// <returns>object</returns>
         public static object InstantiateGeneric(Type clazz, Type entity, object[] param = null)
         {
             Type constructedType = clazz.MakeGenericType(entity);
@@ -26,8 +30,8 @@ namespace DataBase.Database.Utils
         /// <summary>
         /// Get all classes from a namespace
         /// </summary>
-        /// <param name="nspace"></param>
-        /// <returns></returns>
+        /// <param name="nspace">Namespace</param>
+        /// <returns>List</returns>
         public static List<Type> AllClassesFromNamespace(string nspace)
         {
             return AppDomain.CurrentDomain.GetAssemblies()
@@ -39,10 +43,10 @@ namespace DataBase.Database.Utils
         /// <summary>
         /// Get class from a property
         /// </summary>
-        /// <param name="classList"></param>
-        /// <param name="propName"></param>
-        /// <param name="propValue"></param>
-        /// <returns></returns>
+        /// <param name="classList">List of classes</param>
+        /// <param name="propName">Property name</param>
+        /// <param name="propValue">Property value</param>
+        /// <returns>Type</returns>
         public static Type GetClassesFromProperty(List<Type> classList, string propName, object propValue)
         {
             Type result = null;
@@ -53,40 +57,41 @@ namespace DataBase.Database.Utils
             {
                 var propElem = clazz.GetType().GetProperties().FirstOrDefault(prop => prop.Name == propName);
 
-                if(propElem != null && propElem.GetValue(clazz, null) == propValue)
+                if (propElem != null && propElem.GetValue(clazz, null) == propValue)
                 {
                     result = clazz;
                     break;
                 }
             }
+
             return result;
         }
 
         /// <summary>
         /// Call a method by reflection
         /// </summary>
-        /// <param name="clazz"></param>
-        /// <param name="methodName"></param>
-        /// <param name="typeArg"></param>
-        /// <param name="instance"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="clazz">The class</param>
+        /// <param name="methodName">The method name</param>
+        /// <param name="typeArg">The type argument</param>
+        /// <param name="instance">The instance</param>
+        /// <param name="value">Parameters</param>
+        /// <returns>object</returns>
         public static object CallMathodByReflection(Type clazz, string methodName, Type typeArg, object instance, object value = null)
         {
-            // Just for simplicity, assume it's public etc
             MethodInfo method = clazz.GetMethod(methodName);
             MethodInfo generic = method.MakeGenericMethod(typeArg);
             var parameters = (value == null) ? new object[] { } : new object[] { value };
-            return generic.Invoke(instance, parameters); 
+            return generic.Invoke(instance, parameters);
         }
 
         /// <summary>
         /// Gets all attributes from a specified type
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="t"></param>
-        /// <returns></returns>
-        public static List<T> GetAttribute<T>(Type t) where T : Attribute
+        /// <typeparam name="T">Type of the attribute</typeparam>
+        /// <param name="t">Type</param>
+        /// <returns>List</returns>
+        public static List<T> GetAttribute<T>(Type t)
+            where T : Attribute
         {
             return t.GetCustomAttributes<T>(false).ToList<T>();
         }
@@ -96,45 +101,48 @@ namespace DataBase.Database.Utils
         /// </summary>
         public class GenericDictionary
         {
-            private Dictionary<Type, object> _dict = new Dictionary<Type, object>();
+            private Dictionary<Type, object> dict = new Dictionary<Type, object>();
 
             /// <summary>
             /// Add item to the generic dictionnary
             /// </summary>
-            /// <typeparam name="K"></typeparam>
-            /// <typeparam name="V"></typeparam>
-            /// <param name="key"></param>
-            /// <param name="value"></param>
-            public void Add<V>(Type key, V value) where V : class
+            /// <typeparam name="K">Key</typeparam>
+            /// <typeparam name="V">Value</typeparam>
+            /// <param name="key">key</param>
+            /// <param name="value">value</param>
+            public void Add<V>(Type key, V value)
+                where V : class
             {
-                _dict.Add(key, value);
+                this.dict.Add(key, value);
             }
 
             /// <summary>
             /// Get value from the generic dictionnary
             /// </summary>
-            /// <typeparam name="K"></typeparam>
-            /// <typeparam name="T"></typeparam>
-            /// <param name="key"></param>
-            /// <returns></returns>
-            public T GetValue<T>(Type key) where T : class
+            /// <typeparam name="T">Value</typeparam>
+            /// <typeparam name="K">Key</typeparam>
+            /// <param name="key">key</param>
+            /// <returns>T</returns>
+            public T GetValue<T>(Type key)
+                where T : class
             {
-                return _dict[key] as T;
+                return this.dict[key] as T;
             }
 
             /// <summary>
             /// Try Get Value
             /// </summary>
-            /// <typeparam name="T"></typeparam>
-            /// <param name="key"></param>
-            /// <param name="value"></param>
-            /// <returns></returns>
-            public bool TryGetValue<T>(Type key, out T value) where T : class
+            /// <typeparam name="T">T</typeparam>
+            /// <param name="key">Key</param>
+            /// <param name="value">Value</param>
+            /// <returns>bool</returns>
+            public bool TryGetValue<T>(Type key, out T value)
+                where T : class
             {
                 value = null;
-                if (_dict.ContainsKey(key))
+                if (this.dict.ContainsKey(key))
                 {
-                    value = _dict[key] as T; // the type of result is Component!
+                    value = this.dict[key] as T;
                     return true;
                 }
 
